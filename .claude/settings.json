@@ -87,6 +87,10 @@
           {
             "type": "command",
             "command": "afplay ~/.claude/sounds/complete.wav"
+          },
+          {
+            "type": "command",
+            "command": "osascript -e 'tell application \"Ghostty\" to activate'"
           }
         ]
       }
