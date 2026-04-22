@@ -60,6 +60,17 @@ alias la='ls -a'
 ## 実装は bin/gdev を参照
 source "$HOME/.local/bin/gdev"
 
+## cd ごとにウィンドウタイトルを更新（git リポジトリ名 > cwd ベース名）
+## Mission Control 上で Ghostty ウィンドウを見分けやすくする用途
+autoload -Uz add-zsh-hook
+_ghostty_set_title() {
+  local path
+  path=$(git rev-parse --show-toplevel 2>/dev/null) || path=$PWD
+  printf '\e]2;%s\a' "${path##*/}"
+}
+add-zsh-hook chpwd _ghostty_set_title
+_ghostty_set_title
+
 # ==================================================
 # gcloud 切り替え
 # ==================================================
