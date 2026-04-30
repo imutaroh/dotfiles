@@ -59,6 +59,16 @@ return {
           desc = "Declaration of current symbol",
           cond = "textDocument/declaration",
         },
+        gI = {
+          function() vim.lsp.buf.implementation() end,
+          desc = "Implementation of current symbol",
+          cond = "textDocument/implementation",
+        },
+        gr = {
+          function() vim.lsp.buf.references() end,
+          desc = "References of current symbol",
+          cond = "textDocument/references",
+        },
       },
     },
   },
