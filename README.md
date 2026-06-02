@@ -62,7 +62,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 ### インストール
 
 ```bash
-git clone https://github.com/Imutaakihiro/dotfiles.git ~/dotfiles
+git clone https://github.com/imutaroh/dotfiles.git ~/dotfiles
 ~/dotfiles/setup.sh
 source ~/.zshrc  # またはターミナル再起動
 ```
