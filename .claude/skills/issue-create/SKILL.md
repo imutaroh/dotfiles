@@ -1,6 +1,6 @@
 ---
 name: issue-create
-description: GitHub リポジトリ `imutaroh/ObsidianImus` に Issue を起票し、Project "Life" #2 への追加・Quadrant/Area/Status/Milestone 設定までを1コマンドで完結させるスキル。「/issue-create」「Issue 起票」「Issue にして」「タスク追加」「アイデア登録」「これ Issue にして」で使用。type ラベル（task/idea/decision/review/antipattern）・Project フィールドを対話的に決定し、必要に応じて作業ディレクトリ `Company/issues/{N}-{slug}/` の雛形も作成する。
+description: GitHub リポジトリ `imutaroh/ObsidianImus` に Issue を起票し、Project "Life" #2 への追加・Area/Status/Milestone 設定までを1コマンドで完結させるスキル。「/issue-create」「Issue 起票」「Issue にして」「タスク追加」「アイデア登録」「これ Issue にして」で使用。type ラベル（task/idea/decision/review/antipattern）・Project フィールドを対話的に決定する。
 ---
 
 # issue-create
@@ -27,21 +27,9 @@ ID 一覧（Project ID / Field ID / Option ID）は [references/project_life_ids
 | タイトル | ✅ | — |
 | 本文（背景・調べたいこと・成果物） | ⚠️ 推奨 | 空でも可だが補助質問で引き出す |
 | `type:` ラベル | ✅ | `task`（迷ったら確認） |
-| Area | ✅ | 提案→確認 |
-| Quadrant | ✅ | 影響度×緊急度ロジックで自動推定→確認 |
+| Area | ✅ | Mind / dev/AI / Work / Life から提案→確認 |
 | Milestone | — | 当該四半期 |
 | Status | — | Todo |
-| 作業ディレクトリ作成 | — | type が `task/decision/review` なら作成提案 |
-
-### Quadrant の推定基準
-
-`feedback_quadrant_assignment_logic.md` に従う：
-
-- **影響度**: 本業（and roots / Scarlet）直結＝高 / 個人発信・成長系＝中 / 好奇心＝低
-- **緊急度**: 鮮度・他者待ち・運用詰まり＝高 / 同価値で先延ばし可＝低
-- 高×高 → **Q1** / 高×低 or 中×高 → **Q2** / 低×高 → **Q3** / 低～中×低 → **Q4**
-
-推定根拠を1行添えて確認する。例：「Area=Scarlet で業務直結＆Review 待ちあり → Q2 想定」
 
 ## ワークフロー
 
@@ -81,29 +69,17 @@ item_id=$(gh project item-list 2 --owner imutaroh --format json --limit 200 \
 
 bash "$SKILL_DIR/scripts/set_project_fields.sh" "$item_id" \
   --status "Todo" \
-  --quadrant "Q2" \
-  --area "dev"
+  --area "dev/AI"
 ```
 
 スクリプトの引数仕様は [scripts/set_project_fields.sh](scripts/set_project_fields.sh) 冒頭参照。
 
-### 5. 作業ディレクトリの雛形作成（オプション）
-
-slug は英小文字-kebab。タイトルから機械的に作る（例：「HTTP ステータスコードはなぜ3桁」→ `http-status-code-history`）。
-
-```bash
-mkdir -p "Company/issues/${issue_num}-${slug}"
-```
-
-ファイルは置かない。Issue ごとに必要なものが違うので空ディレクトリで OK（CLAUDE.md の運用方針）。
-
-### 6. 報告
+### 5. 報告
 
 ```
 ✅ Issue #N: <TITLE>
    URL: <URL>
-   type:<TYPE> / Quadrant: <Q> / Area: <AREA> / Milestone: <M>
-   作業ディレクトリ: Company/issues/N-slug/ （作成した場合）
+   type:<TYPE> / Area: <AREA> / Status: <STATUS> / Milestone: <M>
 ```
 
 ## type ラベルの判定ガイド
@@ -126,6 +102,5 @@ mkdir -p "Company/issues/${issue_num}-${slug}"
 
 ## 関連メモリ
 
-- Quadrant 振り分けロジック: `~/.claude/projects/-Users-imutaakihiro-repos-imutaakihiro-ObsidianImus/memory/feedback_quadrant_assignment_logic.md`
-- Issue 紐づきディレクトリ運用: 同 `project_issue_tied_directory.md`
+- Issue 管理基盤（Project Life の構造・Area/Status・最新フィールドID）: `~/.claude/projects/-Users-imutaakihiro-repos-imutaakihiro-ObsidianImus/memory/project_issue_management_base.md`
 - GitHub Issue タスク管理の基本: 同 `feedback_tasks_via_github_issue.md`

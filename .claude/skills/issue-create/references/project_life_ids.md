@@ -1,6 +1,6 @@
 # Project Life #2 — IDs リファレンス
 
-最終取得: 2026-05-20
+最終取得: 2026-06-02
 
 ## Project 本体
 
@@ -16,22 +16,13 @@
 
 | 名前 | Option ID |
 |---|---|
-| Todo | `05859249` |
-| In Progress | `3c81879e` |
-| Review | `fbe41ce3` |
-| Pending | `cad6c6a3` |
-| Done | `ed91ac74` |
+| Todo | `20e57f3e` |
+| In Progress | `4e84ccd9` |
+| Review | `be2accf1` |
+| Pending | `97724816` |
+| Done | `de4d5180` |
 
-## Quadrant フィールド
-
-- Field ID: `PVTSSF_lAHODDLAY84BXouLzhS0V8Q`
-
-| 名前 | Option ID |
-|---|---|
-| Q1: 重要×緊急 | `07074fa4` |
-| Q2: 重要×非緊急 | `bef87806` |
-| Q3: 非重要×緊急 | `223a3f9b` |
-| Q4: 非重要×非緊急 | `bbf33342` |
+> Icebox は 2026-06-02 に廃止（退避ゾーンを持たない方針）。
 
 ## Area フィールド
 
@@ -39,15 +30,16 @@
 
 | 名前 | Option ID |
 |---|---|
-| コンテンツ | `2a99415d` |
-| AI | `c1076792` |
-| アウトプット | `b09f18b5` |
-| 健康 | `4913ceb1` |
-| Scarlet | `43aa5b54` |
-| and roots | `6874f546` |
-| 金融 | `a151978a` |
-| dev | `3d15ddf8` |
-| 人 | `c49be055` |
+| Mind | `704b1f98` |
+| dev/AI | `d5ca1188` |
+| Work | `5defc752` |
+| Life | `d697154a` |
+
+> 2026-05-24 に 9個 → 4個へ集約。旧 Area（コンテンツ/健康/Scarlet 等）は廃止。
+
+## Quadrant フィールド
+
+- **2026-05-24 に削除済み**。アイゼンハワー象限は使わない。優先順位は Status / Milestone / 作戦会議で判断する。
 
 ## 再取得コマンド
 
