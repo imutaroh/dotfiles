@@ -1,0 +1,8 @@
+{
+  "name": "Dark Daltonized (Cool)",
+  "base": "dark-daltonized",
+  "overrides": {
+    "warning": "#2dd4bf",
+    "warningShimmer": "#5eead4"
+  }
+}

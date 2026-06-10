@@ -112,6 +112,7 @@ mkdir -p ~/.claude/sounds
 ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" ~/.claude/CLAUDE.md
 ln -sf "$DOTFILES_DIR/.claude/settings.json" ~/.claude/settings.json
 ln -sf "$DOTFILES_DIR/.claude/statusline.sh" ~/.claude/statusline.sh
+ln -sf "$DOTFILES_DIR/.claude/statusline-preview.sh" ~/.claude/statusline-preview.sh
 ln -sfn "$DOTFILES_DIR/.claude/scripts" ~/.claude/scripts
 
 # skillsはディレクトリ全体をシンボリックリンク
@@ -119,6 +120,12 @@ if [ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ]; then
     rm -rf ~/.claude/skills
 fi
 ln -sfn "$DOTFILES_DIR/.claude/skills" ~/.claude/skills
+
+# themesはディレクトリ全体をシンボリックリンク
+if [ -d ~/.claude/themes ] && [ ! -L ~/.claude/themes ]; then
+    rm -rf ~/.claude/themes
+fi
+ln -sfn "$DOTFILES_DIR/.claude/themes" ~/.claude/themes
 
 ln -sf "$DOTFILES_DIR/.claude/sounds/complete.wav" ~/.claude/sounds/complete.wav
 ln -sf "$DOTFILES_DIR/.claude/sounds/confirm.wav" ~/.claude/sounds/confirm.wav
