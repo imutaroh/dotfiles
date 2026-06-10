@@ -12,10 +12,11 @@ SCRIPT="$DIR/statusline.sh"
 OUT="$DIR/tmp/statusline-preview.html"
 mkdir -p "$DIR/tmp"
 
-# サンプル入力 (ctx の input_tokens を引数で変える)
+# サンプル入力 ($1=ctx% $2=5h% $3=7d% を引数で変える)
+NOW=$(date +%s); FIVE=$((NOW + 9900)); SEVEN=$((NOW + 225000))
 render() {
     cat <<JSON | bash "$SCRIPT"
-{"model":{"display_name":"Opus 4.8 (1M context)"},"workspace":{"current_dir":"$HOME/dotfiles"},"context_window":{"context_window_size":1000000,"current_usage":{"input_tokens":$1,"cache_creation_input_tokens":0,"cache_read_input_tokens":0}},"cost":{"total_cost_usd":0.77}}
+{"model":{"display_name":"Opus 4.8"},"workspace":{"current_dir":"$HOME/dotfiles"},"cost":{"total_cost_usd":0.08,"total_duration_ms":423000},"context_window":{"context_window_size":1000000,"used_percentage":$1,"current_usage":{"input_tokens":1,"cache_creation_input_tokens":0,"cache_read_input_tokens":0}},"rate_limits":{"five_hour":{"used_percentage":$2,"resets_at":$FIVE},"seven_day":{"used_percentage":$3,"resets_at":$SEVEN}}}
 JSON
 }
 
@@ -51,9 +52,9 @@ print('<br>'.join(conv(l) for l in data.split('\n')))
 PY
 ansi2html() { python3 "$PYTMP"; }
 
-N=$(render 60000  | ansi2html)   # 通常
-W=$(render 750000 | ansi2html)   # 警告 (ctx 75%)
-D=$(render 950000 | ansi2html)   # 危険 (ctx 95%)
+N=$(render 6  20 3  | ansi2html)   # 通常
+W=$(render 75 72 10 | ansi2html)   # 警告
+D=$(render 95 93 80 | ansi2html)   # 危険
 
 cat > "$OUT" <<HTML
 <!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>statusline preview</title>
