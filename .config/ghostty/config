@@ -53,10 +53,15 @@ cursor-style-blink = false
 # ==================================================
 
 # フォントファミリー（日本語対応の等幅フォント）
-font-family = HackGen35 Console
+# Moralerspace Argon: Monaspace Argon (humanist sans) × IBM Plex Sans JP
+# 丸み・空気感あり、圧迫感を抑えた読みやすい字形。
+font-family = Moralerspace Argon
 
 # サイズ（ポイント）
 font-size = 14
+
+# 行間に余白を足して空気感を出す（圧迫感を減らす）
+adjust-cell-height = 2
 
 
 # ==================================================

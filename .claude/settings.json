@@ -66,7 +66,16 @@
       "Bash(which:*)",
       "Read",
       "WebFetch",
-      "WebSearch"
+      "WebSearch",
+      "Bash(git rebase *)",
+      "Bash(git -C /Users/imutaakihiro/repos/imutaakihiro/sample-repo status)",
+      "Bash(git -C /Users/imutaakihiro/repos/imutaakihiro/sample-repo branch -a)",
+      "Bash(git reset *)",
+      "Bash(printf \"りんご\\\\nバナナ\\\\nオレンジ\\\\nぶどう\\\\nメロン\\\\nキウイ（甘い）\\\\n\")",
+      "Bash(printf \"りんご\\\\nバナナ\\\\nオレンジ\\\\nぶどう\\\\nメロン\\\\nキウイ（酸っぱい）\\\\n\")",
+      "Bash(git merge *)",
+      "Bash(go version *)",
+      "Bash(go mod *)"
     ],
     "deny": [
       "Bash(rm *)",
@@ -75,8 +84,10 @@
       "Bash(git push -f*)",
       "Bash(git reset --hard*)",
       "Bash(git clean -f*)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
+  "model": "opus",
   "enabledMcpjsonServers": [
     "obsidian"
   ],
@@ -87,10 +98,6 @@
           {
             "type": "command",
             "command": "afplay ~/.claude/sounds/complete.wav"
-          },
-          {
-            "type": "command",
-            "command": "osascript -e 'tell application \"Ghostty\" to activate'"
           }
         ]
       }
@@ -104,11 +111,33 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/anti-sycophancy.sh"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
+  "enabledPlugins": {
+    "vercel@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
+  },
+  "effortLevel": "xhigh",
+  "awaySummaryEnabled": true,
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
+  "theme": "custom:dark-daltonized-cool",
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
 }

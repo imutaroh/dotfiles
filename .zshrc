@@ -34,6 +34,11 @@ eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
 
 # ==================================================
+# zoxide（cd の代替・frecency でディレクトリ移動）
+# ==================================================
+eval "$(zoxide init zsh)"
+
+# ==================================================
 # 履歴設定
 # ==================================================
 HISTFILE=~/.zsh_history
@@ -43,6 +48,12 @@ setopt share_history          # ターミナル間で履歴を共有
 setopt hist_ignore_all_dups   # 重複したコマンドを記録しない
 setopt hist_reduce_blanks     # 余分な空白を除いて記録
 setopt correct                # タイプミスを自動修正
+
+# ==================================================
+# PATH
+# ==================================================
+# Python（pip install したコマンドを使えるようにする）
+export PATH="/Library/Frameworks/Python.framework/Versions/3.13/bin:$PATH"
 
 # ==================================================
 # エイリアス
@@ -62,11 +73,14 @@ source "$HOME/.local/bin/gdev"
 
 ## cd ごとにウィンドウタイトルを更新（git リポジトリ名 > cwd ベース名）
 ## Mission Control 上で Ghostty ウィンドウを見分けやすくする用途
+##
+## NOTE: 変数名に `path` を使うと zsh の特殊変数（PATH と連動する配列）と衝突して
+##       関数全体が極端に遅くなる（数秒〜十数秒）。必ず別名にすること。
 autoload -Uz add-zsh-hook
 _ghostty_set_title() {
-  local path
-  path=$(git rev-parse --show-toplevel 2>/dev/null) || path=$PWD
-  printf '\e]2;%s\a' "${path##*/}"
+  local repo_dir
+  repo_dir=$(git rev-parse --show-toplevel 2>/dev/null) || repo_dir=$PWD
+  printf '\e]2;%s\a' "${repo_dir##*/}"
 }
 add-zsh-hook chpwd _ghostty_set_title
 _ghostty_set_title

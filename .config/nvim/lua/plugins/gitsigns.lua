@@ -1,11 +1,14 @@
 return {
   "lewis6991/gitsigns.nvim",
   opts = {
-    current_line_blame = true, -- GitLens のようにインラインで blame 表示
+    -- inline blame は **既定 OFF**。視覚ノイズ（カーソル移動のたびのチカチカ）を避けるため、
+    -- 必要な時だけ <leader>gb で trigger する運用にした。
+    current_line_blame = false,
     current_line_blame_opts = {
       virt_text = true,
-      virt_text_pos = "eol", -- 行末に表示
-      delay = 300,           -- 表示までの遅延(ms)
+      virt_text_pos = "right_align", -- 画面右端に揃えてコードと重ねない
+      delay = 1000,                  -- 1s ディレイでカーソル移動時のチカチカを抑制
+      ignore_whitespace = true,
     },
     current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
     on_attach = function(bufnr)
@@ -14,8 +17,10 @@ return {
         vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
       end
       -- 変更ハンクを前後に移動
-      map("n", "gh", function() gs.next_hunk() end, "Next git hunk")
-      map("n", "gH", function() gs.prev_hunk() end, "Prev git hunk")
+      map("n", "gh", function() gs.next_hunk() end, "次のgit hunkへ")
+      map("n", "gH", function() gs.prev_hunk() end, "前のgit hunkへ")
+      -- inline blame のトグル（必要な時だけ表示）
+      map("n", "<leader>gb", function() gs.toggle_current_line_blame() end, "Toggle inline blame")
     end,
   },
 }

@@ -65,4 +65,83 @@ Tailwind の 400 系（寒色）で統一している。トークン名は `stat
 
 ---
 
-出典: `.claude/statusline.sh`, `.claude/themes/dark-daltonized-cool.json`
+## Neovim テーマ
+
+`<leader>ub` で 4 テーマをループ切替。すべて透過背景で Ghostty 壁紙が透けるように設定している。
+カラーコードは各テーマのソース（`~/.local/share/nvim/lazy/` 以下）から取得した実値スナップショット。
+
+### 🌃 Tokyo Night Storm（デフォルト起動）
+
+寒色寄り・青紫系。statusline の寒色パレットと最も親和性が高い。
+
+| 色名 | HEX | 主な用途 |
+| --- | --- | --- |
+| bg | `#24283b` | 背景（透過で不使用） |
+| fg | `#c0caf5` | テキスト |
+| blue | `#7aa2f7` | 関数・識別子 |
+| cyan | `#7dcfff` | 型・文字列 |
+| magenta | `#bb9af7` | キーワード |
+| teal | `#1abc9c` | 演算子 |
+| green | `#9ece6a` | 文字列リテラル |
+| red | `#f7768e` | エラー・削除 |
+| orange | `#ff9e64` | 定数 |
+| yellow | `#e0af68` | 警告 |
+| comment | `#565f89` | コメント（薄め） |
+
+### ☕ Catppuccin Mocha
+
+深みのある青紫ベース。パステル寄りで目に優しい。
+
+| 色名 | HEX | 主な用途 |
+| --- | --- | --- |
+| base | `#1e1e2e` | 背景（透過で不使用） |
+| text | `#cdd6f4` | テキスト |
+| blue | `#89b4fa` | 関数 |
+| sapphire | `#74c7ec` | 型 |
+| sky | `#89dceb` | 演算子 |
+| teal | `#94e2d5` | 文字列 |
+| mauve | `#cba6f7` | キーワード |
+| green | `#a6e3a1` | 変数・文字列 |
+| red | `#f38ba8` | エラー |
+| peach | `#fab387` | 定数 |
+| yellow | `#f9e2af` | 警告 |
+| overlay0 | `#6c7086` | コメント |
+
+### 🌊 Kanagawa Wave（葛飾北斎・墨と藍の和テイスト）
+
+和テイストの渋い寒色。青みがかったグレーと薄緑が特徴。
+
+| 色名（Kanagawa 命名） | HEX | 主な用途 |
+| --- | --- | --- |
+| sumiInk3（bg） | `#1F1F28` | 背景（透過で不使用） |
+| fujiWhite（fg） | `#DCD7BA` | テキスト |
+| crystalBlue | `#7E9CD8` | 関数 |
+| springBlue | `#7FB4CA` | 型 |
+| waveAqua1 | `#6A9589` | 演算子 |
+| waveAqua2 | `#7AA89F` | 文字列 |
+| oniViolet | `#957FB8` | キーワード |
+| springGreen | `#98BB6C` | 変数 |
+| waveRed | `#E46876` | エラー |
+| carpYellow | `#E6C384` | 警告 |
+| sakuraPink | `#D27E99` | 定数 |
+| fujiGray | `#727169` | コメント |
+
+### 🌹 Rose Pine Main（くすみピンク・エレガント）
+
+唯一の暖色混じりテーマ。ピンク・ゴールド系がアクセント。寒色コンセプトの例外扱い。
+
+| 色名（Rose Pine 命名） | HEX | 主な用途 |
+| --- | --- | --- |
+| base | `#191724` | 背景（透過で不使用） |
+| text | `#e0def4` | テキスト |
+| pine | `#31748f` | 関数（ティール寄り） |
+| foam | `#9ccfd8` | 型・文字列（寒色） |
+| iris | `#c4a7e7` | キーワード（薄紫） |
+| love | `#eb6f92` | エラー（ピンク） |
+| gold | `#f6c177` | 警告（ゴールド）|
+| rose | `#ebbcba` | 定数（ローズ） |
+| muted | `#6e6a86` | コメント |
+
+---
+
+出典: `.claude/statusline.sh`, `.claude/themes/dark-daltonized-cool.json`, `.config/nvim/lua/plugins/colorschemes.lua`

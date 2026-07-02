@@ -10,6 +10,7 @@ brew "neovim"
 
 # === 検索・ファイル操作 ===
 brew "fzf"                    # ファジーファインダー（Ctrl+R で履歴検索）
+brew "zoxide"                 # cd の代替（frecency で賢くディレクトリ移動）
 brew "ripgrep"                # 高速 grep（Neovim Telescope でも使用）
 brew "tree"                   # ディレクトリ構造の表示
 brew "trash"                  # rm の代わりに使用（復元可能）
@@ -18,6 +19,8 @@ brew "trash"                  # rm の代わりに使用（復元可能）
 brew "gh"                     # GitHub CLI
 brew "mise"                   # ランタイムバージョン管理（Node / Python 等）
 brew "lazygit"                # Git TUI クライアント（Neovim から呼び出し可能）
+brew "node"                   # Node.js / npm（Mason LSP: typescript-language-server, pyright 等）
+brew "go"                     # Go 言語（Mason LSP: gopls）
 
 # === macOS ユーティリティ ===
 brew "defaultbrowser"         # デフォルトブラウザを CLI から設定
@@ -33,10 +36,10 @@ cask "cleanshot"
 cask "discord"
 # cask "displaylink"  # sudoが必要なため手動インストール: brew install --cask displaylink
 cask "font-hackgen"
+cask "font-moralerspace"
 cask "ghostty"
 cask "google-chrome"
-cask "homerow"
-# cask "logi-options+"  # sudoが必要なため手動インストール: brew install --cask logi-options+
+cask "logi-options+"
 cask "nani"
 cask "notion"
 cask "obsidian"
@@ -44,3 +47,4 @@ cask "obsidian"
 cask "raindropio"
 cask "raycast"
 cask "slack"
+brew "xcodegen"

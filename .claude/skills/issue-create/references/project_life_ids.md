@@ -37,10 +37,6 @@
 
 > 2026-05-24 に 9個 → 4個へ集約。旧 Area（コンテンツ/健康/Scarlet 等）は廃止。
 
-## Quadrant フィールド
-
-- **2026-05-24 に削除済み**。アイゼンハワー象限は使わない。優先順位は Status / Milestone / 作戦会議で判断する。
-
 ## 再取得コマンド
 
 Project の構造が変わったらこれを実行して上記の表を更新する：
@@ -64,4 +60,4 @@ query {
 ## 既知の注意点
 
 - **GitHub SingleSelect 更新の罠**: `singleSelectOptions` を GraphQL で全置換すると既存割り当てが消える。Option 追加・削除は Web UI 経由が安全（Field ID は同じでも Option ID は再生成される可能性あり）
-- **Issue #45 が Open の間**は Project への Auto-add が動かない。`gh project item-add` の明示実行が必須
+- Auto-add ワークフローには依存せず、`gh project item-add` を毎回明示実行する

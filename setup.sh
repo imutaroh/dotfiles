@@ -94,6 +94,10 @@ ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 mkdir -p ~/.config/git
 ln -sf "$DOTFILES_DIR/.config/git/ignore" ~/.config/git/ignore
 
+# lazygit
+mkdir -p "$HOME/Library/Application Support/lazygit"
+ln -sf "$DOTFILES_DIR/.config/lazygit/config.yml" "$HOME/Library/Application Support/lazygit/config.yml"
+
 # raycast script-commandsはディレクトリ全体をシンボリックリンク
 if [ -d ~/.config/raycast/script-commands ] && [ ! -L ~/.config/raycast/script-commands ]; then
     rm -rf ~/.config/raycast/script-commands

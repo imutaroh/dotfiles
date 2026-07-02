@@ -8,18 +8,33 @@ return {
   opts = {
     options = {
       opt = {
-        wrap = true,        -- 折り返しを有効化
-        linebreak = true,   -- 単語の途中で折り返さない
-        breakindent = true, -- 折り返し行もインデントを維持
-        cursorline = true,  -- カーソルラインを有効化
-        swapfile = false,   -- スワップファイルを無効化（Git + undofile で十分）
+        wrap = true,           -- 折り返しを有効化
+        linebreak = true,      -- 単語の途中で折り返さない
+        breakindent = true,    -- 折り返し行もインデントを維持
+        cursorline = true,     -- カーソルラインを有効化
+        swapfile = false,      -- スワップファイルを無効化（Git + undofile で十分）
+        number = true,         -- 絶対行番号
+        relativenumber = false, -- 相対行番号は OFF（3,2,1,(85),1,2,3 という見た目の混乱を避ける）
+        scrolloff = 8,         -- カーソル上下に常に8行の余白を確保（読みながら書ける）
+        sidescrolloff = 8,     -- カーソル左右に常に8文字の余白を確保
+        smoothscroll = true,   -- 折返し行を画面行単位でスクロール（<C-e>/<C-y>）
       },
     },
     mappings = {
       n = {
         -- Tab でバッファを移動（ブラウザのタブ操作と同じ感覚）
-        ["<Tab>"] = { "<cmd>bnext<cr>", desc = "Next buffer" },
-        ["<S-Tab>"] = { "<cmd>bprevious<cr>", desc = "Previous buffer" },
+        ["<Tab>"] = { "<cmd>bnext<cr>", desc = "次のバッファへ" },
+        ["<S-Tab>"] = { "<cmd>bprevious<cr>", desc = "前のバッファへ" },
+        -- プロジェクト切替
+        ["<leader>fp"] = { "<cmd>Telescope projects<cr>", desc = "プロジェクトを検索" },
+      },
+      x = {
+        -- ビジュアルモードで p を押した際、置き換えたテキストをレジスタに残さない
+        ["p"] = { '"_dP', desc = "貼付（レジスタを上書きしない）" },
+      },
+      t = {
+        -- ターミナルモードを <Esc><Esc> で抜ける（シェル内の Esc を奪わないよう2連打）
+        ["<Esc><Esc>"] = { [[<C-\><C-n>]], desc = "ターミナルモードを抜ける" },
       },
     },
     autocmds = {

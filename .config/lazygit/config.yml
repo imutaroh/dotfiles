@@ -1,0 +1,38 @@
+gui:
+  # ウィンドウサイズ比率
+  sidePanelWidth: 0.3
+  expandFocusedSidePanel: true
+  # テーマ（Neovim との統一感）
+  theme:
+    activeBorderColor:
+      - green
+      - bold
+    inactiveBorderColor:
+      - white
+    selectedLineBgColor:
+      - reverse
+  # 時刻フォーマット
+  timeFormat: "2006-01-02 15:04"
+  # マウス操作を無効化（キーボード派）
+  mouseEvents: false
+
+git:
+  # push 時に自動で upstream を設定
+  autoForwardBranches: allBranches
+  # コミットグラフを表示
+  log:
+    showGraph: always
+    order: topo-order
+
+# カスタムコマンド
+customCommands:
+  # conventional commits スタイルで入力しやすいように
+  - key: C
+    command: "git commit -m '{{index .PromptResponses 0}}'"
+    context: files
+    prompts:
+      - type: input
+        title: "Commit message (conventional: feat/fix/chore/docs/refactor)"
+        initialValue: ""
+    description: "Conventional commit message"
+    loadingText: "Committing..."
