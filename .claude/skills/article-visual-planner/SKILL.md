@@ -67,4 +67,4 @@ description: 記事（Zenn・ブログ・解説文など）を読み、図解・
 
 ## 参考
 - 根拠の出典は `references/best-practices.md` 内にリンクで明記（Google Technical Writing / Cambridge Handbook of Multimedia Learning / Holsanova 2009 ほか）。
-- 関連：`nanobanana-creative`（SNSクリエイティブのプロンプト生成）、`note-create`（記事化）。
+- 関連：`note-create`（記事化）。

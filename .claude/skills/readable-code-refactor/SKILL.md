@@ -1,6 +1,6 @@
 ---
 name: readable-code-refactor
-description: 「The Art of Readable Code」(O'Reilly) の15章の観点でコードを実際にリファクタする作業スキル。学習・解説スキルではなく、Before/After Diff を一気出しして編集まで通すことが目的。リポジトリ `readable-code/` の章別教材を前提知識に持つ。以下のようなリクエストで使用：「リファクタして」「読みやすくして」「リーダブル目線で直して」「命名直して」「コメント整理して」「review-checklist.html に沿って直して」。深掘り解説が欲しいと言われたら `learn` スキルに渡す。Go に限らず他言語に適用可。
+description: 「The Art of Readable Code」(O'Reilly) の15章の観点でコードを実際にリファクタする作業スキル。学習・解説スキルではなく、Before/After Diff を一気出しして編集まで通すことが目的。原著『The Art of Readable Code』の15章構成を前提知識に持つ。以下のようなリクエストで使用：「リファクタして」「読みやすくして」「リーダブル目線で直して」「命名直して」「コメント整理して」「review-checklist.html に沿って直して」。深掘り解説が欲しいと言われたら `learn` スキルに渡す。Go に限らず他言語に適用可。
 ---
 
 # Readable Code Refactor
@@ -56,7 +56,7 @@ description: 「The Art of Readable Code」(O'Reilly) の15章の観点でコー
 提案の出力末尾に 1 行だけ。
 
 ```
-深掘り: readable-code/{該当章 (例: 01-examples)}/index.html
+深掘り: 原著PDF（androots/the-art-of-readable-code.pdf）の該当章を参照
 ```
 
 「もっと解説して」「なぜこれを直すの？」と聞かれたら、その時に `learn` スキルへ渡す。
@@ -72,4 +72,4 @@ description: 「The Art of Readable Code」(O'Reilly) の15章の観点でコー
 ## 参照
 
 - **[checklist.md](references/checklist.md)** — Step 2 で必ず読む。15章ぶんの匂い → 改善手法
-- リポジトリ側教材: `readable-code/index.html` / 各 `NN-examples/index.html` / `review-checklist.html`
+- 原著PDF: `/Users/imutaakihiro/repos/androots/the-art-of-readable-code.pdf`（該当章を参照）

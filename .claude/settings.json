@@ -87,7 +87,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "model": "sonnet",
   "enabledMcpjsonServers": [
     "obsidian"
   ],
@@ -133,7 +133,7 @@
     "frontend-design@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "medium",
   "awaySummaryEnabled": true,
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,

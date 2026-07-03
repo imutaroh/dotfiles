@@ -1,6 +1,6 @@
 ---
 name: find-skills
-description: Helps users discover and install agent skills. Use this skill when the user asks "Is there a skill for X?", "Find a skill that can...", "How do I do X with a skill?", or wants to extend the agent's capabilities. Also invoked via /find-skills command.
+description: Helps users discover and install agent skills. Use this skill when the user asks "Is there a skill for X?", "Find a skill that can...", "How do I do X with a skill?", or wants to extend the agent's capabilities. Also invoked via /find-skills command. 日本語では「〜のSkillある？」「Skillを探して」「Skillをインストールして」でも使う。
 ---
 
 # Find Skills

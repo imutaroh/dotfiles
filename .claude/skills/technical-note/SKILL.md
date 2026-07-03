@@ -64,6 +64,7 @@ description: >-
 
 ```yaml
 ---
+type: technical
 tags:
   - technical
 created: {YYYY-MM-DD}   # date コマンドで取得した当日

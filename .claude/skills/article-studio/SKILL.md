@@ -63,6 +63,7 @@ Stage6 多媒体展開(content-repurpose) ※指定があれば
 | note（体験談・成長記録） | `note-create` |
 | Zenn（技術解説） | `learn` |
 | 告知 / LP / セールス / X長文 | `copywriting-frameworks` |
+| 知識の塊を物語で教えたい（読者主人公の完全映画版） | `story-teach` |
 
 全自動では、方針メモをサブSkillに渡し、トーン等の質問は既定値で進めるよう指示する。
 → 本文ドラフトが `Company/Drafts/` に出る。

@@ -9,6 +9,7 @@ return {
     { "<leader>gD", "<cmd>DiffviewClose<cr>", desc = "Close Diffview" },
     { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File git history" },
     { "<leader>gm", "<cmd>DiffviewOpen origin/main...HEAD<cr>", desc = "Diff: branch vs main（このブランチの全変更）" },
+    { "<leader>gu", "<cmd>DiffviewOpen @{u}...HEAD<cr>", desc = "Diff: 未pushコミット（vs upstream）" },
   },
   opts = {
     enhanced_diff_hl = true, -- 差分をよりカラフルに表示

@@ -7,6 +7,7 @@ description: >-
 # issue-create
 
 ご主人様の Vault リポジトリ `imutaroh/ObsidianImus` への Issue 起票を一気通貫で実行する。
+本Vault（ObsidianImus）の個人タスク管理はこのSkillが正。secretary の汎用TODO管理とは併用しない。
 
 ## 前提（変えない部分）
 
@@ -17,7 +18,7 @@ description: >-
 - 1日に Issue 化するのは **5件まで**。超過時は警告して続行確認
 - Auto-add ワークフローに依存せず、起票後は毎回 `gh project item-add` を明示実行する
 
-ID 一覧（Project ID / Field ID / Option ID）は [references/project_life_ids.md](references/project_life_ids.md) を参照。
+ID 一覧（Project ID / Field ID / Option ID）は [references/project_life_ids.md](references/project_life_ids.md) を参照。ID一覧の取得から1ヶ月以上経過していたら再取得コマンドで更新する。
 
 ## 入力収集（不足していたら必ず聞く）
 

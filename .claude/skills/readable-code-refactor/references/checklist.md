@@ -1,7 +1,7 @@
 # 15章チェック観点リスト
 
 The Art of Readable Code (O'Reilly 2012) の各章を、コードに当てるための「匂い (smell) → 改善手法」リスト。
-各章の詳細は `readable-code/NN-examples/index.html` にある。ここはスキャン用の凝縮版。
+各章の詳細は原著PDF（`/Users/imutaakihiro/repos/androots/the-art-of-readable-code.pdf`）にある。ここはスキャン用の凝縮版。
 
 ---
 

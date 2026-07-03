@@ -89,7 +89,9 @@ return {
         local file = vim.api.nvim_buf_get_name(buf)
         if file == "" or vim.fn.filereadable(file) ~= 1 then return end
         vim.schedule(function()
-          pcall(vim.cmd, "Neotree action=show reveal_file=" .. vim.fn.fnameescape(file))
+          -- reveal_force_cwd=true: ファイルがツリーの cwd 外にある場合でも
+          -- 「File not in cwd. Change cwd to ...?」を聞かずに黙って追従する
+          pcall(vim.cmd, "Neotree action=show reveal_file=" .. vim.fn.fnameescape(file) .. " reveal_force_cwd=true")
         end)
       end,
     })
