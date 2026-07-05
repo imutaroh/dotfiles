@@ -94,3 +94,4 @@ Stage6 多媒体展開(content-repurpose) ※指定があれば
 - 掴み：`hook-and-headline` ／ 多媒体：`content-repurpose` / `x-thread`
 - 図解：`article-visual-planner` → `chatgpt-image`
 - 裏取り：`research` / `deep-research`
+- **note限定でリサーチ→掴み→フォーマット整形→画像プレースホルダまでを軽量に済ませたい場合**は `research-to-note` を単体で使う手もある（本Skillより工程が少なく、画像は生成せずプレースホルダに留める）
