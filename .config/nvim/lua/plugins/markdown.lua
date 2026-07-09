@@ -31,9 +31,32 @@ return {
     end,
   },
 
-  -- NOTE: render-markdown.nvim は 2026-04-17 に削除。
-  -- Neovim 0.12.1 × nvim-treesitter master(archived) の組み合わせで
-  -- query_predicates.lua:141 → treesitter.lua:196 の range() nil クラッシュが発生し、
-  -- md を開くたびに赤字のスタックトレースで画面が埋まるため。
-  -- 復活条件: nvim-treesitter が main ブランチ移行済み、または Neovim 0.11 にダウングレード。
+  -- バッファ内で Obsidian 風にマークダウンをレンダリング（見出し・箇条書き・コードブロック等）
+  --
+  -- 2026-04-17 に一度削除したが復活。当時の削除理由は
+  -- Neovim 0.12.1 × nvim-treesitter master(archived) で
+  -- query_predicates.lua:141 → treesitter.lua:196 の range() nil クラッシュが
+  -- md を開くたびに画面を埋めることだった。
+  --
+  -- 恒久解は nvim-treesitter main ブランチ移行だが、AstroNvim v5 コアが
+  -- 依然 master + 旧 configs API に固定されており（v6 で main 移行済み）、
+  -- treesitter 全体の main 移行はメジャーアップグレードを伴うため見送る。
+  --
+  -- 代わりに master のまま安全に復活できる。クラッシュは treesitter の
+  -- ハイライタ経路（master が登録する 0.12 非互換 predicate を md の
+  -- highlights.scm が呼ぶ）で起きるもので、その経路は treesitter.lua /
+  -- after/ftplugin/markdown.lua の monkey-patch で今も塞いだままにする。
+  -- render-markdown.nvim はハイライタに依存せず、markdown パーサ上で
+  -- 自前のクエリ（標準 predicate のみ）を実行して extmark を描くだけなので、
+  -- 壊れた predicate を踏まず単体で動作する。必要な markdown /
+  -- markdown_inline パーサはインストール済み。
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons", -- アイコン表示（インストール済みのものを利用）
+    },
+    ft = { "markdown" },
+    opts = {},
+  },
 }

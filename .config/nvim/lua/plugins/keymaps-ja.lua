@@ -128,6 +128,7 @@ return {
       { "<Leader>gg", desc = "lazygit を開く" },
       { "<Leader>go", desc = "GitHub などで該当行を開く" },
       { "<Leader>gb", desc = "ブランチ一覧" },
+      { "<Leader>gB", desc = "inline blame 切替" },
       { "<Leader>gt", desc = "git status" },
       { "<Leader>gT", desc = "git stash 一覧" },
 
