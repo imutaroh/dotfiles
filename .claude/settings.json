@@ -87,7 +87,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "sonnet",
+  "model": "opus",
   "enabledMcpjsonServers": [
     "obsidian"
   ],
