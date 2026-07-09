@@ -33,6 +33,7 @@ cask "aqua-voice"
 cask "arc"
 cask "chatwork"
 cask "cleanshot"
+cask "codex"                  # OpenAI Codex CLI（Claude CodeからMCPサーバーとして呼び出し）
 cask "discord"
 # cask "displaylink"  # sudoが必要なため手動インストール: brew install --cask displaylink
 cask "font-hackgen"
@@ -48,3 +49,4 @@ cask "raindropio"
 cask "raycast"
 cask "slack"
 brew "xcodegen"
+brew "postgresql@17"
