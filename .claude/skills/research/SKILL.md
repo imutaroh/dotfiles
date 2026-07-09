@@ -95,20 +95,9 @@ ToolSearch(query: "select:WebSearch,WebFetch", max_results: 2)
 
 ### Step 5: レポート生成
 
-#### 5-1. 規模判定
-| 規模 | 目安 | 出力先 |
-|------|------|--------|
-| **単発** | 成果物1ファイル / 1〜2時間 / 問い1つ | `Company/Drafts/YYYY-MM-DD-テーマ.md` |
-| **案件** | 成果物複数 / 複数セッション / 派生あり | `Company/Drafts/YYYY-MM-DD-テーマ/` |
-
-#### 5-2. 案件フォルダ構造（案件の場合）
-```
-Company/Drafts/YYYY-MM-DD-テーマ/
-├── 00_brief.md    目的・完了条件・参考URL
-├── 10_input/      1次資料・調査対象
-├── 20_wip/        中間メモ
-└── 30_output/     整理済み成果物
-```
+#### 5-1. 出力先（Company/CLAUDE.md 準拠）
+- **原則**: 1案件=1ノート → `Company/Drafts/YYYY-MM-DD-{slug}.md`（Drafts 直下にフラットに置く）
+- **例外**: 本当に複数ファイルが要る重い案件のみ `Company/Drafts/YYYY-MM-DD-{slug}/` のフォルダにしてよい
 
 #### 5-3. レポート構成・frontmatter（必須）
 
