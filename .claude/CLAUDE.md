@@ -41,6 +41,15 @@
 - 結論をまとめる時は、重要な証拠も一緒に提示する
 - サブエージェント（Explore / Agent / Task）に調査・作業を委譲した場合、その出力はユーザーには折りたたまれて見えない。完了報告だけで済ませず、サブエージェントが見つけた重要な発見・結論・根拠を、必ず自分の言葉でわかりやすく要約して伝える
 
+## git worktree（並列開発）
+
+Claude Code で並列開発するときの worktree の扱いを固定する。
+
+- **置き場所は必ず `.claude/worktrees/<名前>/` 配下**。リポジトリ直下や兄弟ディレクトリには作らない（`claude --worktree` / `EnterWorktree` / サブエージェントの `isolation: worktree` のデフォルトに従う）
+- **`.gitignore` に `.claude/worktrees/` を必ず追加**する。入れ忘れると worktree の中身（`node_modules` 含む）が本体側で未追跡ファイルとして見え、事故コミット・再帰スキャンの原因になる
+- 手動で `git worktree add` を叩く運用はしない。**複数タスクの並列開発は `worktree-parallel` Skill を使う**（独立タスクを worktree 隔離サブエージェントに振り、マージバックまで導く）
+- worktree は短命に使う。1タスク1ツリー、マージ or 破棄したら片付ける
+
 ## 環境設定
 
 - 設定ファイルは `~/dotfiles` リポジトリで一元管理している

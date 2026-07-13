@@ -95,16 +95,16 @@ li.task.done .name { text-decoration: line-through; text-decoration-thickness: 1
 <div class="wrap">
   <header>
     <h1>📋 タスクボード</h1>
-    <p class="updated">最終更新: 2026-07-09 11:13</p>
+    <p class="updated">最終更新: 2026-07-10 16:07</p>
   </header>
 
   <div class="stats">
-    <div class="stat"><div class="num">8</div><div class="lbl">全タスク</div></div>
+    <div class="stat"><div class="num">20</div><div class="lbl">全タスク</div></div>
     <div class="stat"><div class="num">1</div><div class="lbl">進行中</div></div>
-    <div class="stat"><div class="num">7</div><div class="lbl">完了</div></div>
-    <div class="stat rate"><div class="num">88%</div><div class="lbl">達成率</div></div>
+    <div class="stat"><div class="num">15</div><div class="lbl">完了</div></div>
+    <div class="stat rate"><div class="num">75%</div><div class="lbl">達成率</div></div>
   </div>
-  <div class="bar"><div style="width: 88%"></div></div>
+  <div class="bar"><div style="width: 75%"></div></div>
 
   <section>
     <h2>PR #2747 レビュー対応（task-dispatcher mccpos）</h2>
@@ -119,9 +119,92 @@ li.task.done .name { text-decoration: line-through; text-decoration-thickness: 1
     </ul>
   </section>
 
-  <details class="done-box">
-    <summary>完了したタスク（7件）</summary>
+  <section>
+    <h2>MCC POS モデリング #2604（PRまで）</h2>
     <ul class="tasks">
+      <li class="task">
+        <span class="chip todo">未着手</span>
+        <div class="body">
+          <div class="name">PR #2843 のレビュー対応と Draft 解除（#2603 apply 後にマージ）</div>
+          <div class="meta"><span class="pri-mid">優先度:中</span> ・ 追加 2026-07-10</div>
+        </div>
+      </li>
+      <li class="task">
+        <span class="chip todo">未着手</span>
+        <div class="body">
+          <div class="name">監視クエリの Issue 起票（JAN多重item_code・(group,series)割れ・マスタ未登録JANの検知）</div>
+          <div class="meta">優先度:低 ・ 追加 2026-07-10</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <details class="done-box">
+    <summary>完了したタスク（15件）</summary>
+    <ul class="tasks">
+      <li class="task done">
+        <span class="chip todo">完了</span>
+        <div class="body">
+          <div class="name">仕上げ: main取り込み→ビルド再確認→/commit→/push でPR作成</div>
+          <div class="meta">draft PR #2843・レビュアー apokurinkansen・マージは#2603 apply後 ・ 完了 2026-07-10</div>
+        </div>
+      </li>
+      <li class="task done">
+        <span class="chip todo">完了</span>
+        <div class="body">
+          <div class="name">検証: dev_aimuta で uv run dbt build -s +Report_Hugkumi_MccPosSales（source解決先の確認含む）</div>
+          <div class="meta">38/38 PASS・Report 16,714行 ・ 完了 2026-07-10</div>
+        </div>
+      </li>
+      <li class="task done">
+        <span class="chip todo">完了</span>
+        <div class="body">
+          <div class="name">mart: Report yml フル装備（_HASHKEY・PK制約・partition/cluster・contract・ownerメタ）</div>
+          <div class="meta">N/A表示設計も追加 ・ 完了 2026-07-10</div>
+        </div>
+      </li>
+      <li class="task done">
+        <span class="chip todo">完了</span>
+        <div class="body">
+          <div class="name">int: 99_transform 商品名寄せ106行の精読（有効断面・min(item_code)・形態判定）</div>
+          <div class="meta">min→any_valueへ変更(実データ裏取り済) ・ 完了 2026-07-10</div>
+        </div>
+      </li>
+      <li class="task done">
+        <span class="chip todo">完了</span>
+        <div class="body">
+          <div class="name">int: 戦略Aの出典パス（ingestion/docs/mccpos/README.md）をSQLコメントに追記</div>
+          <div class="meta">完了 2026-07-10</div>
+        </div>
+      </li>
+      <li class="task done">
+        <span class="chip todo">完了</span>
+        <div class="body">
+          <div class="name">int: sales_extracted yml の列記載を5列→全13列に</div>
+          <div class="meta">完了 2026-07-10</div>
+        </div>
+      </li>
+      <li class="task done">
+        <span class="chip todo">完了</span>
+        <div class="body">
+          <div class="name">int: sales_extracted yml に自然キー3列の not_null テスト追加（規約§4違反の解消）</div>
+          <div class="meta">完了 2026-07-10</div>
+        </div>
+      </li>
+      <li class="task done">
+        <span class="chip todo">完了</span>
+        <div class="body">
+          <div class="name">staging: Hrd yml に warn テスト3本（registered_date/store_code/jan_code の not_null）</div>
+          <div class="meta">error(素のnot_null)3本で実装。家風準拠でwarnから格上げ ・ 完了 2026-07-10</div>
+        </div>
+      </li>
+      <li class="task done">
+        <span class="chip todo">完了</span>
+        <div class="body">
+          <div class="name">staging: Hrd の整理（過剰コメント・前例なし .0 除去・空行の削除、yml 同期）</div>
+          <div class="meta">完了 2026-07-10</div>
+        </div>
+      </li>
       <li class="task done">
         <span class="chip todo">完了</span>
         <div class="body">

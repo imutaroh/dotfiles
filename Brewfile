@@ -19,6 +19,7 @@ brew "trash"                  # rm の代わりに使用（復元可能）
 brew "gh"                     # GitHub CLI
 brew "mise"                   # ランタイムバージョン管理（Node / Python 等）
 brew "lazygit"                # Git TUI クライアント（Neovim から呼び出し可能）
+brew "hunk"                    # レビュー特化の差分ビューア（hunk-review スキルで AI と往復レビュー）
 brew "node"                   # Node.js / npm（Mason LSP: typescript-language-server, pyright 等）
 brew "go"                     # Go 言語（Mason LSP: gopls）
 

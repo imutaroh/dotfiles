@@ -63,6 +63,30 @@ alias v='nvim'
 alias g='git'
 alias ll='ls -la'
 alias la='ls -a'
+# nh: Hunk を自動リロード付きで起動
+#   nh        → 全差分（main 分岐点から手元の未コミット編集まで）。分岐点が取れなければ nh c と同じ
+#   nh c      → 前回 commit してからの手元の編集だけ
+#   nh <args> → hunk diff --watch にそのまま渡す（例: nh main...HEAD / nh -- path）
+nh() {
+  if [[ $1 == c ]]; then
+    shift
+    hunk diff --watch "$@"
+    return
+  fi
+  if (( $# )); then
+    hunk diff --watch "$@"
+    return
+  fi
+  local base
+  base=$(git merge-base origin/HEAD HEAD 2>/dev/null) \
+    || base=$(git merge-base origin/main HEAD 2>/dev/null) \
+    || base=$(git merge-base origin/master HEAD 2>/dev/null)
+  if [[ -n $base ]]; then
+    hunk diff --watch "$base"
+  else
+    hunk diff --watch
+  fi
+}
 
 # ==================================================
 # Ghostty ヘルパー関数

@@ -31,32 +31,14 @@ return {
     end,
   },
 
-  -- バッファ内で Obsidian 風にマークダウンをレンダリング（見出し・箇条書き・コードブロック等）
-  --
-  -- 2026-04-17 に一度削除したが復活。当時の削除理由は
-  -- Neovim 0.12.1 × nvim-treesitter master(archived) で
-  -- query_predicates.lua:141 → treesitter.lua:196 の range() nil クラッシュが
-  -- md を開くたびに画面を埋めることだった。
-  --
-  -- 恒久解は nvim-treesitter main ブランチ移行だが、AstroNvim v5 コアが
-  -- 依然 master + 旧 configs API に固定されており（v6 で main 移行済み）、
-  -- treesitter 全体の main 移行はメジャーアップグレードを伴うため見送る。
-  --
-  -- 代わりに master のまま安全に復活できる。クラッシュは treesitter の
-  -- ハイライタ経路（master が登録する 0.12 非互換 predicate を md の
-  -- highlights.scm が呼ぶ）で起きるもので、その経路は treesitter.lua /
-  -- after/ftplugin/markdown.lua の monkey-patch で今も塞いだままにする。
-  -- render-markdown.nvim はハイライタに依存せず、markdown パーサ上で
-  -- 自前のクエリ（標準 predicate のみ）を実行して extmark を描くだけなので、
-  -- 壊れた predicate を踏まず単体で動作する。必要な markdown /
-  -- markdown_inline パーサはインストール済み。
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons", -- アイコン表示（インストール済みのものを利用）
-    },
-    ft = { "markdown" },
-    opts = {},
-  },
+  -- NOTE: render-markdown.nvim（バッファ内 markdown 装飾）は 2026-07-10 に恒久削除。
+  -- 2026-04-17 に一度削除 → 「ハイライタ経路の monkey-patch があれば単体で動く」との
+  -- 読みで復活させたが、その前提が誤りで再クラッシュした。
+  -- render-markdown は vim.treesitter.start() を経由せず自前で parser:parse() を呼ぶため、
+  -- treesitter.lua の start monkey-patch では構造的に捕まえられない。その parse が
+  -- injection 処理（languagetree _get_injections → _apply_directives）で master(archived) の
+  -- 0.12 非互換ディレクティブを踏み、treesitter.lua:196 の range() nil で落ちる。
+  -- 恒久解は nvim-treesitter main 移行だが AstroNvim v5 コアが master 固定のため見送り。
+  -- バッファ内装飾は諦め、プレビューは上の markdown-preview.nvim（<leader>mp）で代替する。
+  -- treesitter main へ移行できたら再検討する。
 }
