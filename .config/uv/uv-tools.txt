@@ -1,0 +1,3 @@
+ruff
+playwright
+browser-use
