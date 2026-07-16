@@ -1,0 +1,158 @@
+# ==================================================
+# テーマ
+# ==================================================
+
+theme = GitHub Dark
+
+
+# ==================================================
+# ウィンドウ
+# ==================================================
+
+# 閉じるときの確認ダイアログを無効化
+confirm-close-surface = false
+
+# 内側パディング（ピクセル）
+window-padding-x = 16
+window-padding-y = 16
+
+# パディングを自動調整してコンテンツを中央配置
+window-padding-balance = true
+
+# ウィンドウの装飾テーマ
+window-theme = ghostty
+
+# 非アクティブなペインを暗くして視覚的に区別
+unfocused-split-opacity = 0.4
+
+
+# ==================================================
+# 背景
+# ==================================================
+
+# 不透明度（0.0〜1.0）※0.9 にすることでぼかし効果が透けて見える
+background-opacity = 0.9
+
+# ぼかし半径（ピクセル）
+background-blur-radius = 20
+
+
+# ==================================================
+# カーソル
+# ==================================================
+
+# 形状: block / bar / underline
+cursor-style = block
+
+# 点滅を無効化
+cursor-style-blink = false
+
+
+# ==================================================
+# フォント
+# ==================================================
+
+# フォントファミリー（日本語対応の等幅フォント）
+# Moralerspace Argon: Monaspace Argon (humanist sans) × IBM Plex Sans JP
+# 丸み・空気感あり、圧迫感を抑えた読みやすい字形。
+font-family = Moralerspace Argon
+
+# サイズ（ポイント）
+font-size = 14
+
+# 行間に余白を足して空気感を出す（圧迫感を減らす）
+adjust-cell-height = 2
+
+
+# ==================================================
+# タイトルバー
+# ==================================================
+
+# タイトルを非表示（全角スペース）
+title = "　"
+
+# タイトルバーを透明化
+macos-titlebar-style = transparent
+
+
+# ==================================================
+# フルスクリーン
+# ==================================================
+
+# non-native: 背景透過・ぼかし効果を有効にするために必要
+fullscreen = non-native
+
+
+# ==================================================
+# キーバインド
+# ==================================================
+
+# Shift+Enter で ESC+CR を送信（Neovim で使用）
+keybind = shift+enter=text:\x1b\r
+
+# コピー時のフォーマットをプレーンテキストに固定
+keybind = super+c=copy_to_clipboard:plain
+
+# Cmd+` でどこからでも Ghostty を呼び出す（QuickTerminal）
+keybind = global:super+grave_accent=toggle_quick_terminal
+
+# --------------------------------------------------
+# herdr 連携（cmd キーを herdr のプレフィックス ctrl+q(\x11) + キーに変換して送信）
+# herdr の外（素のシェル等）ではこれらのキーは実質無効になる点に注意
+# --------------------------------------------------
+
+# Cmd+d / Cmd+Shift+d で herdr のペイン分割（左右 / 上下）
+keybind = super+d=text:\x11v
+keybind = super+shift+d=text:\x11-
+
+# Cmd+h/j/k/l で herdr のペイン間を移動
+keybind = super+h=text:\x11h
+keybind = super+j=text:\x11j
+keybind = super+k=text:\x11k
+keybind = super+l=text:\x11l
+
+# Cmd+Shift+Enter で herdr のペイン最大化⇔戻す（Ghostty ネイティブの zoom と同じキー感覚）
+keybind = super+shift+enter=text:\x11z
+
+# Cmd+w で herdr のペインを閉じる（prefix + x）。最後の1ペインを閉じるとタブごと閉じる
+# 注意: Ghostty ネイティブの close_surface を上書きするため、herdr の外では Cmd+w は無効になる
+keybind = super+w=text:\x11x
+
+# Cmd+Shift+w で herdr の Space を閉じる（prefix + shift+d）
+# 注意: 旧割り当ての「タブを閉じる」は素の prefix + shift+x で行う（Cmd+w でペインを全部閉じてもタブは閉じる）
+keybind = super+shift+w=text:\x11D
+
+# Cmd+t で herdr の新しいタブ（prefix + c）。Ghostty ネイティブのタブは使わない方針
+keybind = super+t=text:\x11c
+
+# Cmd+Shift+t で herdr の新しい Space（prefix + shift+n）。Cmd+t の Space 版
+keybind = super+shift+t=text:\x11N
+
+# Cmd+s で herdr の Space picker（S = Spaces。prefix + w）
+keybind = super+s=text:\x11w
+
+# Cmd+g で herdr のなんでもジャンプ（G = Goto。曖昧検索。prefix + g）
+# 注意: Ghostty ネイティブの検索「次の一致へ」(navigate_search:next) を上書きする
+keybind = super+g=text:\x11g
+
+# Cmd+e で herdr のサイドバー開閉（nvim の <leader>e = Neo-tree と同じ連想。prefix + b）
+# 注意: Ghostty ネイティブの search_selection を上書きする
+keybind = super+e=text:\x11b
+
+# Cmd+o で通知を出したエージェントに直行（O = Open notification target。prefix + o）
+keybind = super+o=text:\x11o
+
+# Cmd+1〜9 で herdr のタブ切替（prefix + 数字）
+# digit_N（物理キー名）で指定して、デフォルトの super+digit_N=goto_tab:N を上書きする
+keybind = super+digit_1=text:\x111
+keybind = super+digit_2=text:\x112
+keybind = super+digit_3=text:\x113
+keybind = super+digit_4=text:\x114
+keybind = super+digit_5=text:\x115
+keybind = super+digit_6=text:\x116
+keybind = super+digit_7=text:\x117
+keybind = super+digit_8=text:\x118
+keybind = super+digit_9=text:\x119
+
+# macOS で Option キーを Alt として使う
+macos-option-as-alt = left

@@ -1,0 +1,138 @@
+{
+  "awaySummaryEnabled": true,
+  "effortLevel": "medium",
+  "enabledMcpjsonServers": [
+    "obsidian"
+  ],
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true
+  },
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "command": "afplay ~/.claude/sounds/confirm.wav",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "afplay ~/.claude/sounds/complete.wav",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "bash ~/.claude/hooks/anti-sycophancy.sh",
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
+  "model": "fable",
+  "permissions": {
+    "allow": [
+      "Edit",
+      "Bash(brew --prefix:*)",
+      "Bash(brew --version:*)",
+      "Bash(brew config:*)",
+      "Bash(brew deps:*)",
+      "Bash(brew doctor:*)",
+      "Bash(brew info:*)",
+      "Bash(brew leaves:*)",
+      "Bash(brew list:*)",
+      "Bash(brew outdated:*)",
+      "Bash(brew search:*)",
+      "Bash(brew services list:*)",
+      "Bash(cd:*)",
+      "Bash(date:*)",
+      "Bash(echo:*)",
+      "Bash(fd:*)",
+      "Bash(gh api:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh repo list:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh search:*)",
+      "Bash(gh status:*)",
+      "Bash(gh workflow list:*)",
+      "Bash(gh workflow view:*)",
+      "Bash(git add:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(git diff:*)",
+      "Bash(git fetch:*)",
+      "Bash(git log:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(git stash:*)",
+      "Bash(git status:*)",
+      "Bash(git switch:*)",
+      "Bash(ls:*)",
+      "Bash(mise:*)",
+      "Bash(node:*)",
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(npm install:*)",
+      "Bash(npx:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(pwd:*)",
+      "Bash(trash:*)",
+      "Bash(tree:*)",
+      "Bash(TZ=Asia/Tokyo date:*)",
+      "Bash(uv:*)",
+      "Bash(wc:*)",
+      "Bash(which:*)",
+      "Read",
+      "WebFetch",
+      "WebSearch",
+      "Bash(git rebase *)",
+      "Bash(git reset *)",
+      "Bash(git merge *)",
+      "Bash(go version *)",
+      "Bash(go mod *)"
+    ],
+    "defaultMode": "auto",
+    "deny": [
+      "Bash(rm *)",
+      "Bash(rmdir *)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -f*)"
+    ]
+  },
+  "skipAutoPermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
+  "statusLine": {
+    "command": "~/.claude/statusline.sh",
+    "type": "command"
+  },
+  "theme": "custom:dark-daltonized-cool",
+  "tui": "fullscreen",
+  "voiceEnabled": true
+}

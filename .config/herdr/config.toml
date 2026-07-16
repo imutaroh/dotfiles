@@ -1,0 +1,45 @@
+onboarding = false
+
+[keys]
+# プレフィックスキー: ctrl+q を押してから各キーを押す（tmux の ctrl+b 相当）
+prefix = "ctrl+q"
+
+# ─── 基本 ───
+help = "prefix+?"              # キーバインド一覧を表示（迷ったらこれ）
+settings = "prefix+s"          # 設定画面
+detach = "prefix+d"            # セッションから抜ける（サーバは生きたまま）
+reload_config = "prefix+shift+r"
+
+# ─── ワークスペース ───
+workspace_picker = "prefix+w"  # ワークスペース一覧から選ぶ
+goto = "prefix+g"              # なんでもジャンプ
+new_workspace = "prefix+shift+n"
+rename_workspace = "prefix+shift+w"
+close_workspace = "prefix+shift+d"
+
+# ─── タブ ───
+new_tab = "prefix+c"           # 新しいタブ（tmux と同じ c）
+rename_tab = "prefix+shift+t"
+previous_tab = "prefix+p"
+next_tab = "prefix+n"
+switch_tab = "prefix+1..9"     # ctrl+q → 数字 でタブ切替
+close_tab = "prefix+shift+x"
+
+# ─── ペイン（分割） ───
+split_vertical = "prefix+v"    # 左右に分割
+split_horizontal = "prefix+minus" # 上下に分割
+focus_pane_left = "prefix+h"   # vim 風に h/j/k/l で移動
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+zoom = "prefix+z"              # ペインを最大化/戻す
+resize_mode = "prefix+r"       # リサイズモード
+close_pane = "prefix+x"
+
+# ─── その他 ───
+toggle_sidebar = "prefix+b"    # サイドバー開閉
+edit_scrollback = "prefix+e"   # スクロールバックをエディタで開く
+open_notification_target = "prefix+o"
+
+[ui]
+agent_panel_sort = "spaces"
