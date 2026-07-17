@@ -93,6 +93,7 @@ source ~/.zshrc  # またはターミナル再起動
 
 | コマンド | 説明 |
 |----------|------|
+| `ide [dir]` | herdr に開発用 Space を一発構築（タブ1「cchunk」: Claude Code + hunk diff --watch の50%分割、タブ2「nvim」） |
 | `nh [c\|p\|args]` | Hunk（差分ビューア）を自動リロード付きで起動。`nh` で main 分岐点から、`nh c` でコミット後の編集、`nh p` で push 後の差分 |
 | `gdev [dir]` | 指定ディレクトリで垂直分割（左: nvim、右: Claude Code）を開く |
 | `gswitch` | gcloud configuration + ADC を一括切り替え（`gswitch-setup` で新規作成） |
