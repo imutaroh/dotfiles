@@ -106,6 +106,10 @@ nh() {
 dev() {
   local dir="${1:-$PWD}"
   dir=$(cd "$dir" 2>/dev/null && pwd) || { echo "dev: ディレクトリがありません: $1" >&2; return 1; }
+  if [[ -z $1 && $dir == "$HOME" ]]; then
+    echo "dev: ホームディレクトリで実行しています。リポジトリに cd してから実行するか、dev <dir> で指定してください（本当にホームで開くなら dev ~）" >&2
+    return 1
+  fi
   local out ws t1 p1 p2 p3
   out=$(herdr workspace create --cwd "$dir" --label "${dir:t}" --focus) || {
     echo "dev: herdr の Space 作成に失敗しました（herdr 内で実行していますか？）" >&2
