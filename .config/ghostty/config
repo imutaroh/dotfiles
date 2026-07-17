@@ -142,6 +142,9 @@ keybind = super+e=text:\x11b
 # Cmd+o で通知を出したエージェントに直行（O = Open notification target。prefix + o）
 keybind = super+o=text:\x11o
 
+# Cmd+p で直前のペインとトグル（P = Previous pane。エディタ⇔AI の一撃往復。herdr 側は prefix+m）
+keybind = super+p=text:\x11m
+
 # Cmd+] / Cmd+[ で次/前のエージェントへ巡回（連打で順番に進む。herdr 側は prefix+a / shift+a）
 # 注意: Ghostty ネイティブの goto_split:next/previous を上書きする（分割移動は herdr の Cmd+h/j/k/l を使う）
 keybind = super+]=text:\x11a
