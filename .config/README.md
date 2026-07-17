@@ -10,6 +10,7 @@
 .config/
 ├── ghostty/           # ターミナルエミュレータ
 ├── git/               # Git グローバル設定
+├── herdr/             # エージェントマルチプレクサ
 ├── lazygit/           # Git TUI クライアント
 ├── mise/              # ランタイムバージョン管理
 ├── nvim/              # エディタ（詳細は nvim/README.md）
@@ -18,8 +19,15 @@
 └── uv/                # Python パッケージ管理
 ```
 
-> [!NOTE]
-> ターミナル多重化は [herdr](https://herdr.dev) を使用している。herdr の設定（`~/.config/herdr/config.toml`）は dotfiles に未ミラーの例外。
+## [herdr](https://herdr.dev)
+
+エージェントマルチプレクサ（tmux / 旧 Zellij の後継）。ターミナルの多重化とペイン管理に使用する。
+
+### ファイル構成
+
+| ファイル | 説明 |
+|----------|------|
+| `config.toml` | 設定ファイル（キーバインド等。ランタイム生成ファイルは管理対象外） |
 
 ## [Ghostty](https://ghostty.org/)
 
