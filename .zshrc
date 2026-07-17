@@ -98,6 +98,26 @@ nh() {
   fi
 }
 
+# dev: herdr に開発用レイアウトを一発で組む
+#   タブ1「cchunk」: 左 Claude Code（50%）/ 右 hunk diff --watch
+#   タブ2「nvim」  : nvim
+#   引数でディレクトリ指定（省略時はカレントディレクトリ）
+dev() {
+  local dir="${1:-$PWD}"
+  dir=$(cd "$dir" 2>/dev/null && pwd) || { echo "dev: ディレクトリがありません: $1" >&2; return 1; }
+  local p1 p2 p3
+  p1=$(herdr tab create --cwd "$dir" --label cchunk --focus | jq -r '.result.root_pane.pane_id // empty')
+  if [[ -z $p1 ]]; then
+    echo "dev: herdr のタブ作成に失敗しました（herdr 内で実行していますか？）" >&2
+    return 1
+  fi
+  p2=$(herdr pane split "$p1" --direction right --ratio 0.5 --cwd "$dir" --no-focus | jq -r '.result.pane.pane_id // empty')
+  herdr pane run "$p1" "claude" >/dev/null
+  [[ -n $p2 ]] && herdr pane run "$p2" "hunk diff --watch" >/dev/null
+  p3=$(herdr tab create --cwd "$dir" --label nvim --no-focus | jq -r '.result.root_pane.pane_id // empty')
+  [[ -n $p3 ]] && herdr pane run "$p3" "nvim" >/dev/null
+}
+
 # ==================================================
 # Ghostty ヘルパー関数
 # ==================================================
