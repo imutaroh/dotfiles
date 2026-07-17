@@ -142,10 +142,10 @@ keybind = super+e=text:\x11b
 # Cmd+o で通知を出したエージェントに直行（O = Open notification target。prefix + o）
 keybind = super+o=text:\x11o
 
-# Cmd+a / Cmd+Shift+a で次/前のエージェントへ（A = Agent。prefix + a / shift+a）
-# 注意: Ghostty ネイティブの select_all（Cmd+a）を上書きする
-keybind = super+a=text:\x11a
-keybind = super+shift+a=text:\x11A
+# Cmd+] / Cmd+[ で次/前のエージェントへ巡回（連打で順番に進む。herdr 側は prefix+a / shift+a）
+# 注意: Ghostty ネイティブの goto_split:next/previous を上書きする（分割移動は herdr の Cmd+h/j/k/l を使う）
+keybind = super+]=text:\x11a
+keybind = super+[=text:\x11A
 
 # Cmd+1〜9 で herdr のタブ切替（prefix + 数字）
 # digit_N（物理キー名）で指定して、デフォルトの super+digit_N=goto_tab:N を上書きする
