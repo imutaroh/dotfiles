@@ -12,6 +12,8 @@ reload_config = "prefix+shift+r"
 
 # ─── ワークスペース ───
 workspace_picker = "prefix+w"  # ワークスペース一覧から選ぶ
+navigate_workspace_down = "j"  # picker 内を vim 風に移動（デフォルトは矢印のみ）
+navigate_workspace_up = "k"
 goto = "prefix+g"              # なんでもジャンプ
 new_workspace = "prefix+shift+n"
 rename_workspace = "prefix+shift+w"
@@ -35,6 +37,10 @@ focus_pane_right = "prefix+l"
 zoom = "prefix+z"              # ペインを最大化/戻す
 resize_mode = "prefix+r"       # リサイズモード
 close_pane = "prefix+x"
+
+# ─── エージェント ───
+next_agent = "prefix+a"        # agent パネル順で次のエージェントへ（A = Agent）
+previous_agent = "prefix+shift+a" # 前のエージェントへ
 
 # ─── その他 ───
 toggle_sidebar = "prefix+b"    # サイドバー開閉
