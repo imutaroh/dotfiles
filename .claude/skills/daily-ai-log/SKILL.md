@@ -39,6 +39,21 @@ ctx sql "SELECT time(MIN(e.occurred_at_ms)/1000,'unixepoch','localtime') AS t, C
 - `is_primary=1` でサブエージェントは除外（人間の会話だけ）
 - **user と assistant はペイロード構造が違う**: user は `$.body.content_preview.text`（文字列）、assistant は `$.body.content_preview.json`（ブロック配列の文字列。先頭が thinking のことがあるので `json_each` で最初の text ブロックを取る）
 
+### 3.5. 全文要約（既定モード）
+
+SQL の ask/result ペアは骨組みでしかない。**既定では各セッションの全文をサブエージェントに読ませて要約する**（ご主人様希望 2026-07-17。Max プラン前提。急ぎのときだけ「簡易版で」と言われたら SQL ペアのみで組む）。
+
+1. 対象日の各セッションを scratchpad に書き出す:
+   ```bash
+   ctx show session <ctx_session_id> --format markdown --out <scratchpad>/<date>-<n>-<id先頭8>.md
+   ```
+2. ファイルサイズを見て 3〜6 体の Explore サブエージェントに分担（1体あたり合計 100〜150KB 目安。巨大ファイルは単独割当）
+3. サブエージェントへの指示に必ず含めること:
+   - **タイムスタンプは UTC、JST は +9時間**。対象日は JST（= UTC で前日15:00〜当日15:00）。範囲外のやり取りは無視
+   - 出力形式「ファイル番号 | JST最初の発言時刻 | 要約2〜3文（依頼→経緯→結果。数字・PR/Issue番号・ファイル名を拾う）」
+   - 秘密情報は要約に含めない
+4. 全員の結果を回収してから §4 の形式に組む（1〜2セッション分の結果が欠けたら、その分は SQL ペアで埋めて「(簡易)」と付記）
+
 ### 4. 整形ルール
 
 `## AIログ` セクションとして以下の形式で組む:
