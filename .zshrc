@@ -98,28 +98,28 @@ nh() {
   fi
 }
 
-# ide: herdr に開発用の新しい Space（IDE 構成）を一発で組む（実行時のカレントディレクトリ基準）
+# desk: herdr に開発用の新しい Space（IDE 構成）を一発で組む（実行時のカレントディレクトリ基準）
 #   Space 名: ディレクトリ名
 #   タブ1「cchunk」: 左 Claude Code（50%）/ 右 hunk diff --watch
 #   タブ2「nvim」  : nvim
 #   引数でディレクトリ指定（省略時はカレントディレクトリ）
-ide() {
+desk() {
   local dir="${1:-$PWD}"
   dir=${dir:A}  # cd を使わず絶対パス化（chpwd フックの発火を避ける）
-  [[ -d $dir ]] || { echo "ide: ディレクトリがありません: $1" >&2; return 1; }
+  [[ -d $dir ]] || { echo "desk: ディレクトリがありません: $1" >&2; return 1; }
   if [[ -z $1 && $dir == "$HOME" ]]; then
-    echo "ide: ホームディレクトリで実行しています。リポジトリに cd してから実行するか、ide <dir> で指定してください（本当にホームで開くなら ide ~）" >&2
+    echo "desk: ホームディレクトリで実行しています。リポジトリに cd してから実行するか、desk <dir> で指定してください（本当にホームで開くなら desk ~）" >&2
     return 1
   fi
   local out ws t1 p1 p2 p3
   out=$(herdr workspace create --cwd "$dir" --label "${dir:t}" --focus) || {
-    echo "ide: herdr の Space 作成に失敗しました（herdr 内で実行していますか？）" >&2
+    echo "desk: herdr の Space 作成に失敗しました（herdr 内で実行していますか？）" >&2
     return 1
   }
   ws=$(echo "$out" | jq -r '.result.workspace.workspace_id // empty')
   t1=$(echo "$out" | jq -r '.result.root_pane.tab_id // empty')
   p1=$(echo "$out" | jq -r '.result.root_pane.pane_id // empty')
-  [[ -z $ws || -z $p1 ]] && { echo "ide: herdr の応答を解析できませんでした" >&2; return 1; }
+  [[ -z $ws || -z $p1 ]] && { echo "desk: herdr の応答を解析できませんでした" >&2; return 1; }
   herdr tab rename "$t1" cchunk >/dev/null
   p2=$(herdr pane split "$p1" --direction right --ratio 0.5 --cwd "$dir" --no-focus | jq -r '.result.pane.pane_id // empty')
   herdr pane run "$p1" "claude" >/dev/null
@@ -131,10 +131,6 @@ ide() {
 # ==================================================
 # Ghostty ヘルパー関数
 # ==================================================
-## gdev: 指定ディレクトリで垂直分割（左: nvim, 右: Claude Code）
-## 実装は bin/gdev を参照
-source "$HOME/.local/bin/gdev"
-
 ## cd ごとにウィンドウタイトルを更新（git リポジトリ名 > cwd ベース名）
 ## Mission Control 上で Ghostty ウィンドウを見分けやすくする用途
 ##
@@ -152,9 +148,3 @@ _ghostty_set_title() {
 add-zsh-hook chpwd _ghostty_set_title
 _ghostty_set_title
 
-# ==================================================
-# gcloud 切り替え
-# ==================================================
-## gswitch: gcloud configuration + ADC を一括切り替え
-## gswitch-setup: 新規 configuration の作成
-source "$HOME/.local/bin/gswitch"
