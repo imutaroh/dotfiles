@@ -50,14 +50,3 @@ open_notification_target = "prefix+o"
 
 [ui]
 agent_panel_sort = "spaces"
-
-[experimental]
-# prefix 操作中（ペイン/タブ/Space/エージェント切り替え等）は macOS の入力ソースを
-# 一時的に英数（ASCII）へ強制切り替えし、操作終了後に元へ戻す。
-# 日本語 IME のままでも切り替えコマンドが確実に効くようになる（実験的機能）
-switch_ascii_input_source_in_prefix = true
-
-[ui.toast]
-# エージェントが完了/入力待ちになるとトースト通知を表示する（デフォルトは off）。
-# これが表示されている間に Cmd+O（open_notification_target）でそのエージェントに直行できる
-delivery = "herdr"
