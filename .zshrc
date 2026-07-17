@@ -105,7 +105,8 @@ nh() {
 #   引数でディレクトリ指定（省略時はカレントディレクトリ）
 dev() {
   local dir="${1:-$PWD}"
-  dir=$(cd "$dir" 2>/dev/null && pwd) || { echo "dev: ディレクトリがありません: $1" >&2; return 1; }
+  dir=${dir:A}  # cd を使わず絶対パス化（chpwd フックの発火を避ける）
+  [[ -d $dir ]] || { echo "dev: ディレクトリがありません: $1" >&2; return 1; }
   if [[ -z $1 && $dir == "$HOME" ]]; then
     echo "dev: ホームディレクトリで実行しています。リポジトリに cd してから実行するか、dev <dir> で指定してください（本当にホームで開くなら dev ~）" >&2
     return 1
@@ -141,6 +142,9 @@ source "$HOME/.local/bin/gdev"
 ##       関数全体が極端に遅くなる（数秒〜十数秒）。必ず別名にすること。
 autoload -Uz add-zsh-hook
 _ghostty_set_title() {
+  # stdout が端末でない（コマンド置換 $(cd ...) の中など）場合は何もしない。
+  # エスケープ列が置換結果に混入してパス文字列等を壊すのを防ぐ
+  [[ -t 1 ]] || return 0
   local repo_dir
   repo_dir=$(git rev-parse --show-toplevel 2>/dev/null) || repo_dir=$PWD
   printf '\e]2;%s\a' "${repo_dir##*/}"
