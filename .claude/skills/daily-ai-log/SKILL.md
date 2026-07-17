@@ -29,14 +29,15 @@ date +%F         # 「今日の分」と言われたとき
 
 ### 3. セッション抽出（イベント発生日基準・日またぎ対応）
 
-セッションの**開始日ではなく、その日にユーザー発言があったか**で拾う。前日から続いているセッションは `(継続)` マークが付く。`{DATE}` を対象日に置換して実行:
+セッションの**開始日ではなく、その日にユーザー発言があったか**で拾う。前日から続いているセッションは `C`（継続）マークが付く。各セッションについて「その日最初のユーザー発言（ask）」と「その日最後のアシスタント返答（result）」のペアを取る。`{DATE}` を対象日に置換して実行:
 
 ```bash
-ctx sql "SELECT time(MIN(e.occurred_at_ms)/1000,'unixepoch','localtime') AS first_msg, COUNT(*) AS msgs, CASE WHEN date(s.started_at_ms/1000,'unixepoch','localtime') < '{DATE}' THEN '(継続)' ELSE '' END AS cont, substr(replace(json_extract((SELECT e2.payload_json FROM ctx_events e2 WHERE e2.ctx_session_id=s.ctx_session_id AND e2.role='user' AND e2.event_type='message' AND date(e2.occurred_at_ms/1000,'unixepoch','localtime')='{DATE}' ORDER BY e2.occurred_at_ms LIMIT 1),'\$.body.content_preview.text'),char(10),' '),1,80) AS topic, s.ctx_session_id FROM ctx_events e JOIN ctx_sessions s ON s.ctx_session_id=e.ctx_session_id WHERE date(e.occurred_at_ms/1000,'unixepoch','localtime')='{DATE}' AND e.role='user' AND e.event_type='message' AND s.is_primary=1 AND s.provider='claude' GROUP BY s.ctx_session_id ORDER BY first_msg" --max-rows 60 --timeout 60s
+ctx sql "SELECT time(MIN(e.occurred_at_ms)/1000,'unixepoch','localtime') AS t, COUNT(*) AS msgs, CASE WHEN date(s.started_at_ms/1000,'unixepoch','localtime') < '{DATE}' THEN 'C' ELSE '' END AS cont, substr(replace(json_extract((SELECT e2.payload_json FROM ctx_events e2 WHERE e2.ctx_session_id=s.ctx_session_id AND e2.role='user' AND e2.event_type='message' AND date(e2.occurred_at_ms/1000,'unixepoch','localtime')='{DATE}' ORDER BY e2.occurred_at_ms LIMIT 1),'\$.body.content_preview.text'),char(10),' '),1,55) AS ask, substr(replace(coalesce((SELECT je.value->>'\$.text' FROM json_each(json_extract((SELECT e3.payload_json FROM ctx_events e3 WHERE e3.ctx_session_id=s.ctx_session_id AND e3.role='assistant' AND e3.event_type='message' AND date(e3.occurred_at_ms/1000,'unixepoch','localtime')='{DATE}' ORDER BY e3.occurred_at_ms DESC LIMIT 1),'\$.body.content_preview.json')) je WHERE je.value->>'\$.text' IS NOT NULL LIMIT 1),''),char(10),' '),1,90) AS result FROM ctx_events e JOIN ctx_sessions s ON s.ctx_session_id=e.ctx_session_id WHERE date(e.occurred_at_ms/1000,'unixepoch','localtime')='{DATE}' AND e.role='user' AND e.event_type='message' AND s.is_primary=1 AND s.provider='claude' GROUP BY s.ctx_session_id ORDER BY t" --max-rows 60 --timeout 60s
 ```
 
 - ポイント: `'localtime'` 修飾子を外さない（外すと UTC になり朝9時前が前日に化ける）
 - `is_primary=1` でサブエージェントは除外（人間の会話だけ）
+- **user と assistant はペイロード構造が違う**: user は `$.body.content_preview.text`（文字列）、assistant は `$.body.content_preview.json`（ブロック配列の文字列。先頭が thinking のことがあるので `json_each` で最初の text ブロックを取る）
 
 ### 4. 整形ルール
 
@@ -47,18 +48,21 @@ ctx sql "SELECT time(MIN(e.occurred_at_ms)/1000,'unixepoch','localtime') AS firs
 
 ## AIログ
 
-Claude Code セッション N本（ctx から自動抽出・その日の最初の発言ベース）
+Claude Code セッション N本（ctx から自動抽出。依頼→その日の最終返答ベース、↩=前日からの継続）
 
-- HH:MM 話題の一行要約
-- HH:MM ↩前日から継続。話題の一行要約
-- （まとまる場合）HH:MM〜HH:MM 同一テーマの複数セッションは1行に束ねる
+- **HH:MM** 依頼の要約 → 結果・着地点の要約（N往復）
+- **HH:MM** ↩ 前日からの継続。依頼の要約 → 結果の要約
 - ほか特殊入力等 M本
 ```
 
-- topic のノイズ処理: `<command-message>xxx</command-message>` → `/xxx` と表記。`<local-command-caveat>` や NULL → 件数だけ「ほか特殊入力等 M本」に集約。`/compact` `/clear` 起点の継続セッションは topic が薄いので msgs 数を頼りに前後セッションと同テーマなら束ねる
-- 話題はユーザー発言の**要約**にする（生ペーストで長々と引用しない。60字以内目安）
-- `(継続)` は `↩前日から継続` として明記
+- **「依頼 → 結果」の1行構成**が基本形。ask（何を頼んだか）と result（どう終わったか）を自分の言葉で要約して `→` でつなぐ
+- セッション途中で話題が変わっているとき（ask と result が別の話）は「→ 最後は◯◯の話に発展」のように**そのまま正直に書く**（ドリフトも作業記録の一部）
+- 往復数（msgs）が突出したセッションには「（**N往復**・この日最長）」を付けると密度が分かる
+- ノイズ処理: `<command-message>xxx>` → `/xxx` と表記。`<local-command-caveat>` や NULL ask は result があれば result 側から要約し、両方空なら「ほか特殊入力等 M本」に集約
+- 生ペーストの長い引用はしない（各要素 60〜90字目安に要約）。**秘密情報（キー・トークン・クライアント名等）が preview に混ざっていたら日報に書かずマスクする**
+- `C` は `↩`（前日からの継続）として明記
 - 追記位置はファイル**末尾**に `---` 区切りで（テンプレの空 `## AIログ` 枠が既にある日はその枠を埋める）
+- 対象日が**今日**の場合は見出し行を「N本・HH時時点の途中経過」とする
 
 ### 5. フェイルセーフ
 
