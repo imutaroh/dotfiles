@@ -35,6 +35,7 @@ focus_pane_down = "prefix+j"
 focus_pane_up = "prefix+k"
 focus_pane_right = "prefix+l"
 zoom = "prefix+z"              # ペインを最大化/戻す
+last_pane = "prefix+m"         # 直前のペインとトグル（Cmd+P から呼ぶ。エディタ⇔AI の一撃往復用）
 resize_mode = "prefix+r"       # リサイズモード
 close_pane = "prefix+x"
 
