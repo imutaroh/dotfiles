@@ -18,9 +18,10 @@ macOS 用の個人設定ファイル管理リポジトリ。
 | シェル | zsh | デフォルトシェル |
 | | Starship | カスタマイズ可能なプロンプト |
 | ターミナル | Ghostty | ターミナルエミュレータ |
-| | herdr | エージェントマルチプレクサ（tmux 代替。設定は `~/.config/herdr/`、dotfiles 未ミラー） |
+| | herdr | エージェントマルチプレクサ（tmux / 旧 Zellij の後継。設定は `.config/herdr/` で管理） |
 | 開発ツール | Neovim（AstroNvim ベース） | エディタ |
 | | Claude Code | コーディングエージェント |
+| | hunk | レビュー特化の差分ビューア（`nh` コマンド・hunk-review スキルから使用） |
 | ユーティリティ | Raycast | ランチャーアプリ |
 
 ## ディレクトリ構成
@@ -38,6 +39,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 ├── .config/               # ~/.config/ にリンク
 │   ├── ghostty/           # ターミナル設定
 │   ├── git/               # Git グローバル gitignore
+│   ├── herdr/             # エージェントマルチプレクサ設定
 │   ├── lazygit/           # Git TUI 設定
 │   ├── mise/              # ランタイム管理設定
 │   ├── nvim/              # Neovim 設定
