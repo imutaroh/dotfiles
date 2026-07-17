@@ -50,3 +50,8 @@ open_notification_target = "prefix+o"
 
 [ui]
 agent_panel_sort = "spaces"
+
+[ui.toast]
+# エージェントが完了/入力待ちになるとトースト通知を表示する（デフォルトは off）。
+# これが表示されている間に Cmd+O（open_notification_target）でそのエージェントに直行できる
+delivery = "herdr"
