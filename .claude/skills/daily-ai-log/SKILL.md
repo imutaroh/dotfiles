@@ -26,6 +26,7 @@ date +%F         # 「今日の分」と言われたとき
 1. **日報ファイルの存在**: `Vault/03_Journals/YYYY-MM-DD.md` が無ければ**作らない**。「日報ファイルが無いのでスキップした」と報告して終了
 2. **重複**: ファイル内に既に `## AIログ` があり中身が埋まっていれば、**上書きせず**その旨を報告（ユーザーが「作り直して」と言ったときだけ既存セクションを置換）
 3. **ctx の健全性**: `ctx status` が失敗したら報告して終了
+4. **索引の鮮度**: `ctx sql "SELECT max(datetime(occurred_at_ms/1000,'unixepoch','localtime')) FROM ctx_events"` が対象日の終わりより古ければ `ctx import --provider claude --partial` で更新する。**`--partial` 必須**（fork エージェントの symlink transcript が混ざると素の import は全体が中断する。2026-07-18 に実際に発生）
 
 ### 3. セッション抽出（イベント発生日基準・日またぎ対応）
 
