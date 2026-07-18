@@ -48,5 +48,10 @@ toggle_sidebar = "prefix+b"    # サイドバー開閉
 edit_scrollback = "prefix+e"   # スクロールバックをエディタで開く
 open_notification_target = "prefix+o"
 
+[worktrees]
+# CLI で作るときは `herdr worktree create --path .claude/worktrees/<slug>` でリポ内に置くのが標準。
+# ここはサイドバー（prefix+shift+g）から作った場合の保険で、~/.claude/worktrees/<repo>/<branch> に落とす。
+directory = "~/.claude/worktrees"
+
 [ui]
 agent_panel_sort = "spaces"
