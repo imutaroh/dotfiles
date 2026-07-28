@@ -1,62 +1,81 @@
 ---
 name: image-generate
-description: article-visual-planner等が出した画像生成プロンプトを、mcp-hub-image MCP経由でOpenAI gpt-image-2に直接投げて生成し、signed URLからcurlで~/Downloadsに保存するスキル。ブラウザ操作・Chrome接続・ログインは一切不要。「画像を生成して」「画像作って」「プロンプトから画像生成して」「図を作って」で使用。旧chatgpt-image（ChatGPT UIをブラウザ操作で叩く方式）の後継。生成のみ担当、プロンプト作成はarticle-visual-planner、リネーム・配置・gitはスコープ外。
+description: article-visual-planner等が出した画像生成プロンプトを、Codex CLI（ChatGPT認証・image_generation機能）に渡して画像を生成し、指定パスへ保存するスキル。「画像を生成して」「画像作って」「プロンプトから画像生成して」「図を作って」で使用。旧mcp-hub-image（OAuth不調で2026-07-28廃止）の後継。生成のみ担当、プロンプト作成はarticle-visual-planner、リネーム・配置・gitはスコープ外。
 ---
 
-# 画像生成（image-generate）
+# 画像生成（image-generate / Codex ルート）
 
-`mcp-hub-image` MCP（`generate_image`）でOpenAI gpt-image-2にプロンプトを直接投げ、**生成→signed URLをcurlでDL→実ファイル確認**まで一気通貫。旧`chatgpt-image`（ChatGPT UIをブラウザ操作で叩く方式）を置き換えた版。ブラウザ・ログイン・Chrome接続は不要で、生成自体も同期的（ポーリング不要）。
+Codex CLI の内蔵 `image_generation` ツール（stable・ChatGPTアカウント認証・APIキー不要）に画像生成を委譲し、**生成→指定パスへの保存→実ファイル確認**まで一気通貫で行う。旧 `mcp-hub-image` MCP 直叩き方式は OAuth 不調（サーバーURL移転による設定不一致）のため 2026-07-28 に廃止した。
 
 ```
-article-visual-planner（プロンプト）→ 【このSkill：generate_image→DL→実ファイル確認】 → （リネーム/配置/git は範囲外）
+article-visual-planner（プロンプト）→ 【このSkill：codex exec → 保存 → 実ファイル確認】 → （リネーム/配置/git は範囲外）
 ```
 
 ## 入口前提（満たさないと動かない）
 
-- `mcp__mcp-hub-image__generate_image` が使えること。ツールリストに無い/呼んでエラーなら`mcp__mcp-hub-image__authenticate`を呼び、返ってきたOAuth URLをユーザーに提示して承認してもらう（この一手だけは人間の操作が必要。代行できない）。
-- 複数枚が必要なら1プロンプト＝1回の呼び出しを順に行う（同時並列で投げない）。
+- `codex` CLI がインストール済みで、ChatGPT アカウントにログイン済みであること（`codex login status` で確認）。
+- `codex features list | grep image_generation` が `stable  true` を返すこと。
+- Codex が MCP サーバー（`codex mcp-server`）として Claude Code に登録されている環境では、`mcp__codex__*` ツール経由で同じことができる。ツールが露出していなければ下記の `codex exec` 方式を使う（機能は同一）。
 
 ## 絶対の鉄則（捏造防止・最優先）
 
-- **実際にツールが返したsigned URL・保存先パスだけを根拠に「生成できた」と言う。** ツール結果が返る前に完了したと書かない。
-- curlでDL後、`ls -la`で実ファイルのサイズを確認してから完了報告する。0バイトや存在しないファイルを「取得済み」と書かない。
-- 失敗（生成拒否・DL失敗）はそのまま正直に報告し、次のプロンプトに進まない。
+- **実際に保存されたファイルパスと `ls -la` の結果だけを根拠に「生成できた」と言う。** コマンドが返る前に完了したと書かない。
+- 生成後は必ず `Read` で画像を目視確認する。日本語ラベルの崩れ・構図崩壊があれば再生成する。
+- 失敗（生成拒否・保存失敗・0バイト）はそのまま正直に報告し、次のプロンプトに進まない。
 
 ## 手順
 
-### 1. quality決定
-ユーザーが明示しない限り `low` を使う。`medium`/`high`はユーザーが高画質を要求したときだけ使う（階級によっては拒否されることがある）。
+### 1. プロンプトファイルを作る
 
-### 2. 生成
-`mcp__mcp-hub-image__generate_image` にプロンプト・quality（・size・reference_images）を渡す。
-- 戻り値：base64画像（インラインで確認できる）＋GCS保存先（`gs://...`）＋ダウンロード用signed URL（有効期限あり、約12時間）。
-- 参照画像を使う場合は先に `mcp__mcp-hub-image__upload_reference` でPUT用signed URLを取得 → `curl -X PUT -H "Content-Type: <type>" --data-binary @<file> '<upload_url>'` でアップロード → 返ってきた `gs://` を `reference_images` に渡す。
+1画像 = 1ファイル。スクラッチパッドに Markdown で書く。構成は3要素：
 
-### 3. signed URLをcurlでDL
-```bash
-curl -fSL -o ~/Downloads/<わかりやすいファイル名>.png '<signed URL>'
+```markdown
+画像を1枚生成して、`<保存先相対パス>` に保存してください
+（生成ツールが出力したPNGを目的のパスにコピーする）。既存ファイルがあれば上書きしてよい。
+
+スタイル：<STYLEブロック。article-visual-planner の出力をそのまま>
+
+内容：<SCENE記述。構図・アイコン・配色・ラベル位置>
+
+画像に描いてよい文字はこれだけ：「…」「…」
+
+保存後、`ls -la <保存先>` の結果を最終メッセージに含めてください。
 ```
-ファイル名は呼び出しごとに意味のある名前にする（例: `sp-fig1.png`）。signed URLはクエリパラメータが長いので、シングルクォートで丸ごと囲む。
 
-### 4. 実ファイル確認
+- 「画像に描いてよい文字はこれだけ」の明示が最重要（余計な文字・タイトルの焼き込み防止）。
+- 日本語ラベルは正確に描画される（2026-07-28 実証。1672×941・約1MB・1〜2分/枚）。
+
+### 2. 生成（1枚ずつ）
+
 ```bash
-ls -la ~/Downloads/<ファイル名>.png
+codex exec --sandbox workspace-write -C <対象リポジトリ> - < <プロンプトファイル>
 ```
-サイズが0でないことを確認し、`Read`で中身を見てからユーザーに完了報告する。ここで初めて「取得完了」と言える。
 
-### 5. 複数枚のループ
-プロンプトが複数あるなら2〜4を1件ずつ繰り返す。1件失敗したらそこで止め、どこまで成功したか報告する。
+- `--sandbox workspace-write`：Codex が生成物を `images/` 等へコピーするのに必要。
+- `-C`：保存先リポジトリをカレントにする（相対パスが安定する）。
+- 複数枚は for ループで直列に回す（並列で投げない）。1枚あたり timeout 目安 5分。
+
+### 3. 実ファイル確認
+
+```bash
+ls -la <保存先>
+```
+
+サイズが0でないことを確認し、`Read` で中身を目視してから完了報告する。Zenn 用途なら 3MB 以下であることも確認（超えたら再生成か圧縮）。
+
+### 4. 複数枚のループ
+
+1件ずつ 2〜3 を繰り返す。1件失敗したらそこで止め、どこまで成功したか報告する。
 
 ## 破綻条件（事前に伝える）
 
-- **OAuthトークン失効**：`generate_image`がエラーを返す/ツールリストから消える場合、`authenticate`から再承認が必要＝人間の操作待ちで自動化が止まる。cron/loop実行など人が見ていないタイミングで起きると、その回だけ画像工程が止まる。
-- **quality=medium/highは階級によって拒否されうる**（ツール説明に明記）。まず`low`で確認してから上げる。
-- **signed URLは約12時間で失効**（GCSオブジェクト自体は30日で自動削除）。生成後は早めにDLする。
-- **日本語描画は概ね正確だが、複雑な長文・小さいフォントは崩れることがある。** 生成後は必ず目視確認し、崩れていれば再生成する。
+- **ChatGPT ログイン失効**：`codex exec` が認証エラーを返したら `codex login` が必要＝人間の操作待ち。cron 等の無人実行ではその回の画像工程が止まる。
+- **プラン利用枠**：Codex 側の利用枠を消費する。大量生成（10枚超）は枠切れで途中停止しうる。
+- **微妙な構図指定の再現度**：Codex が内部でプロンプトを整形するため、厳密なレイアウト指定は1発で決まらないことがある。目視確認→部分修正指示で追い込む。
 
 ## スコープ外
 - プロンプト作成 → `article-visual-planner`
-- リネーム・リポジトリ配置・git への取り込み → 範囲外
+- リネーム・リポジトリ配置調整・git への取り込み → 範囲外
 
 ## 関連
-- `article-visual-planner`（前段：プロンプト）/ `article-studio`（全体オーケストレータ）
+- `article-visual-planner`（前段：プロンプト）
