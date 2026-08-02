@@ -192,4 +192,4 @@ promote: なし
 - スタイル要点: 本SKILL.md内「## スタイル要点」セクション
 - 過去のnote記事: `Company/Drafts/`
 - 入力ソース: `Vault/01_Notes/`
-- 関連Skill: `/research`（事前リサーチが必要なとき）、`/structured-workflow`（スタイル要点改訂時）
+- 関連Skill: `/hyperresearch`（事前リサーチが必要なとき。旧 /research は2026-07-27削除）、`/structured-workflow`（スタイル要点改訂時）

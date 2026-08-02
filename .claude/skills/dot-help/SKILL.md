@@ -36,10 +36,10 @@ dotfiles 全体の設定を実際に読んで、キーバインドと設定の�
 | Neovim / vim / AstroNvim | `~/dotfiles/.config/nvim/` | `references/nvim.md` を必ず先に読む |
 | Ghostty / herdr / ターミナルの Cmd キー | `~/dotfiles/.config/ghostty/config`, `~/.config/herdr/config.toml` | `references/terminal.md` を必ず先に読む |
 | zsh の alias・関数・環境変数 | `~/dotfiles/.zshrc` | 不要（直接読む） |
-| karabiner | `~/dotfiles/.config/karabiner/karabiner.json` | 不要。現状カスタムルールなし（素の Default profile） |
-| zellij | `~/dotfiles/.config/zellij/` | 不要。レガシー（現在はターミナル多重化を herdr に移行済み） |
+| karabiner | 設定ファイルなし（dotfiles にも `~/.config` にも不在。GUI設定のみ） | 不要 |
+| zellij | 設定削除済み（ターミナル多重化は herdr に移行完了） | 不要 |
 | lazygit | `~/dotfiles/.config/lazygit/config.yml` | 不要（直接読む） |
-| プロンプト表示 | `~/dotfiles/starship.toml` | 不要（直接読む） |
+| プロンプト表示 | `~/dotfiles/.config/starship.toml` | 不要（直接読む） |
 | インストール済みツール | `~/dotfiles/Brewfile` | 不要（直接読む） |
 
 注意: `~/.config/herdr/` は dotfiles に**未ミラー**の例外（実体が `~/.config` 直下にある）。それ以外は `~/dotfiles` 配下が実体（シンボリックリンク元）なので、必ず `~/dotfiles` 側のパスで参照・回答する。
