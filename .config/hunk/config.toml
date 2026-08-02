@@ -1,0 +1,6 @@
+# Hunk（ターミナル diff ビューア）の設定
+# 設定可能な項目は `brew --prefix hunk`/README.md の Config セクションを参照
+
+# 長い行を折り返す（デフォルトは false = 右端で切り捨て）
+# 日本語のドキュメントや長い SQL を読むときに切り捨てられると困るため有効化
+wrap_lines = true
