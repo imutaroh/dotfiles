@@ -11,6 +11,7 @@
 ├── ghostty/           # ターミナルエミュレータ
 ├── git/               # Git グローバル設定
 ├── herdr/             # エージェントマルチプレクサ
+├── hunk/              # ターミナル diff ビューア
 ├── lazygit/           # Git TUI クライアント
 ├── mise/              # ランタイムバージョン管理
 ├── nvim/              # エディタ（詳細は nvim/README.md）
@@ -117,6 +118,22 @@ macOS 用ランチャーアプリ。Spotlight の高機能版で、カスタム�
 | 項目 | 値 | 説明 |
 |------|-----|------|
 | `python-preference` | `only-managed` | mise で管理された Python のみ使用 |
+
+## [hunk](https://hunk.dev/)
+
+ターミナルの diff ビューア。Claude Code とのペアレビューにも使う（エージェントが `hunk session` 経由で表示位置の移動やコメント追加を行う）。
+
+### ファイル構成
+
+| ファイル | 説明 |
+|----------|------|
+| `config.toml` | 設定ファイル（同ディレクトリの `state.json` は hunk 自身が生成するため管理対象外） |
+
+### 主な設定
+
+| 項目 | 値 | 説明 |
+|------|-----|------|
+| `wrap_lines` | `true` | 長い行を折り返す（デフォルトは切り捨て）。日本語ドキュメントや長い SQL が右端で切れるのを防ぐ |
 
 ## [lazygit](https://github.com/jesseduffield/lazygit)
 

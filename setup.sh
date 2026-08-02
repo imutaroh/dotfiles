@@ -88,6 +88,10 @@ ln -sf "$DOTFILES_DIR/.config/ghostty/config" ~/.config/ghostty/config
 mkdir -p ~/.config/herdr
 ln -sf "$DOTFILES_DIR/.config/herdr/config.toml" ~/.config/herdr/config.toml
 
+# hunk は config.toml のみ管理（同ディレクトリの state.json は対象外）
+mkdir -p ~/.config/hunk
+ln -sf "$DOTFILES_DIR/.config/hunk/config.toml" ~/.config/hunk/config.toml
+
 ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 
 mkdir -p ~/.config/git
