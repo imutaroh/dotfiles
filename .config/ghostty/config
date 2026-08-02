@@ -142,8 +142,9 @@ keybind = super+e=text:\x11b
 # Cmd+o で通知を出したエージェントに直行（O = Open notification target。prefix + o）
 keybind = super+o=text:\x11o
 
-# Cmd+p で直前のペインとトグル（P = Previous pane。エディタ⇔AI の一撃往復。herdr 側は prefix+m）
-keybind = super+p=text:\x11m
+# Cmd+p でスクラッチシェルの popup を開く（P = Popup。herdr 側は prefix+t のカスタムコマンド）
+# 閉じるのは exit / Ctrl+D。直前ペイントグル(last_pane)は素の Ctrl+Q → M で引き続き使える
+keybind = super+p=text:\x11t
 
 # Cmd+Shift+r でタブの名前変更（R = Rename。herdr 側は prefix+shift+t）
 keybind = super+shift+r=text:\x11T
