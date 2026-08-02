@@ -1,6 +1,5 @@
 {
   "awaySummaryEnabled": true,
-  "effortLevel": "medium",
   "enabledMcpjsonServers": [
     "obsidian"
   ],
