@@ -48,6 +48,28 @@ toggle_sidebar = "prefix+b"    # サイドバー開閉
 edit_scrollback = "prefix+e"   # スクロールバックをエディタで開く
 open_notification_target = "prefix+o"
 
+# ─── ポップアップ（0.7.4〜のフローティングペイン） ───
+# スクラッチシェルを画面中央に浮かせる（Cmd+P から呼ぶ）。exit / Ctrl+D で閉じる。
+# 注意: popup 表示中は Esc 含む全入力を popup が受け取る（トグル非対応、閉じるにはプロセス終了）
+[[keys.command]]
+key = "prefix+t"
+type = "popup"
+command = "exec \"${SHELL:-sh}\""
+description = "open scratch terminal"
+width = "80%"
+height = "80%"
+
+[ui.toast]
+# エージェントが完了(idle)・入力待ち(blocked)になったら in-app popup を表示する。
+# popup が出たら Cmd+O（= prefix+o / open_notification_target）でそのエージェントに直行できる。
+# delivery: off(既定=無効) / herdr(アプリ内トースト) / terminal(端末経由の通知) / system(macOS通知)
+delivery = "herdr"
+# 状態変化からこの秒数待って、まだ同じ状態なら通知（一瞬の状態揺れを無視）
+delay_seconds = 1
+
+[ui.toast.herdr]
+position = "top-right"
+
 [worktrees]
 # CLI で作るときは `herdr worktree create --path .claude/worktrees/<slug>` でリポ内に置くのが標準。
 # ここはサイドバー（prefix+shift+g）から作った場合の保険で、~/.claude/worktrees/<repo>/<branch> に落とす。
