@@ -4,7 +4,7 @@ description: >-
   技術ネタ（開発ログ・構築体験・ツール検証・会話履歴・既存ドラフト）を Zenn の tech/idea 記事に整形し、
   Zenn連携リポジトリ（zenn-claude-guide）の articles/ に published:false の下書きとして配置・コミット・push までを行うスキル。
   「Zennにして」「Zenn記事にして」「Zennの下書き作って」「これZennに書きたい」「技術記事にして」「今日やったことをZennに」で使用。
-  住み分け: 概念の段階的解説（スクラップ向け）は learn、note向け体験談は note-create、X投稿は x-thread。
+  住み分け: 概念の段階的解説（スクラップ向け）は learn、note向け体験談は note-create。
   「開発・構築・検証の実体験を技術記事として公開する」ならこのスキル。
 ---
 

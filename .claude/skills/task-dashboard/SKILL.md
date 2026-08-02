@@ -97,6 +97,6 @@ Agent ツールを `model: "sonnet"`、`run_in_background: false` で起動し�
 
 ## 住み分け
 
-- 中長期目標の分解・逆算 → `next-step`（分解した結果のタスク登録先としてこのスキルを使うのは可）
+- 中長期目標の分解・逆算 → 専用Skillなし（旧 `next-step` は2026-07-17削除）。分解は通常会話で行い、結果のタスク登録先としてこのスキルを使うのは可
 - GitHub Issue として起票したいもの → `issue-create`
 - 実装セッション中だけの一時TODO → 本体の TaskCreate（このスキルは使わない）

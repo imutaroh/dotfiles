@@ -7,7 +7,7 @@ description: >-
 # issue-create
 
 いむたろ様の Vault リポジトリ `imutaroh/ObsidianImus` への Issue 起票を一気通貫で実行する。
-本Vault（ObsidianImus）の個人タスク管理はこのSkillが正。secretary の汎用TODO管理とは併用しない。
+本Vault（ObsidianImus）の個人タスク管理はこのSkillが正。（旧 `secretary` スキルは退役済み。セッションをまたぐ個人タスクの可視化は `task-dashboard` が別枠で担う）
 
 ## 前提（変えない部分）
 
