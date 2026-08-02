@@ -41,13 +41,29 @@
 - 結論をまとめる時は、重要な証拠も一緒に提示する
 - サブエージェント（Explore / Agent / Task）に調査・作業を委譲した場合、その出力はユーザーには折りたたまれて見えない。完了報告だけで済ませず、サブエージェントが見つけた重要な発見・結論・根拠を、必ず自分の言葉でわかりやすく要約して伝える
 
+## Git 開発フロー（全プロジェクト共通の原則）
+
+プロジェクト側の CLAUDE.md やスキル（`/commit` `/push` など）があればそちらを優先する。無い場合でも以下の原則に従う。
+
+- **main ブランチでの直接編集は禁止**。編集前に `git branch` で作業ブランチにいることを確認する
+- **以下のコマンドは絶対に実行禁止**（`&&` や `;` で繋ぐ場合も含む）:
+  - `git push -f` / `git push --force` / `git push --force-with-lease`
+  - `git reset --hard`
+- 開発の流れ: **Issue 確認・作成 → ブランチ作成 → 開発 → コミット → プッシュ・PR**
+  - ブランチは Issue に紐付けて作成する: `gh issue develop <issue番号> --name <ブランチ名> --checkout`
+- コミット前にステージング済みファイルを検査し、不審なファイル（一時ファイル・秘密情報・意図しない変更）が混ざっていないか確認する
+- 新規機能の実装や複数ファイルにまたがる改修は、実装開始前に `/delegate-implementation` スキルで実装をサブエージェントに委譲する（1 ファイル数行の軽微な修正は除く）
+
 ## git worktree（並列開発）
 
-Claude Code で並列開発するときの worktree の扱いを固定する。
+Claude Code で並列開発するときの worktree の扱いを固定する（2026-07-18 に herdr 管理を採用）。
 
-- **置き場所は必ず `.claude/worktrees/<名前>/` 配下**。リポジトリ直下や兄弟ディレクトリには作らない（`claude --worktree` / `EnterWorktree` / サブエージェントの `isolation: worktree` のデフォルトに従う）
+- **置き場所は必ずリポ内の `.claude/worktrees/<名前>/` 配下**。リポジトリ直下や兄弟ディレクトリには作らない
+- **人間が主導する長命の並列作業は herdr で作る**：`herdr worktree create --path .claude/worktrees/<slug> --branch <slug>`（ワークスペースとして開き、サイドバーでエージェント状態も見える）。マージ後は `herdr worktree remove` で掃除
+- **AI サブエージェントの短命隔離は従来通り** `claude --worktree` / `EnterWorktree` / `isolation: worktree` / `worktree-parallel` Skill（デフォルトで `.claude/worktrees/` に作られる）。herdr で開きたくなったら `herdr worktree open --path` で合流できる
+- herdr サイドバー（prefix+shift+g）から作った worktree だけは保険設定で `~/.claude/worktrees/<repo>/<branch>` に落ちる（herdr の `[worktrees].directory` はグローバル1箇所でリポ内を指せないため）。原則は CLI + `--path` で作る
 - **`.gitignore` に `.claude/worktrees/` を必ず追加**する。入れ忘れると worktree の中身（`node_modules` 含む）が本体側で未追跡ファイルとして見え、事故コミット・再帰スキャンの原因になる
-- 手動で `git worktree add` を叩く運用はしない。**複数タスクの並列開発は `worktree-parallel` Skill を使う**（独立タスクを worktree 隔離サブエージェントに振り、マージバックまで導く）
+- 手動で `git worktree add` を叩く運用はしない（herdr か Skill 経由）
 - worktree は短命に使う。1タスク1ツリー、マージ or 破棄したら片付ける
 
 ## 環境設定
