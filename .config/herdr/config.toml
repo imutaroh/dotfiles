@@ -77,3 +77,8 @@ directory = "~/.claude/worktrees"
 
 [ui]
 agent_panel_sort = "spaces"
+
+[experimental]
+# terminal-browser 等、Kitty グラフィックスプロトコルで描画するアプリを herdr ペイン内で表示するための実験的機能（herdr v0.5.9+）。
+# 描画不具合が出たら false に戻す。
+kitty_graphics = true

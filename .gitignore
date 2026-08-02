@@ -36,3 +36,6 @@ __pycache__/
 
 # hyperresearch インストーラ生成物（uv tool + hyperresearch install --global で再生成可能）
 .claude/skills/hyperresearch/
+
+# terminal-browser インストーラ生成物（curl -fsSL https://terminal-browser.sh/install | bash で再生成可能）
+.claude/skills/terminal-browser
