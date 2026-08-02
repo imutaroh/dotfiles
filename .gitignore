@@ -33,3 +33,6 @@ Thumbs.db
 # Python
 __pycache__/
 *.pyc
+
+# hyperresearch インストーラ生成物（uv tool + hyperresearch install --global で再生成可能）
+.claude/skills/hyperresearch/
