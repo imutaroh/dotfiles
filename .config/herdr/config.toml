@@ -59,6 +59,21 @@ description = "open scratch terminal"
 width = "80%"
 height = "80%"
 
+# ─── ブラウザ（herdr-browser 公式プラグイン official.browser） ───
+# CDP screencast をペインに描画する Chromium。AI は Playwright MCP 等で CDP 接続、人間はマウスで介入できる。
+# README 例は prefix+b だがサイドバー開閉と衝突するため u（URL）に変更。
+[[keys.command]]
+key = "prefix+u"
+type = "shell"
+command = '"${HERDR_BIN_PATH}" plugin pane open --plugin official.browser --entrypoint browser --placement split --direction right --focus'
+description = "open browser in right split"
+
+[[keys.command]]
+key = "prefix+shift+u"
+type = "shell"
+command = '"${HERDR_BIN_PATH}" plugin pane open --plugin official.browser --entrypoint browser --placement overlay --focus'
+description = "open browser overlay"
+
 [ui.toast]
 # エージェントが完了(idle)・入力待ち(blocked)になったら in-app popup を表示する。
 # popup が出たら Cmd+O（= prefix+o / open_notification_target）でそのエージェントに直行できる。
