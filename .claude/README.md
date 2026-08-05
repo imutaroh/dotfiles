@@ -8,6 +8,7 @@ Claude Code のユーザーレベル設定。`~/.claude/` にシンボリック�
 .claude/
 ├── CLAUDE.md          # カスタム指示
 ├── settings.json      # Claude Code 設定
+├── design.md          # 寒色トーン&マナー（statusline / テーマの配色リファレンス）
 ├── statusline.sh      # ステータスライン表示スクリプト
 ├── hooks/             # イベントフック
 │   └── anti-sycophancy.sh # 迎合防止リマインダー（UserPromptSubmit）
@@ -45,12 +46,14 @@ Claude Code の動作設定。主な項目：
 | カテゴリ | 主なスキル |
 |----------|-----------|
 | 学習・コード理解 | learn / progressive-learning / code-reading / func-anatomy / readable-code-refactor |
-| 記事・コンテンツ制作 | note-create / zenn-article / x-thread / instagram-script / article-studio / article-visual-planner / copywriting-frameworks / hook-and-headline / content-repurpose / story-teach / research-to-note / image-generate |
+| 記事・コンテンツ制作 | note-create / zenn-article / article-visual-planner / image-generate / story-teach / research-to-note / doc-coauthoring |
 | 文章規範 | japanese-tech-writing / cognitive-rhythm-writing |
-| 日報・振り返り | daily-report-formatter / feedback-slack-formatter / month / yoshida-shoin-fb |
-| ノート・ナレッジ管理 | technical-note / research / issue-create / task-dashboard |
-| 開発ワークフロー | structured-workflow / architect-mode / worktree-parallel / pr-review-fix-coach / hunk-review / dot-help / ctx-agent-history-search |
+| 日報・振り返り | morning / daily-report-formatter / daily-ai-log / feedback-slack-formatter / month / yoshida-shoin-fb |
+| ノート・ナレッジ管理 | technical-note / issue-create / task-dashboard / books / strengths-map / hyperresearch |
+| 開発ワークフロー | structured-workflow / delegate-implementation / worktree-parallel / pr-review-fix-coach / hunk-review / dot-help / ctx-agent-history-search / terminal-browser |
 | メタ（スキル管理） | skill-creator / find-skills |
+
+`hyperresearch` と `terminal-browser` はインストーラが `skills/` 配下に張る symlink（実体は別ディレクトリ）で、リポジトリでは追跡していない。再導入は各ツールのインストーラで行う。
 
 Anthropic 公式由来: [doc-coauthoring](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) / [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 
