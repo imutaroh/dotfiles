@@ -3,7 +3,7 @@ name: morning
 description: >-
   1日の始まりに実行する朝のブリーフィング・オーケストレータ。「/morning」「おはよう、今日を始めよう」「朝のブリーフィング」「朝のルーティンやって」で使用。
   ①昨日の日報の要約とFB確認 ②Claude Code 使用状況（ai-usage-dashboard）②.5 今日のタイムカレンダー（Google Calendar から1時間グリッド）
-  ③昨日のAIログの日報貼り付け（daily-ai-log に委譲）④GitHub Life Issue の残タスク提示 を1コマンドで実行し、
+  ③昨日のAIログの日報貼り付け（daily-ai-log に委譲）④Todo.md（実行リスト・上限10）の残タスク提示 を1コマンドで実行し、
   今日の日報に「## 朝のブリーフィング」として追記するところまで行う（その日の一手を決めるのはご主人様。AI は聞かない）。
 ---
 
@@ -15,7 +15,7 @@ description: >-
 
 - AIログの生成・日報書き込み → `daily-ai-log` スキル（Vault 書き込み特例はあちらが持つ）
 - 使用量の集計 → `ai-usage-dashboard`（launchd が毎朝 7:30 に自動更新済み）
-- タスクの正 → GitHub `imutaroh/ObsidianImus` の Issue（Project "Life" #2）
+- タスクの正 → リポ直下の `Todo.md`（closed list・上限10。2026-08-03 転換。GitHub Issue は「複雑度2以上の案件の倉庫」に格下げされ、毎朝は見ない。設計は `Company/Drafts/2026-08-03-august-task-system.md`）
 
 morning が Vault に書いてよいのは次の4箇所**だけ**（`/morning` は常設許可スキル。2026-07-21 の都度許可制決定時に確認不要枠として明文化済み）:
 
@@ -35,7 +35,7 @@ morning が Vault に書いてよいのは次の4箇所**だけ**（`/morning` �
 | 日報 | `~/repos/imutaakihiro/ObsidianImus/Vault/03_Journals/YYYY-MM-DD.md` |
 | 使用量データ | `~/repos/imutaakihiro/ai-usage-dashboard/data.js`（`window.USAGE_DATA = {...}` 形式） |
 | ダッシュボード | `http://127.0.0.1:8787/`（`serve.sh` が配信。旧 `file://.../index.html` はフォールバック） |
-| タスク | `gh issue list --repo imutaroh/ObsidianImus` |
+| タスク | `~/repos/imutaakihiro/ObsidianImus/Todo.md`（2026-08-03〜） |
 | カレンダー | Google Calendar MCP（`mcp__claude_ai_Google_Calendar__list_events`） |
 
 ## コスト方針（2026-07-24 決定）
@@ -193,17 +193,15 @@ Skill ツールで `daily-ai-log` を呼び出す（対象日=昨日、がデフ
 - 既に `## AIログ` が埋まっていたら「貼り付け済み」と報告してスキップ
 - 全文要約はサブエージェントに委譲されて時間がかかる。**先にステップ1・2・4の結果をブリーフィングとして出してから**この完了を待ってよい
 
-### 4. 残タスク（GitHub Life Issue）
+### 4. 残タスク（Todo.md）
 
-```bash
-gh issue list --repo imutaroh/ObsidianImus --state open --limit 40 \
-  --json number,title,labels,milestone \
-  --jq '.[] | "#\(.number) \(.title) [\([.labels[].name] | join(","))] \(.milestone.title // "")"'
-```
+`~/repos/imutaakihiro/ObsidianImus/Todo.md` を読む（2026-08-03 からタスクの正はここ。GitHub Issue は倉庫なので毎朝は見ない）。
 
-- そのまま全件羅列しない。**「今四半期のマイルストーン」「type:task」を優先して5〜8件をピックアップ**し、残りは「ほか N 件」でまとめる
-- ステップ1で拾った日報の未完了 `- [ ]` と重なるものがあれば「日報でも積み残し」と印を付ける
-- `gh` が失敗（未認証・オフライン）したら「Issue 取得失敗」と報告して次へ
+- 「## Todo」節の未チェック項目を**全件**出す（上限10なのでピックアップ不要）。チェック済みは出さない
+- ステップ1で拾った昨日の日報の未完了 `- [ ]` と重なるものがあれば「日報でも積み残し」と印を付ける
+- 昨日の日報 `### Memo` にタスクらしき書き散らしがあれば「**Inbox→Todo候補**」として1〜3個だけ提示する。ただし **Todo.md への追記は morning はやらない**（昇格を決めるのはご主人様。原則は金曜Migrationの空き枠で行う）
+- 昨日の日報でチェックされた完了項目があれば、Todo.md の「8月にやったこと（Anti-Todo）」への転記候補として1行添える（これも提示まで）
+- Todo.md が読めない・空のときは「Todo.md なし」と報告して次へ
 
 ### 5. ブリーフィング出力
 
@@ -228,9 +226,10 @@ gh issue list --repo imutaroh/ObsidianImus --state open --limit 40 \
 ### AIログ
 - 日報 <昨日>.md への貼り付け: 完了 / 貼り付け済み / 失敗（理由）
 
-### 残タスク（Life Issue）
-- #NNN タイトル ← 日報でも積み残し
-- …（5〜8件）… ほか N 件
+### 残タスク（Todo.md）
+- [ ] 項目 ← 日報でも積み残し
+- …（未チェック全件・上限10）
+- Inbox→Todo候補: …（あれば1〜3個）
 ```
 
 > 🚫 **「今日の一手」は聞かない**（2026-08-02 廃止）。AskUserQuestion でその日のタスクを選ばせる運用は、2回連続で選択肢の外から回答が返り機能しなかった。計画を立てる価値は認めた上で、**決める行為はご主人様が AI の外で行う**。AI は材料（カレンダー・ふりかえり・ログ・残タスク）を出すところまで。ブリーフィングを出したらそのままステップ6の日報追記へ進み、聞かずに終了する。
@@ -288,7 +287,7 @@ gh issue list --repo imutaroh/ObsidianImus --state open --limit 40 \
 ### AIログ
 - <昨日>.md への貼り付け: 完了（N本）
 
-### 残タスク（Life Issue）
+### 残タスク（Todo.md）
 …
 ```
 
@@ -302,7 +301,7 @@ gh issue list --repo imutaroh/ObsidianImus --state open --limit 40 \
 | serve.sh が終了コード2（ポート衝突） | `file://.../index.html` をリンクとして出し、衝突している旨を添える |
 | serve.sh が終了コード1（起動失敗） | 同じく file:// フォールバック。`serve.log` の確認を促す |
 | ctx が壊れている | daily-ai-log 側のチェックに従いスキップ報告 |
-| gh 未認証 | 「Issue 取得失敗」と報告して続行 |
+| Todo.md が無い・空 | 「Todo.md なし」と報告して続行 |
 | カレンダーが取れない（MCP未接続・認証切れ） | 「カレンダー取得失敗」と報告し**表は出さない**。空の表を捏造しない |
 | 今日の予定が0件 | 「今日は予定なし」と1行だけ書き、空きは 09:00–18:00 として扱う |
 | 今日の日報が無い | 日報テンプレで新規作成してから追記（2026-07-28変更） |

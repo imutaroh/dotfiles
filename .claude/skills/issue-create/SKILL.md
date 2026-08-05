@@ -6,8 +6,11 @@ description: >-
 
 # issue-create
 
-いむたろ様の Vault リポジトリ `imutaroh/ObsidianImus` への Issue 起票を一気通貫で実行する。
-本Vault（ObsidianImus）の個人タスク管理はこのSkillが正。（旧 `secretary` スキルは退役済み。セッションをまたぐ個人タスクの可視化は `task-dashboard` が別枠で担う）
+> ⚠️ **2026-08-03 大改定**: 個人タスク管理の正は リポ直下の `Todo.md` に移行し、**Project "Life" #2 は削除済み**。GitHub Issue は「複雑度2以上の案件の倉庫」（起票はご主人様の明示指示時のみ）。
+> このスキルで**実行するのは「Issue 起票＋ `type:` ラベル」だけ**。以下の Project 追加・Area/Status/Milestone 設定のステップは**すべてスキップする**（`gh project item-add` は対象が存在せず失敗する）。references/project_life_ids.md も無効。
+
+いむたろ様の Vault リポジトリ `imutaroh/ObsidianImus` への Issue 起票を実行する。
+（旧 `secretary` スキルは退役済み。セッションをまたぐ個人タスクの可視化は `task-dashboard` が別枠で担う）
 
 ## 前提（変えない部分）
 
