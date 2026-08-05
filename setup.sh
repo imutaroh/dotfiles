@@ -117,7 +117,6 @@ ln -sfn "$DOTFILES_DIR/.config/nvim" ~/.config/nvim
 # Claude Code設定（ファイル単位でリンク、他のファイルは残す）
 mkdir -p ~/.claude/sounds
 ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" ~/.claude/CLAUDE.md
-ln -sf "$DOTFILES_DIR/.claude/settings.json" ~/.claude/settings.json
 ln -sf "$DOTFILES_DIR/.claude/statusline.sh" ~/.claude/statusline.sh
 ln -sf "$DOTFILES_DIR/.claude/statusline-preview.sh" ~/.claude/statusline-preview.sh
 ln -sfn "$DOTFILES_DIR/.claude/scripts" ~/.claude/scripts
@@ -126,6 +125,12 @@ ln -sfn "$DOTFILES_DIR/.claude/scripts" ~/.claude/scripts
 # skills のようなディレクトリまるごとリンクにはしない）
 mkdir -p ~/.claude/hooks
 ln -sf "$DOTFILES_DIR/.claude/hooks/anti-sycophancy.sh" ~/.claude/hooks/anti-sycophancy.sh
+
+# settings.json は symlink にしない（claude doctor が rename で書き戻して壊すため）。
+# 初回だけ配布し、以降は ./sync-settings.sh で実環境から dotfiles に取り込む。
+if [ ! -e ~/.claude/settings.json ]; then
+    cp "$DOTFILES_DIR/.claude/settings.json" ~/.claude/settings.json
+fi
 
 # skillsはディレクトリ全体をシンボリックリンク
 if [ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ]; then

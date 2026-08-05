@@ -1,50 +1,7 @@
 {
-  "awaySummaryEnabled": true,
-  "enabledMcpjsonServers": [
-    "obsidian"
-  ],
-  "enabledPlugins": {
-    "frontend-design@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true,
-    "vercel@claude-plugins-official": true
-  },
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
-  "hooks": {
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "command": "afplay ~/.claude/sounds/confirm.wav",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "command": "afplay ~/.claude/sounds/complete.wav",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "command": "bash ~/.claude/hooks/anti-sycophancy.sh",
-            "type": "command"
-          }
-        ]
-      }
-    ]
-  },
-  "model": "fable",
   "permissions": {
     "allow": [
       "Edit",
@@ -115,7 +72,6 @@
       "Bash(go version *)",
       "Bash(go mod *)"
     ],
-    "defaultMode": "auto",
     "deny": [
       "Bash(rm *)",
       "Bash(rmdir *)",
@@ -123,15 +79,69 @@
       "Bash(git push -f*)",
       "Bash(git reset --hard*)",
       "Bash(git clean -f*)"
+    ],
+    "defaultMode": "auto"
+  },
+  "enabledMcpjsonServers": [
+    "obsidian"
+  ],
+  "skillOverrides": {
+    "month": "off"
+  },
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay ~/.claude/sounds/confirm.wav"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay ~/.claude/sounds/complete.wav"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/anti-sycophancy.sh"
+          }
+        ]
+      }
     ]
   },
-  "skipAutoPermissionPrompt": true,
-  "skipWorkflowUsageWarning": true,
   "statusLine": {
-    "command": "~/.claude/statusline.sh",
-    "type": "command"
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
   },
-  "theme": "custom:dark-daltonized-cool",
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": false,
+    "swift-lsp@claude-plugins-official": false,
+    "claude-security@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
+  },
+  "awaySummaryEnabled": true,
   "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
+  "theme": "custom:dark-daltonized-cool",
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
 }

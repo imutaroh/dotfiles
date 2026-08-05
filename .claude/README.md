@@ -1,6 +1,6 @@
 # .claude
 
-Claude Code のユーザーレベル設定。`~/.claude/` にシンボリックリンクされる。
+Claude Code のユーザーレベル設定。`~/.claude/` にシンボリックリンクされる（`settings.json` だけは例外。後述）。
 
 ## ディレクトリ構成
 
@@ -37,6 +37,12 @@ Claude Code の動作設定。主な項目：
 | `permissions.deny` | 拒否するコマンド |
 | `hooks` | イベント発生時に実行するコマンド |
 | `statusLine` | ステータスライン表示の設定 |
+
+**このファイルだけは symlink で管理していない。** `claude doctor` などが一時ファイル + rename で書き戻すため、symlink はその時点で実ファイルに置き換わってしまう（2026-07-27 に実際に発生し、以降の変更が dotfiles に入らないまま乖離した）。
+
+- `setup.sh` は**初回のみ**コピーで配布する
+- `/config` や `claude doctor` で設定を変えたら、リポジトリ直下の `./sync-settings.sh` で実環境の内容を dotfiles に取り込んでコミットする
+- `./sync-settings.sh --check` は差分の有無だけを見る（差分があれば終了コード 1）
 
 ### skills/
 
