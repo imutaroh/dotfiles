@@ -39,3 +39,6 @@ __pycache__/
 
 # hyperresearch インストーラ生成物（uv tool + hyperresearch install --global で再生成可能）
 .claude/skills/hyperresearch/
+
+# 書籍ノート知識貯蔵庫（著作物の要約を含むため private リポジトリ imutaroh/book-skills で管理）
+.claude/skills/books/
