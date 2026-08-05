@@ -53,7 +53,10 @@ Claude Code の動作設定。主な項目：
 | 開発ワークフロー | structured-workflow / delegate-implementation / worktree-parallel / pr-review-fix-coach / hunk-review / dot-help / ctx-agent-history-search / terminal-browser |
 | メタ（スキル管理） | skill-creator / find-skills |
 
-`hyperresearch` と `terminal-browser` はインストーラが `skills/` 配下に張る symlink（実体は別ディレクトリ）で、リポジトリでは追跡していない。再導入は各ツールのインストーラで行う。
+次の3つは**このリポジトリでは追跡していない**（`skills/` 配下に実体があるだけ）:
+
+- `hyperresearch` / `terminal-browser` — インストーラが張る symlink（実体は別ディレクトリ）。再導入は各ツールのインストーラで行う
+- `books` — 著作物の要約を含むため private リポジトリ `imutaroh/book-skills` を clone して配置する
 
 Anthropic 公式由来: [doc-coauthoring](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) / [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 
