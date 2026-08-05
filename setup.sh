@@ -122,6 +122,11 @@ ln -sf "$DOTFILES_DIR/.claude/statusline.sh" ~/.claude/statusline.sh
 ln -sf "$DOTFILES_DIR/.claude/statusline-preview.sh" ~/.claude/statusline-preview.sh
 ln -sfn "$DOTFILES_DIR/.claude/scripts" ~/.claude/scripts
 
+# hooksはファイル単位でリンク（dotfiles 管理外のフックを消さないため、
+# skills のようなディレクトリまるごとリンクにはしない）
+mkdir -p ~/.claude/hooks
+ln -sf "$DOTFILES_DIR/.claude/hooks/anti-sycophancy.sh" ~/.claude/hooks/anti-sycophancy.sh
+
 # skillsはディレクトリ全体をシンボリックリンク
 if [ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ]; then
     rm -rf ~/.claude/skills
