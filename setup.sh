@@ -128,6 +128,12 @@ if [ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ]; then
 fi
 ln -sfn "$DOTFILES_DIR/.claude/skills" ~/.claude/skills
 
+# 書籍ノート知識貯蔵庫（private リポジトリ・dotfilesの.gitignore対象）を skills 配下に clone
+if [ ! -d "$DOTFILES_DIR/.claude/skills/books" ]; then
+    git clone https://github.com/imutaroh/book-skills.git "$DOTFILES_DIR/.claude/skills/books" \
+        || echo "⚠️  book-skills のcloneに失敗（private リポジトリのため要認証。後で手動で clone してください）"
+fi
+
 # themesはディレクトリ全体をシンボリックリンク
 if [ -d ~/.claude/themes ] && [ ! -L ~/.claude/themes ]; then
     rm -rf ~/.claude/themes
