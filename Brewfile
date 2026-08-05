@@ -1,4 +1,5 @@
 tap "laishulu/homebrew"
+tap "oven-sh/bun"
 
 # === シェル・ターミナル ===
 brew "zsh-autosuggestions"    # 履歴から補完候補を表示
@@ -20,8 +21,9 @@ brew "trash"                  # rm の代わりに使用（復元可能）
 brew "gh"                     # GitHub CLI
 brew "mise"                   # ランタイムバージョン管理（Node / Python 等）
 brew "lazygit"                # Git TUI クライアント（Neovim から呼び出し可能）
-brew "hunk"                    # レビュー特化の差分ビューア（hunk-review スキルで AI と往復レビュー）
+brew "hunk"                   # レビュー特化の差分ビューア（hunk-review スキルで AI と往復レビュー）
 brew "node"                   # Node.js / npm（Mason LSP: typescript-language-server, pyright 等）
+brew "bun"                    # JavaScript ランタイム / パッケージマネージャ
 brew "go"                     # Go 言語（Mason LSP: gopls）
 brew "xcodegen"               # Xcode プロジェクトを yml から生成
 brew "postgresql@17"          # PostgreSQL（ローカル開発用 DB）
@@ -29,8 +31,9 @@ brew "postgresql@17"          # PostgreSQL（ローカル開発用 DB）
 # === macOS ユーティリティ ===
 brew "defaultbrowser"         # デフォルトブラウザを CLI から設定
 brew "laishulu/homebrew/macism"   # IME 切り替え（Neovim で Normal モード時に英数へ）
+brew "ffmpeg"                 # 動画・音声の変換（GIF 生成などで使用）
 
-cask "1password"
+# === GUI アプリ ===
 cask "alt-tab"
 cask "aqua-voice"
 cask "arc"
