@@ -34,5 +34,8 @@ Thumbs.db
 __pycache__/
 *.pyc
 
+# terminal-browser インストーラ生成物（~/.agents/skills/ への symlink。再生成はインストーラで）
+.claude/skills/terminal-browser
+
 # hyperresearch インストーラ生成物（uv tool + hyperresearch install --global で再生成可能）
 .claude/skills/hyperresearch/
