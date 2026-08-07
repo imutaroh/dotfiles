@@ -7,7 +7,9 @@ macOS 用の個人設定ファイル管理リポジトリ。
 
 - `setup.sh` でシンボリックリンクを作成して各設定ファイルを適用する
 - `.config/` 以下はミラーリング方式（実際の配置場所と同じ構造）で管理
-- `.claude/` は `~/.claude/` にリンクされるため、プロジェクト固有の Claude Code 設定は作成できない
+- `~/.claude/` 自体は実ディレクトリで、`CLAUDE.md` / `skills` / `scripts` / `statusline.sh` / `themes` / `task-dashboard` のみが dotfiles へのシンボリックリンク
+- `settings.json` は symlink 不可（`claude doctor` 等が実ファイルに置き換えるため）。`./sync-settings.sh` で実環境 → dotfiles へ明示的に取り込む
+- `.claude/settings.local.json` はこのリポジトリ固有の設定として使える（gitignore 対象外・設定の優先順位は user < project < local）
 
 ## 作業ルール
 
