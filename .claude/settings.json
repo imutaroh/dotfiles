@@ -125,7 +125,7 @@
     "command": "~/.claude/statusline.sh"
   },
   "enabledPlugins": {
-    "frontend-design@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": false,
     "skill-creator@claude-plugins-official": false,
     "swift-lsp@claude-plugins-official": false,
     "claude-security@claude-plugins-official": true
@@ -142,6 +142,8 @@
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "theme": "custom:dark-daltonized-cool",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "model": "opus"
 }
