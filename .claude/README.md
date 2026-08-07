@@ -55,13 +55,13 @@ Claude Code の動作設定。主な項目：
 | 記事・コンテンツ制作 | note-create / zenn-article / article-visual-planner / image-generate / story-teach / research-to-note / doc-coauthoring |
 | 文章規範 | japanese-tech-writing / cognitive-rhythm-writing |
 | 日報・振り返り | morning / daily-report-formatter / daily-ai-log / feedback-slack-formatter / month / yoshida-shoin-fb |
-| ノート・ナレッジ管理 | technical-note / issue-create / task-dashboard / books / strengths-map / hyperresearch |
+| ノート・ナレッジ管理 | technical-note / issue-create / task-dashboard / books / strengths-map |
 | 開発ワークフロー | structured-workflow / delegate-implementation / worktree-parallel / pr-review-fix-coach / hunk-review / dot-help / ctx-agent-history-search / terminal-browser |
 | メタ（スキル管理） | skill-creator / find-skills |
 
-次の3つは**このリポジトリでは追跡していない**（`skills/` 配下に実体があるだけ）:
+次の2つは**このリポジトリでは追跡していない**（`skills/` 配下に実体があるだけ）:
 
-- `hyperresearch` / `terminal-browser` — インストーラが張る symlink（実体は別ディレクトリ）。再導入は各ツールのインストーラで行う
+- `terminal-browser` — インストーラが張る symlink（実体は別ディレクトリ）。再導入はインストーラで行う
 - `books` — 著作物の要約を含むため private リポジトリ `imutaroh/book-skills` を clone して配置する
 
 Anthropic 公式由来: [doc-coauthoring](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) / [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
