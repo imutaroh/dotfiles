@@ -23,11 +23,6 @@ return {
         return vim.bo[buf].buftype == "" and vim.api.nvim_buf_get_name(buf) ~= ""
       end,
     },
-    icons = {
-      kinds = {
-        use_devicons = true,
-      },
-    },
   },
   keys = {
     -- パンくずをクリックする代わりにキーボードで操作

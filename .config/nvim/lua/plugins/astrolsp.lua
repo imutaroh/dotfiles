@@ -49,14 +49,11 @@ return {
       },
       timeout_ms = 1000,
     },
-    -- Mason で自動インストールするサーバー
+    -- Mason 管理外のサーバーだけを列挙する。
+    -- Mason 管理のサーバー（mason.lua の ensure_installed）は mason-lspconfig が
+    -- 自動で setup するため、ここに書くと setup が二重に走り、
+    -- lspconfig が既存クライアントを stop して非推奨警告を出す。
     servers = {
-      "gopls",      -- Go
-      "ts_ls",      -- TypeScript / JavaScript
-      "pyright",    -- Python
-      "lua_ls",     -- Lua（Neovim 設定ファイル用）
-      "cssls",      -- CSS
-      "html",       -- HTML
       "sqlls",      -- SQL（補完・定義ジャンプ・診断）
       "dbt_ls",     -- dbt（macro/ref の定義ジャンプ・補完。go install で手動インストール）
     },
