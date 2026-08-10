@@ -37,6 +37,7 @@ brew "ffmpeg"                 # 動画・音声の変換（GIF 生成などで�
 cask "alt-tab"
 cask "aqua-voice"
 cask "arc"
+# cask "capsomnia"  # caskが存在しないため手動インストール: https://capsomnia.com/ja/ からpkgをDL
 cask "chatwork"
 cask "cleanshot"
 cask "codex"                  # OpenAI Codex CLI（Claude CodeからMCPサーバーとして呼び出し）
