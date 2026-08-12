@@ -1,0 +1,55 @@
+# 公開前点検チェックリスト
+
+push の前に全項目をコマンドで実測し、**実出力を添えて**結果を報告する。記憶・一般論で「制限内です」と言わない（カバー1MB制限の見落としで本番デプロイが中断した実績あり）。
+
+すべて `zenn-claude-guide/` リポのルートで実行する。
+
+## 1. 画像サイズ
+
+```bash
+find books -name "cover.png" -size +1M      # カバーは 1MB 以下（Zenn独自制限）→ ヒット0が合格
+find images -size +3M                        # 本文画像は 3MB 以下 → ヒット0が合格
+```
+
+カバーが超過していたら `sips -z 1050 700 <path> --out <path>` で縮小して再測定。
+
+## 2. 未処理プレースホルダ
+
+```bash
+grep -rn "<!-- fig:" books/ articles/        # 図スロットの入れ忘れ → 公開対象では0が合格
+grep -rn "<!-- HEARING" books/ articles/     # 体験談の未注入箇所
+```
+
+HEARING は HTML コメントなので読者には見えないが、**その周辺の「僕」の体験談が事実確認済みかは別問題**。未確認のまま公開する判断をした場合は、宿題として Todo.md か日報 Action への記録を提案する（黙って流さない）。
+
+## 3. 公開フラグの最終確認
+
+```bash
+grep "published:" books/*/config.yaml articles/*.md
+```
+
+- `published: true` になっているものの一覧を提示し、「push すると即公開される」ことを明示してから push する
+- `false → true` の変更はご主人様の明示指示があった場合のみ
+
+## 4. 記事メタの規約
+
+- slug: `a-z0-9` とハイフン・アンダースコアで 12〜50文字
+- topics: 最大5つ・小文字英数字
+- emoji: 1文字
+
+## 5. git 操作（パス指定・巻き込み禁止）
+
+```bash
+git status --short                            # 不審ファイル（一時ファイル・無関係な変更）の混入がないか目視
+git add <自分が作った/編集したファイルだけをパス指定>
+git commit -m "<変更内容>"
+git pull --rebase
+git push origin main
+```
+
+## 6. push 後の確認案内
+
+- 反映は数分。**https://zenn.dev/dashboard/deploys** でデプロイ結果を確認してもらう
+- 既知の落とし穴:
+  - **カバー1MB超過** → デプロイ中断（このリストの1で防ぐ）
+  - **投稿数上限による同期スキップ** → 新しい本を `published: true` にしたときに起こりうる。スキップ表示が出たら本数の空きを作るか再トリガー
