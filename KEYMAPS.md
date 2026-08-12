@@ -86,6 +86,9 @@
 | キー | 動作 | 備考 |
 |------|------|------|
 | `<leader>mp` | ブラウザでプレビュー | .md ファイルを開いている時のみ有効 |
+| `gd` | `[[wikilink]]` 先のノートへジャンプ | Obsidian vault 内のみ（obsidian.nvim の LSP 経由）。短縮形・フルパス形・`\|別名` 付きすべて対応 |
+| `go` | `gd` のジャンプ元へ戻る | vault 内のみ（`<C-o>` 相当。連打でさらに前へ戻れる。逆方向は `<C-i>`） |
+| `<CR>` | カーソル下のリンクを follow | obsidian.nvim の smart_action（vault 内のみ） |
 
 ---
 
