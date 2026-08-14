@@ -1,6 +1,6 @@
 ---
 name: daily-ai-log
-description: ctx（エージェント履歴検索）からその日の Claude Code セッション一覧を抽出し、Obsidian 日報（Vault/03_Journals/YYYY-MM-DD.md）の「## AIログ」セクションに追記するスキル。「/daily-ai-log」「昨日のAIログを日報に」「AIログ埋めて」「昨日Claudeと何話したか日報にまとめて」で使用。日またぎセッション対応（イベント発生日基準）。
+description: ctx（エージェント履歴検索）からその日の Claude Code セッション一覧を抽出し、Obsidian 日報（Private/Journals/YYYY-MM-DD.md）の「## AIログ」セクションに追記するスキル。「/daily-ai-log」「昨日のAIログを日報に」「AIログ埋めて」「昨日Claudeと何話したか日報にまとめて」で使用。日またぎセッション対応（イベント発生日基準）。
 ---
 
 # 日報AIログ生成（daily-ai-log）
@@ -8,7 +8,7 @@ description: ctx（エージェント履歴検索）からその日の Claude Co
 ## 前提
 
 - **対象日のデフォルトは昨日**（朝に前日分を埋める運用）。「今日の分」「7/15の分」等の指定があればその日付
-- **書き込み先**: `/Users/imutaakihiro/repos/imutaakihiro/ObsidianImus/Vault/03_Journals/YYYY-MM-DD.md` の `## AIログ` セクション
+- **書き込み先**: `/Users/imutaakihiro/repos/imutaakihiro/ObsidianImus/Private/Journals/YYYY-MM-DD.md` の `## AIログ` セクション
 - これは **Vault 書き込み禁止の例外**（日報朝テンプレ特例と同枠。CLAUDE.md 日報フォーマットに明文化済み 2026-07-17）。**この Skill が書いてよいのは対象日ノートの `## AIログ` セクションだけ**。他のセクション・他のノートには触れない
 - `ctx` CLI（`~/.local/bin/ctx`）が必要。無ければ「ctx が無いので生成できない」と正直に報告して終了（結果を捏造しない）
 
@@ -23,7 +23,7 @@ date +%F         # 「今日の分」と言われたとき
 
 ### 2. 事前チェック（3つ、順に）
 
-1. **日報ファイルの存在**: `Vault/03_Journals/YYYY-MM-DD.md` が無ければ**作らない**。「日報ファイルが無いのでスキップした」と報告して終了
+1. **日報ファイルの存在**: `Private/Journals/YYYY-MM-DD.md` が無ければ**作らない**。「日報ファイルが無いのでスキップした」と報告して終了
 2. **重複**: ファイル内に既に `## AIログ` があり中身が埋まっていれば、**上書きせず**その旨を報告（ユーザーが「作り直して」と言ったときだけ既存セクションを置換）
 3. **ctx の健全性**: `ctx status` が失敗したら報告して終了
 4. **索引の鮮度**: `ctx sql "SELECT max(datetime(occurred_at_ms/1000,'unixepoch','localtime')) FROM ctx_events"` が対象日の終わりより古ければ `ctx import --provider claude --partial` で更新する。**`--partial` 必須**（fork エージェントの symlink transcript が混ざると素の import は全体が中断する。2026-07-18 に実際に発生）
@@ -99,5 +99,5 @@ Claude Code セッション N本（ctx から自動抽出。依頼→その日�
 ## 関連
 
 - 決定の経緯: メモリ `project_ctx_daily_ai_log.md`（2026-07-17）
-- ctx の運用リサーチ: `ObsidianImus/Company/Drafts/2026-07-17-ctx-research.md`
+- ctx の運用リサーチ: `ObsidianImus/Private/AI workspace/2026-07-17-ctx-research.md`
 - 隣接 Skill: `daily-report-formatter`（日報本文の整形。AIログ枠を壊さないこと）

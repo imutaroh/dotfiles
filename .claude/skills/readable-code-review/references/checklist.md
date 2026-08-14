@@ -1,7 +1,7 @@
 # 15章チェック観点リスト
 
 The Art of Readable Code (O'Reilly 2012) の各章を、コードに当てるための「匂い (smell) → 改善手法」リスト。
-各章の詳細は原著PDF（`/Users/imutaakihiro/repos/androots/the-art-of-readable-code.pdf`）にある。ここはスキャン用の凝縮版。
+各章の詳細は原著PDF（`/Users/imutaakihiro/repos/imutaakihiro/kindle-screenshot-app/output/the-art-of-readable-code.pdf`）にある。ここはスキャン用の凝縮版。
 
 ---
 
@@ -264,7 +264,7 @@ The Art of Readable Code (O'Reilly 2012) の各章を、コードに当てるた
 
 ## チェックの当て方（実践）
 
-このリストを Step 2 で当てるとき、**順序は Part I → II → III → IV** で進める。
+このリストをレビューで当てるとき、**順序は Part I → II → III → IV** で進める。
 直すコストが低い順で、いむたろ様の負担が少ない。
 
 「全部当てる」より「**最も効くもの 5 件**」を提示する方が、いむたろ様の段階的学習に合う。
