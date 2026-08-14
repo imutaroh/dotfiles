@@ -51,18 +51,26 @@ Claude Code の動作設定。主な項目：
 
 | カテゴリ | 主なスキル |
 |----------|-----------|
-| 学習・コード理解 | learn / progressive-learning / code-reading / func-anatomy / readable-code-refactor |
-| 記事・コンテンツ制作 | note-studio / zenn-studio / article-visual-planner / image-generate / story-teach / research-to-note / doc-coauthoring |
+| 学習・コード理解 | learn / progressive-learning / code-reading / func-anatomy / readable-code-review |
+| 記事・コンテンツ制作 | note-studio / zenn-studio / article-visual-planner / image-generate / story-teach / research-to-note / youtube-research / doc-coauthoring |
 | 文章規範 | japanese-tech-writing / cognitive-rhythm-writing |
-| 日報・振り返り | morning / daily-report-formatter / daily-ai-log / feedback-slack-formatter / month / yoshida-shoin-fb |
-| ノート・ナレッジ管理 | technical-note / issue-create / task-dashboard / books / strengths-map |
-| 開発ワークフロー | structured-workflow / delegate-implementation / worktree-parallel / pr-review-fix-coach / hunk-review / dot-help / ctx-agent-history-search / terminal-browser |
+| 日報・振り返り | morning / daily-ai-log / feedback-slack-formatter / month / close |
+| ノート・ナレッジ管理 | technical-note / issue-create / task-dashboard / books / book-to-skill / strengths-map |
+| 開発ワークフロー | structured-workflow / delegate-implementation / worktree-parallel / pr-review-fix-coach / hunk-review / dot-help / ctx-agent-history-search / herdr-control / terminal-browser |
 | メタ（スキル管理） | skill-creator / find-skills |
 
-次の2つは**このリポジトリでは追跡していない**（`skills/` 配下に実体があるだけ）:
+次の3つは**このリポジトリでは追跡していない**（`skills/` 配下に実体があるだけ）:
 
 - `terminal-browser` — インストーラが張る symlink（実体は別ディレクトリ）。再導入はインストーラで行う
 - `books` — 著作物の要約を含むため private リポジトリ `imutaroh/book-skills` を clone して配置する
+- `book-to-skill` — `books` と同じ private リポジトリに同居。実体は `skills/books/book-to-skill/` で、`skills/book-to-skill` はそこへの symlink。スキルは1階層目しか読まれないため symlink が必須
+
+新しいマシンでは `setup.sh` だけでは上記3つが復活しない。`books` / `book-to-skill` は次の手順が要る:
+
+```bash
+git clone https://github.com/imutaroh/book-skills.git ~/.claude/skills/books
+ln -s books/book-to-skill ~/.claude/skills/book-to-skill
+```
 
 Anthropic 公式由来: [doc-coauthoring](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) / [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
 
