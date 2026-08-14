@@ -1,5 +1,8 @@
 # note の画像スタイル定義
 
+> **ブランド全体の正本**: `/Users/imutaakihiro/repos/imutaakihiro/ObsidianImus/Studio/Brand/design.md`
+> （配色2系統の使い分け・キャラクター素材・アンチパターンはそちら。このファイルは note の画像手順に特化する）
+
 note の画像は**2系統だけ**。用途を混ぜない。
 
 | 系統 | 何 | 枚数 | スタイル |
