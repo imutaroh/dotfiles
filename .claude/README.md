@@ -52,7 +52,7 @@ Claude Code の動作設定。主な項目：
 | カテゴリ | 主なスキル |
 |----------|-----------|
 | 学習・コード理解 | learn / progressive-learning / code-reading / func-anatomy / readable-code-refactor |
-| 記事・コンテンツ制作 | note-create / zenn-article / article-visual-planner / image-generate / story-teach / research-to-note / doc-coauthoring |
+| 記事・コンテンツ制作 | note-studio / zenn-studio / article-visual-planner / image-generate / story-teach / research-to-note / doc-coauthoring |
 | 文章規範 | japanese-tech-writing / cognitive-rhythm-writing |
 | 日報・振り返り | morning / daily-report-formatter / daily-ai-log / feedback-slack-formatter / month / yoshida-shoin-fb |
 | ノート・ナレッジ管理 | technical-note / issue-create / task-dashboard / books / strengths-map |
