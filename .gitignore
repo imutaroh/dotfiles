@@ -44,3 +44,7 @@ __pycache__/
 
 # 書籍ノート知識貯蔵庫（著作物の要約を含むため private リポジトリ imutaroh/book-skills で管理）
 .claude/skills/books/
+
+# book-to-skill は books/ と同じ private リポジトリに同居。実体は books/book-to-skill/ で、
+# ここにあるのは symlink（スキルは1階層目しか読まれないため symlink が必要）
+.claude/skills/book-to-skill
