@@ -21,6 +21,11 @@ token.json
 # 私的データ（タスク実体は公開しない）
 .claude/task-dashboard/
 
+# /close の蓄積データ（実セッションの session_id・失敗履歴を含むため公開しない。
+# スキル本体 close/SKILL.md は公開する）
+.claude/skills/close/ledger.md
+.claude/skills/close/prompts.md
+
 # OS生成ファイル
 .DS_Store
 Thumbs.db

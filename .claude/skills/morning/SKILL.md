@@ -15,7 +15,7 @@ description: >-
 
 - AIログの生成・日報書き込み → `daily-ai-log` スキル（Vault 書き込み特例はあちらが持つ）
 - 使用量の集計 → `ai-usage-dashboard`（launchd が毎朝 7:30 に自動更新済み）
-- タスクの正 → リポ直下の `Todo.md`（closed list・上限10。2026-08-03 転換。GitHub Issue は「複雑度2以上の案件の倉庫」に格下げされ、毎朝は見ない。設計は `Company/Drafts/2026-08-03-august-task-system.md`）
+- タスクの正 → リポ直下の `Todo.md`（closed list・上限10。2026-08-03 転換。GitHub Issue は「複雑度2以上の案件の倉庫」に格下げされ、毎朝は見ない。設計は `Private/AI workspace/2026-08-03-august-task-system.md`）
 
 morning が Vault に書いてよいのは次の4箇所**だけ**（`/morning` は常設許可スキル。2026-07-21 の都度許可制決定時に確認不要枠として明文化済み）:
 
@@ -32,7 +32,7 @@ morning が Vault に書いてよいのは次の4箇所**だけ**（`/morning` �
 
 | もの | 場所 |
 |---|---|
-| 日報 | `~/repos/imutaakihiro/ObsidianImus/Vault/03_Journals/YYYY-MM-DD.md` |
+| 日報 | `~/repos/imutaakihiro/ObsidianImus/Private/Journals/YYYY-MM-DD.md` |
 | 使用量データ | `~/repos/imutaakihiro/ai-usage-dashboard/data.js`（`window.USAGE_DATA = {...}` 形式） |
 | ダッシュボード | `http://127.0.0.1:8787/`（`serve.sh` が配信。旧 `file://.../index.html` はフォールバック） |
 | タスク | `~/repos/imutaakihiro/ObsidianImus/Todo.md`（2026-08-03〜） |
@@ -59,7 +59,7 @@ date -v-1d +%F    # 昨日
 
 ### 1. 昨日の日報の要約とFB
 
-`Vault/03_Journals/<昨日>.md` を読み、以下を抽出する:
+`Private/Journals/<昨日>.md` を読み、以下を抽出する:
 
 - **要約 3〜5行**: やったこと・気づき・学び（日報は自由記述。TODOチェックボックス、`### 今日のVision`、散文の学びメモが混在する前提で読む）
 - **未完了タスク**: `- [ ]` のまま残っている項目（ステップ5の「今日の一手」候補になる）
@@ -247,7 +247,7 @@ Skill ツールで `daily-ai-log` を呼び出す（対象日=昨日、がデフ
 
 ### 6. 今日の日報への追記（ブリーフィング直後・即実行）
 
-ステップ5をチャットに出したら、**すぐ**今日のノート `Vault/03_Journals/<今日>.md` へ**全文**を追記する（後回しにすると会話が流れたとき日報に何も残らない。2026-07-24 に実際に起きた反省から即時追記に変更）。
+ステップ5をチャットに出したら、**すぐ**今日のノート `Private/Journals/<今日>.md` へ**全文**を追記する（後回しにすると会話が流れたとき日報に何も残らない。2026-07-24 に実際に起きた反省から即時追記に変更）。
 
 - **事前チェック（順に）**:
   1. 今日のノートが**無い場合は日報テンプレで新規作成してから追記する**（2026-07-28 ご主人様指示で変更。旧「作らない」ルールは廃止）。テンプレは下記の**2026-07-30 改訂版**（`### タイムカレンダー` / `### Memo` / `### Action` / `### AIログ` の4枠）。`### Memo` の中身はご主人様の手書き領域なので空のまま
@@ -267,7 +267,7 @@ Skill ツールで `daily-ai-log` を呼び出す（対象日=昨日、がデフ
 ### Memo
 
 やったこと・学び・気づき・振り返りを、分けずにここへ書き散らす。
-（気づきを 01_Notes に育てるときは `→ [[Vault/01_Notes/xxx|タイトル]]` でリンクを貼る）
+（気づきを 01_Notes に育てるときは `→ [[Notes/xxx|タイトル]]` でリンクを貼る）
 
 -
 
