@@ -1,7 +1,9 @@
 # note の画像スタイル定義
 
-> **ブランド全体の正本**: `/Users/imutaakihiro/repos/imutaakihiro/ObsidianImus/Studio/Brand/design.md`
-> （配色2系統の使い分け・キャラクター素材・アンチパターンはそちら。このファイルは note の画像手順に特化する）
+> **ブランド全体の正本は `imutaro-visual` Skill**（配色2系統の使い分け・タイポ・モチーフ・アンチパターン）。
+> このファイルは **note の画像手順**に特化する。以下のときは visual-style.md で済ませず、**必ず `imutaro-visual` Skill を呼ぶ**:
+> - **キャラクター（ドット絵の本人像）を使うとき**（参照画像なしでは別人になる。プロンプトと参照画像は Skill が持つ）
+> - 配色トークンを新しく決める／サイトの変更と照合するとき
 
 note の画像は**2系統だけ**。用途を混ぜない。
 
