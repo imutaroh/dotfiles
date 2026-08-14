@@ -61,6 +61,8 @@ export VISUAL='nvim'
 alias vim='nvim'
 alias v='nvim'
 alias g='git'
+alias gb='git branch'
+alias gs='git switch'
 alias ll='ls -la'
 alias la='ls -a'
 # nh: Hunk を自動リロード付きで起動

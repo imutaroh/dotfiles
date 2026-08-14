@@ -1,7 +1,7 @@
 ---
 name: month
 description: |
-  月次振り返りサマリーを生成して Vault/03_Journals/Monthly/YYYY-MM-monthly.md に保存するスキル。
+  月次振り返りサマリーを生成して Private/Journals/Monthly/YYYY-MM-monthly.md に保存するスキル。
   対象月の日報を全読みし、「実務ベース」「学びベース」「辛口指摘（反省の再放送検出）」を出す。
   以下のような状況で使うこと：
   - 「/month」「6月の振り返りをまとめて」「月次サマリー作って」
@@ -13,7 +13,7 @@ description: |
 ## 大原則
 
 - これは **AI が素材（下書き）を出す → いむたろ様が `//` コメントや上書きで自分の言葉にする** ための入力素材。完成品ではない
-- Vault 書き込み例外（2026-07-15 いむたろ様承認）。書き込み先は `Vault/03_Journals/Monthly/` のみ
+- Vault 書き込み例外（2026-07-15 いむたろ様承認）。書き込み先は `Private/Journals/Monthly/` のみ
 - **既存ファイルの本文（特にいむたろ様の `//` コメント・加筆）は1文字も消さない・書き換えない**
 - 事実要約は日報に書いてあることだけ。捏造・肉付けをしない。辛口指摘セクションのみ AI の判断を書いてよい
 
@@ -27,7 +27,7 @@ description: |
 
 ### 2. 日報の全読み
 
-1. `ls Vault/03_Journals/ | grep YYYY-MM` で対象月の日報を列挙
+1. `ls Private/Journals/ | grep YYYY-MM` で対象月の日報を列挙
 2. **全ファイルを Read する**（半分ずつ2バッチの並列 Read）。斜め読み・サンプリングで済ませない
 3. 空ファイル・メモ書きだけの日もそのまま受け入れる（無理に埋めない）
 
@@ -77,7 +77,7 @@ description: |
 
 ### 5. 保存
 
-保存先: `Vault/03_Journals/Monthly/YYYY-MM-monthly.md`
+保存先: `Private/Journals/Monthly/YYYY-MM-monthly.md`
 
 - **新規の場合**：骨子（見出しだけ）を Write → 各セクションを Edit で肉付け（一発 Write で全文を書かない）
 - **既存ファイルがある場合**（`YYYY-MM-monthly.md` でも `6月.md` のような変則名でも）：
