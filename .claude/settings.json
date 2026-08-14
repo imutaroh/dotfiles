@@ -18,6 +18,7 @@
       "Bash(cd:*)",
       "Bash(date:*)",
       "Bash(echo:*)",
+      "Bash(fd:*)",
       "Bash(gh issue list:*)",
       "Bash(gh issue view:*)",
       "Bash(gh pr checks:*)",
@@ -56,7 +57,12 @@
       "Bash(git reset *)",
       "Bash(git merge *)",
       "Bash(go version *)",
-      "Bash(go mod *)"
+      "Bash(go mod *)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(mise:*)",
+      "Bash(npm run:*)",
+      "Bash(npm test:*)"
     ],
     "deny": [
       "Bash(rm *)",
@@ -129,6 +135,5 @@
   "theme": "custom:dark-daltonized-cool",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "model": "opus"
+  "voiceEnabled": true
 }
