@@ -325,5 +325,6 @@ Skill ツールで `daily-ai-log` を呼び出す（対象日=昨日、がデフ
 
 - `daily-ai-log` — AIログ生成の実体（このスキルから委譲）
 - `daily-report-formatter` — 日報そのものの整形（morning は呼ばない。夜/日中の担当）
-- `issue-create` — ブリーフィングで拾ったタスクをご主人様の指示で起票するとき
 - `task-dashboard` — セッションをまたぐ個人タスクの可視化
+
+> 旧 `issue-create` は 2026-08-16 に削除。GitHub Issue 起票はご主人様の明示指示時に `gh issue create` を直叩きする（手順は Vault の `.claude/CLAUDE.md`）。

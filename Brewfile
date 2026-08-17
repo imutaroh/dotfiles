@@ -32,6 +32,7 @@ brew "postgresql@17"          # PostgreSQL（ローカル開発用 DB）
 brew "defaultbrowser"         # デフォルトブラウザを CLI から設定
 brew "laishulu/homebrew/macism"   # IME 切り替え（Neovim で Normal モード時に英数へ）
 brew "ffmpeg"                 # 動画・音声の変換（GIF 生成などで使用）
+brew "pngquant"               # PNG の減色圧縮（GitHub アバターの 1MB 制限対応など）
 
 # === GUI アプリ ===
 cask "alt-tab"

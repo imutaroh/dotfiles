@@ -65,6 +65,7 @@ alias gb='git branch'
 alias gs='git switch'
 alias ll='ls -la'
 alias la='ls -a'
+alias c='claude'
 # nh: Hunk を自動リロード付きで起動
 #   nh        → 全差分（main 分岐点から手元の未コミット編集まで）。分岐点が取れなければ nh c と同じ
 #   nh c      → 前回 commit してからの手元の編集だけ
