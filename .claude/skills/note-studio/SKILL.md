@@ -96,6 +96,8 @@ description: なぐりがき・会話・体験の種を note 公開記事に仕�
 
 **[references/visual-style.md](references/visual-style.md) を読んでから始める。** アイキャッチ1枚＋「頭の中の図解」。見本1枚 → 承認 → 量産 → 全数検品の順を守る。
 
+**本・映画の感想記事なら [references/eyecatch-review.md](references/eyecatch-review.md) が正本。** 3分割（左＝文字／中央＝実物の書影・ポスター／右＝ドット絵の本人）の型。書影は**生成せず実物を合成する**（`scripts/compose_cover.py`）。
+
 ## 仕上げモード: FBループ（オプトイン）
 
 「ブラッシュアップして」等の明示指示があったときだけ、**[references/review-loop.md](references/review-loop.md)** を読んで回す。エージェント4体×数ラウンドと重いので初稿には使わない。
