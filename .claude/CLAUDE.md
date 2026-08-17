@@ -1,4 +1,13 @@
-# Claude Code カスタム指示
+# Claude Code / Codex 共通カスタム指示
+
+## Claude Code / Codex 互換ルール
+
+このファイルは Claude Code と Codex の両方が使用する。
+
+- `[Claude Code 専用]` と書かれた節は Codex では適用しない
+- `[Codex 専用]` と書かれた節は Claude Code では適用しない
+- 現在の実行環境に存在しないツール名や機能名は、目的を保ったまま利用可能な同等手段へ読み替える
+- Codex では Claude Code 固有のモデル名（Fable / opus / sonnet / haiku）に関する指示を適用せず、Codex の `config.toml` にあるモデル設定に従う
 
 ## 基本情報
 
@@ -48,7 +57,7 @@
 - 結論をまとめる時は、重要な証拠も一緒に提示する
 - サブエージェント（Explore / Agent / Task）に調査・作業を委譲した場合、その出力はユーザーには折りたたまれて見えない。完了報告だけで済ませず、サブエージェントが見つけた重要な発見・結論・根拠を、必ず自分の言葉でわかりやすく要約して伝える
 
-## サブエージェントのモデル指定
+## [Claude Code 専用] サブエージェントのモデル指定
 
 - **サブエージェントに Fable は使わない。**
 - Agent / Task / Workflow の `agent()` を起動するときは、`model` を**必ず明示的に指定**する（`opus` / `sonnet` / `haiku` から選ぶ）
