@@ -144,6 +144,10 @@ ln -sfn "$DOTFILES_DIR/.claude/skills" ~/.claude/skills
 mkdir -p ~/.codex
 ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" ~/.codex/AGENTS.md
 
+# Codex のカスタムテーマはファイル単位でリンクし、他のテーマを残す。
+mkdir -p ~/.codex/themes
+ln -sf "$DOTFILES_DIR/.codex/themes/imutaro-cool.tmTheme" ~/.codex/themes/imutaro-cool.tmTheme
+
 # リポジトリ内では AGENTS.md がなければ CLAUDE.md を指示として読む。
 # 既存の config.toml は Codex アプリが管理するため、ファイル全体を symlink しない。
 if [ ! -e ~/.codex/config.toml ]; then
@@ -151,6 +155,15 @@ if [ ! -e ~/.codex/config.toml ]; then
 fi
 if ! grep -q '^project_doc_fallback_filenames[[:space:]]*=' ~/.codex/config.toml; then
     printf '\nproject_doc_fallback_filenames = ["CLAUDE.md"]\n' >> ~/.codex/config.toml
+fi
+
+# Claude Code の寒色デザインに合わせた Codex TUI を初回だけ設定する。
+# [tui] がすでにある場合は、Codex アプリが管理する既存値を壊さない。
+if ! grep -q '^\[tui\]$' ~/.codex/config.toml; then
+    printf '\n[tui]\ntheme = "imutaro-cool"\nstatus_line = ["model-with-reasoning", "current-dir", "git-branch", "context-remaining", "five-hour-limit", "weekly-limit"]\n' >> ~/.codex/config.toml
+elif ! grep -q '^theme[[:space:]]*=[[:space:]]*"imutaro-cool"$' ~/.codex/config.toml \
+    || ! grep -q '^status_line[[:space:]]*=' ~/.codex/config.toml; then
+    echo "⚠️  Codex TUI は既存設定あり。/theme と /statusline で Imutaro Cool 設定を確認してください"
 fi
 
 # Claude Code の transcript mode に合わせ、Ctrl+O で Codex の transcript を開く。

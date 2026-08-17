@@ -9,6 +9,8 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - `.config/` 以下はミラーリング方式（実際の配置場所と同じ構造）で管理
 - `~/.claude/` 自体は実ディレクトリで、`CLAUDE.md` / `skills` / `scripts` / `statusline.sh` / `themes` / `task-dashboard` のみが dotfiles へのシンボリックリンク
 - `settings.json` は symlink 不可（`claude doctor` 等が実ファイルに置き換えるため）。`./sync-settings.sh` で実環境 → dotfiles へ明示的に取り込む
+- `~/.codex/config.toml` は Codex アプリも更新するため symlink 不可。`setup.sh` で不足している設定だけ追記する
+- Codex のカスタムテーマは `.codex/themes/` で管理し、`~/.codex/themes/` へファイル単位でリンクする
 - `.claude/settings.local.json` はこのリポジトリ固有の設定として使える（gitignore 対象外・設定の優先順位は user < project < local）
 
 ## 作業ルール

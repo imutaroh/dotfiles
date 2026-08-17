@@ -20,7 +20,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 | ターミナル | Ghostty | ターミナルエミュレータ |
 | | herdr | エージェントマルチプレクサ（tmux / 旧 Zellij の後継。設定は `.config/herdr/` で管理） |
 | 開発ツール | Neovim（AstroNvim ベース） | エディタ |
-| | Claude Code | コーディングエージェント |
+| | Claude Code / Codex CLI | コーディングエージェント |
 | | hunk | レビュー特化の差分ビューア（`nh` コマンド・hunk-review スキルから使用） |
 | ユーティリティ | Raycast | ランチャーアプリ |
 
@@ -45,10 +45,13 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   ├── starship.toml      # プロンプト設定
 │   └── uv/                # Python パッケージ管理設定
 │
-└── .claude/               # ~/.claude/ にリンク（ユーザーレベル設定）
-    ├── CLAUDE.md          # カスタム指示
-    ├── settings.json      # 設定
-    └── skills/            # カスタムスキル
+├── .claude/               # ~/.claude/ にリンク（ユーザーレベル設定）
+│   ├── CLAUDE.md          # カスタム指示
+│   ├── settings.json      # 設定
+│   └── skills/            # カスタムスキル
+│
+└── .codex/                # Codex CLI のdotfiles管理対象
+    └── themes/            # ~/.codex/themes/ にファイル単位でリンク
 ```
 
 詳細は各ディレクトリの README を参照。
@@ -84,6 +87,17 @@ source ~/.zshrc  # またはターミナル再起動
 6. Claude Code をインストール（未インストールの場合）
 7. Google Cloud SDK をインストール（未インストールの場合）
 8. シンボリックリンクを作成
+
+## Codex CLI カスタマイズ
+
+`setup.sh` は `~/.codex/config.toml` 全体を置き換えず、初回のみTUI設定を追記する。Codexアプリが管理するモデル・権限・Hooksなどの既存設定は保持される。
+
+- テーマ: `Imutaro Cool`（Claude Codeと共通のシアン・ブルー・ティール・バイオレット・スレートを使用）
+- ステータスライン: モデルと推論レベル、ディレクトリ、Gitブランチ、コンテキスト残量、5時間枠、週間枠
+- 手動変更: Codex CLIの `/theme` と `/statusline`
+- 利用枠のリセット日時: `/status` で確認（ステータスラインは残量のみ）
+
+既存の `[tui]` 設定がある場合、`setup.sh` は自動上書きせず確認メッセージを表示する。
 
 ## カスタムコマンド
 
