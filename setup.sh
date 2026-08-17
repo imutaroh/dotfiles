@@ -160,7 +160,7 @@ fi
 # Claude Code の寒色デザインに合わせた Codex TUI を初回だけ設定する。
 # [tui] がすでにある場合は、Codex アプリが管理する既存値を壊さない。
 if ! grep -q '^\[tui\]$' ~/.codex/config.toml; then
-    printf '\n[tui]\ntheme = "imutaro-cool"\nstatus_line = ["model-with-reasoning", "current-dir", "git-branch", "context-remaining", "five-hour-limit", "weekly-limit"]\n' >> ~/.codex/config.toml
+    printf '\n[tui]\ntheme = "imutaro-cool"\nstatus_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "current-dir", "git-branch"]\n' >> ~/.codex/config.toml
 elif ! grep -q '^theme[[:space:]]*=[[:space:]]*"imutaro-cool"$' ~/.codex/config.toml \
     || ! grep -q '^status_line[[:space:]]*=' ~/.codex/config.toml; then
     echo "⚠️  Codex TUI は既存設定あり。/theme と /statusline で Imutaro Cool 設定を確認してください"
