@@ -139,6 +139,31 @@ if [ -d ~/.claude/skills ] && [ ! -L ~/.claude/skills ]; then
 fi
 ln -sfn "$DOTFILES_DIR/.claude/skills" ~/.claude/skills
 
+# Codex は Claude Code と同じカスタム指示を読む。
+# Codex 固有のモデル・権限・Hooks は ~/.codex/config.toml で別管理する。
+mkdir -p ~/.codex
+ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" ~/.codex/AGENTS.md
+
+# リポジトリ内では AGENTS.md がなければ CLAUDE.md を指示として読む。
+# 既存の config.toml は Codex アプリが管理するため、ファイル全体を symlink しない。
+if [ ! -e ~/.codex/config.toml ]; then
+    touch ~/.codex/config.toml
+fi
+if ! grep -q '^project_doc_fallback_filenames[[:space:]]*=' ~/.codex/config.toml; then
+    printf '\nproject_doc_fallback_filenames = ["CLAUDE.md"]\n' >> ~/.codex/config.toml
+fi
+
+# Claude Code の transcript mode に合わせ、Ctrl+O で Codex の transcript を開く。
+# config.toml はアプリも更新するため、既存セクションがある場合は上書きせず手動確認を促す。
+if ! grep -q '^open_transcript[[:space:]]*=[[:space:]]*"ctrl-o"$' ~/.codex/config.toml; then
+    if grep -q '^\[tui\.keymap\.global\]$' ~/.codex/config.toml \
+        || grep -q '^\[tui\.keymap\.pager\]$' ~/.codex/config.toml; then
+        echo "⚠️  Codex keymap は既存設定あり。/keymap で Claude Code 互換設定を確認してください"
+    else
+        printf '\n[tui.keymap.global]\nopen_transcript = "ctrl-o"\ncopy = []\n\n[tui.keymap.pager]\nscroll_up = "k"\nscroll_down = "j"\nhalf_page_up = "ctrl-u"\nhalf_page_down = "ctrl-d"\njump_top = "g"\njump_bottom = "shift-g"\nclose_transcript = "q"\n' >> ~/.codex/config.toml
+    fi
+fi
+
 # 書籍ノート知識貯蔵庫（private リポジトリ・dotfilesの.gitignore対象）を skills 配下に clone
 if [ ! -d "$DOTFILES_DIR/.claude/skills/books" ]; then
     git clone https://github.com/imutaroh/book-skills.git "$DOTFILES_DIR/.claude/skills/books" \
