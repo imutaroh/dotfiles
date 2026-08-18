@@ -63,4 +63,3 @@ description: >-
 このスキルは「技術を教えてZennスクラップ用mdを出す」担当。以下は住み分け先：
 - `progressive-learning`：概念をゼロから段階的に教えてほしいとき→そちら
 - `code-reading`：コードリーディングの伴走をしてほしいとき→そちら
-- `technical-note`：学んだ内容をObsidianのTechnicalノートに保存したいとき→そちら
