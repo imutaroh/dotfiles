@@ -55,7 +55,7 @@ Claude Code の動作設定。主な項目：
 | 記事・コンテンツ制作 | note-studio / zenn-studio / article-visual-planner / image-generate / story-teach / research-to-note / youtube-research / doc-coauthoring |
 | 文章規範 | japanese-tech-writing / cognitive-rhythm-writing |
 | 日報・振り返り | morning / daily-ai-log / feedback-slack-formatter / month / close |
-| ノート・ナレッジ管理 | technical-note / task-dashboard / books / book-to-skill / strengths-map |
+| ノート・ナレッジ管理 | excalidraw-diagram / task-dashboard / books / book-to-skill / strengths-map |
 | 開発ワークフロー | structured-workflow / delegate-implementation / worktree-parallel / pr-review-fix-coach / hunk-review / dot-help / ctx-agent-history-search / herdr-control / terminal-browser |
 | メタ（スキル管理） | skill-creator / find-skills |
 
