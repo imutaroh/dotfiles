@@ -12,6 +12,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - `~/.codex/config.toml` は Codex アプリも更新するため symlink 不可。`setup.sh` で不足している設定だけ追記する
 - Codex のカスタムテーマは `.codex/themes/` で管理し、`~/.codex/themes/` へファイル単位でリンクする
 - `.claude/settings.local.json` はこのリポジトリ固有の設定として使える（gitignore 対象外・設定の優先順位は user < project < local）
+- `launchd/*.plist` は常駐エージェント定義。`setup.sh` が `~/Library/LaunchAgents/` へコピーし `launchctl bootstrap` でロードする（symlink ではなくコピー）
 
 ## 作業ルール
 
