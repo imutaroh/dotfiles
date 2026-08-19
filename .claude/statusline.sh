@@ -4,12 +4,15 @@ input=$(cat)
 MODEL=$(echo "$input" | jq -r '.model.display_name')
 CURRENT_DIR=$(echo "$input" | jq -r '.workspace.current_dir')
 DISPLAY_DIR=$(echo "$CURRENT_DIR" | sed "s|^$HOME|~|")
+# session_name: /rename したカスタム名、なければ AI 生成タイトル。どちらも無い間は absent
+# 専用行に出すので上限は緩め（横幅からあふれる分は Claude Code 側が … で切る）
+SESSION_NAME=$(echo "$input" | jq -r '.session_name // empty | if length > 48 then .[0:47] + "…" else . end')
 
 # ── 配色: 寒色ベース (24bit truecolor) ─────────────────────
 CYAN=$'\033[38;2;56;189;248m'     # モデル名 (sky-400)
 BLUE=$'\033[38;2;96;165;250m'     # ディレクトリ (blue-400)
 TEAL=$'\033[38;2;45;212;191m'     # git ブランチ / バー通常 (teal-400)
-VIOLET=$'\033[38;2;129;140;248m'  # dirty マーカー (indigo-400)
+VIOLET=$'\033[38;2;129;140;248m'  # dirty マーカー / セッション名 (indigo-400)
 ICE=$'\033[38;2;148;163;184m'     # ラベル・区切り・補助情報 (slate-400)
 WARN=$'\033[38;2;96;165;250m'     # 70%+ 警告 (明るい青)
 RED=$'\033[38;2;240;138;138m'     # 90%+ 危険 (控えめコーラル)
@@ -61,6 +64,10 @@ format_elapsed() {
 }
 
 NOW=$(date +%s)
+
+# ── 0行目: セッション名（狭いペインでも見えるよう専用行）──
+LINE0=""
+[ -n "$SESSION_NAME" ] && LINE0="${VIOLET}${SESSION_NAME}${RESET}"
 
 # ── 1行目: モデル + ディレクトリ + git ブランチ ───────────
 GIT_SEG=""
@@ -123,11 +130,14 @@ LINE4=""
 [ -n "$SEVEN_PCT" ] && LINE4="$(quota_seg "$SEVEN_PCT" "$SEVEN_RST" "7d")"
 
 # ── 出力: 縦に並べる (空の行はスキップ) ───────────────────
+#   0行目: セッション名（/rename 名 or AI 生成タイトル、未生成なら行ごと省略）
 #   1行目: モデル + ディレクトリ + git ブランチ
 #   2行目: ctx バー + コスト + セッション経過時間
 #   3行目: 5h レート制限バー + リセット残り
 #   4行目: 7d レート制限バー + リセット残り
+[ -n "$LINE0" ] && echo -e "$LINE0"
 echo -e "$LINE1"
 echo -e "$LINE2"
 [ -n "$LINE3" ] && echo -e "$LINE3"
 [ -n "$LINE4" ] && echo -e "$LINE4"
+exit 0  # 最終行の && が偽でも非0終了させない
