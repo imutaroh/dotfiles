@@ -65,9 +65,9 @@ format_elapsed() {
 
 NOW=$(date +%s)
 
-# ── 0行目: セッション名（狭いペインでも見えるよう専用行）──
-LINE0=""
-[ -n "$SESSION_NAME" ] && LINE0="${VIOLET}${SESSION_NAME}${RESET}"
+# ── 2行目: セッション名（狭いペインでも見えるよう専用行）──
+NAME_LINE=""
+[ -n "$SESSION_NAME" ] && NAME_LINE="${VIOLET}${SESSION_NAME}${RESET}"
 
 # ── 1行目: モデル + ディレクトリ + git ブランチ ───────────
 GIT_SEG=""
@@ -130,13 +130,13 @@ LINE4=""
 [ -n "$SEVEN_PCT" ] && LINE4="$(quota_seg "$SEVEN_PCT" "$SEVEN_RST" "7d")"
 
 # ── 出力: 縦に並べる (空の行はスキップ) ───────────────────
-#   0行目: セッション名（/rename 名 or AI 生成タイトル、未生成なら行ごと省略）
 #   1行目: モデル + ディレクトリ + git ブランチ
-#   2行目: ctx バー + コスト + セッション経過時間
-#   3行目: 5h レート制限バー + リセット残り
-#   4行目: 7d レート制限バー + リセット残り
-[ -n "$LINE0" ] && echo -e "$LINE0"
+#   2行目: セッション名（/rename 名 or AI 生成タイトル、未生成なら行ごと省略）
+#   3行目: ctx バー + コスト + セッション経過時間
+#   4行目: 5h レート制限バー + リセット残り
+#   5行目: 7d レート制限バー + リセット残り
 echo -e "$LINE1"
+[ -n "$NAME_LINE" ] && echo -e "$NAME_LINE"
 echo -e "$LINE2"
 [ -n "$LINE3" ] && echo -e "$LINE3"
 [ -n "$LINE4" ] && echo -e "$LINE4"
