@@ -4,12 +4,14 @@ input=$(cat)
 MODEL=$(echo "$input" | jq -r '.model.display_name')
 CURRENT_DIR=$(echo "$input" | jq -r '.workspace.current_dir')
 DISPLAY_DIR=$(echo "$CURRENT_DIR" | sed "s|^$HOME|~|")
+# session_name: /rename したカスタム名、なければ AI 生成タイトル。どちらも無い間は absent
+SESSION_NAME=$(echo "$input" | jq -r '.session_name // empty | if length > 32 then .[0:31] + "…" else . end')
 
 # ── 配色: 寒色ベース (24bit truecolor) ─────────────────────
 CYAN=$'\033[38;2;56;189;248m'     # モデル名 (sky-400)
 BLUE=$'\033[38;2;96;165;250m'     # ディレクトリ (blue-400)
 TEAL=$'\033[38;2;45;212;191m'     # git ブランチ / バー通常 (teal-400)
-VIOLET=$'\033[38;2;129;140;248m'  # dirty マーカー (indigo-400)
+VIOLET=$'\033[38;2;129;140;248m'  # dirty マーカー / セッション名 (indigo-400)
 ICE=$'\033[38;2;148;163;184m'     # ラベル・区切り・補助情報 (slate-400)
 WARN=$'\033[38;2;96;165;250m'     # 70%+ 警告 (明るい青)
 RED=$'\033[38;2;240;138;138m'     # 90%+ 危険 (控えめコーラル)
@@ -72,7 +74,9 @@ if git -C "$CURRENT_DIR" rev-parse --git-dir > /dev/null 2>&1; then
         GIT_SEG=" ${ICE}|${RESET} ${TEAL}${BRANCH}${RESET}${DIRTY}"
     fi
 fi
-LINE1="${CYAN}[${MODEL}]${RESET} ${BLUE}${DISPLAY_DIR}${RESET}${GIT_SEG}"
+NAME_SEG=""
+[ -n "$SESSION_NAME" ] && NAME_SEG=" ${ICE}|${RESET} ${VIOLET}${SESSION_NAME}${RESET}"
+LINE1="${CYAN}[${MODEL}]${RESET} ${BLUE}${DISPLAY_DIR}${RESET}${GIT_SEG}${NAME_SEG}"
 
 # ── 2行目: ctx バー + コスト + セッション経過時間 ──────────
 PCT=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
@@ -131,3 +135,4 @@ echo -e "$LINE1"
 echo -e "$LINE2"
 [ -n "$LINE3" ] && echo -e "$LINE3"
 [ -n "$LINE4" ] && echo -e "$LINE4"
+exit 0  # 最終行の && が偽でも非0終了させない
