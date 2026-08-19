@@ -33,11 +33,14 @@ macOS 用の個人設定ファイル管理リポジトリ。
 ├── Brewfile               # Homebrew パッケージ
 ├── setup.sh               # セットアップスクリプト
 ├── macos.sh               # macOS 設定用スクリプト
+├── launchd/               # 常駐エージェント用 plist（~/Library/LaunchAgents/ にコピー）
 │
 ├── .config/               # ~/.config/ にリンク
 │   ├── ghostty/           # ターミナル設定
 │   ├── git/               # Git グローバル gitignore
 │   ├── herdr/             # エージェントマルチプレクサ設定
+│   │                       # （agent-taborder-watch.py: Agents サイドバーをタブ順に追従、
+│   │                       #  ログは ~/.config/herdr/agent-taborder.log）
 │   ├── lazygit/           # Git TUI 設定
 │   ├── mise/              # ランタイム管理設定
 │   ├── nvim/              # Neovim 設定
@@ -87,6 +90,7 @@ source ~/.zshrc  # またはターミナル再起動
 6. Claude Code をインストール（未インストールの場合）
 7. Google Cloud SDK をインストール（未インストールの場合）
 8. シンボリックリンクを作成
+9. `launchd/*.plist` を `~/Library/LaunchAgents/` にコピーし、常駐エージェントとしてロード
 
 ## Codex CLI カスタマイズ
 
