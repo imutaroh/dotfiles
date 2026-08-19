@@ -84,9 +84,11 @@ ln -sf "$DOTFILES_DIR/.config/uv/uv.toml" ~/.config/uv/uv.toml
 mkdir -p ~/.config/ghostty
 ln -sf "$DOTFILES_DIR/.config/ghostty/config" ~/.config/ghostty/config
 
-# herdr は config.toml のみ管理（同ディレクトリのソケット・ログ・セッション状態は対象外）
+# herdr は config.toml と常駐ウォッチャスクリプトのみ管理
+# （同ディレクトリのソケット・ログ・セッション状態は対象外）
 mkdir -p ~/.config/herdr
 ln -sf "$DOTFILES_DIR/.config/herdr/config.toml" ~/.config/herdr/config.toml
+ln -sf "$DOTFILES_DIR/.config/herdr/agent-taborder-watch.py" ~/.config/herdr/agent-taborder-watch.py
 
 # hunk は config.toml のみ管理（同ディレクトリの state.json は対象外）
 mkdir -p ~/.config/hunk
@@ -191,5 +193,23 @@ ln -sfn "$DOTFILES_DIR/.claude/themes" ~/.claude/themes
 
 ln -sf "$DOTFILES_DIR/.claude/sounds/complete.wav" ~/.claude/sounds/complete.wav
 ln -sf "$DOTFILES_DIR/.claude/sounds/confirm.wav" ~/.claude/sounds/confirm.wav
+
+# ==================================================
+# launchd（常駐エージェント）
+# ==================================================
+# plist は ~/Library/LaunchAgents/ にコピーし、bootstrap でロードする。
+# 既にロード済みの場合は一度 bootout してから bootstrap し直すことで冪等にする。
+mkdir -p ~/Library/LaunchAgents
+for plist in "$DOTFILES_DIR"/launchd/*.plist; do
+    label="$(basename "$plist" .plist)"
+    dest="$HOME/Library/LaunchAgents/$label.plist"
+    cp "$plist" "$dest"
+    launchctl bootout "gui/$(id -u)/$label" >/dev/null 2>&1 || true
+    if launchctl bootstrap "gui/$(id -u)" "$dest" >/dev/null 2>&1; then
+        echo "launchd: $label をロードしました"
+    else
+        echo "⚠️  launchd: $label のロードに失敗しました（手動で launchctl bootstrap を確認してください）"
+    fi
+done
 
 echo "Setup complete! Run 'source ~/.zshrc' to apply changes."
