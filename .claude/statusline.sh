@@ -7,6 +7,10 @@ DISPLAY_DIR=$(echo "$CURRENT_DIR" | sed "s|^$HOME|~|")
 # session_name: /rename したカスタム名、なければ AI 生成タイトル。どちらも無い間は absent
 # 専用行に出すので上限は緩め（横幅からあふれる分は Claude Code 側が … で切る）
 SESSION_NAME=$(echo "$input" | jq -r '.session_name // empty | if length > 48 then .[0:47] + "…" else . end')
+EFFORT=$(echo "$input" | jq -r '.effort.level // empty')
+# output style は default 以外のときだけ表示する
+OUTPUT_STYLE=$(echo "$input" | jq -r '.output_style.name // empty')
+[ "$OUTPUT_STYLE" = "default" ] && OUTPUT_STYLE=""
 
 # ── 配色: 寒色ベース (24bit truecolor) ─────────────────────
 CYAN=$'\033[38;2;56;189;248m'     # モデル名 (sky-400)
@@ -69,7 +73,7 @@ NOW=$(date +%s)
 LINE0=""
 [ -n "$SESSION_NAME" ] && LINE0="${VIOLET}${SESSION_NAME}${RESET}"
 
-# ── 1行目: モデル + ディレクトリ + git ブランチ ───────────
+# ── 1行目: モデル·effort + ディレクトリ + git ブランチ + output style ──
 GIT_SEG=""
 if git -C "$CURRENT_DIR" rev-parse --git-dir > /dev/null 2>&1; then
     BRANCH=$(git -C "$CURRENT_DIR" branch --show-current 2>/dev/null)
@@ -79,7 +83,11 @@ if git -C "$CURRENT_DIR" rev-parse --git-dir > /dev/null 2>&1; then
         GIT_SEG=" ${ICE}|${RESET} ${TEAL}${BRANCH}${RESET}${DIRTY}"
     fi
 fi
-LINE1="${CYAN}[${MODEL}]${RESET} ${BLUE}${DISPLAY_DIR}${RESET}${GIT_SEG}"
+MODEL_LABEL="$MODEL"
+[ -n "$EFFORT" ] && MODEL_LABEL="${MODEL}·${EFFORT}"
+STYLE_SEG=""
+[ -n "$OUTPUT_STYLE" ] && STYLE_SEG=" ${ICE}|${RESET} ${ICE}${OUTPUT_STYLE}${RESET}"
+LINE1="${CYAN}[${MODEL_LABEL}]${RESET} ${BLUE}${DISPLAY_DIR}${RESET}${GIT_SEG}${STYLE_SEG}"
 
 # ── 2行目: ctx バー + コスト + セッション経過時間 ──────────
 PCT=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
@@ -131,7 +139,7 @@ LINE4=""
 
 # ── 出力: 縦に並べる (空の行はスキップ) ───────────────────
 #   0行目: セッション名（/rename 名 or AI 生成タイトル、未生成なら行ごと省略）
-#   1行目: モデル + ディレクトリ + git ブランチ
+#   1行目: モデル·effort + ディレクトリ + git ブランチ + output style（非default時のみ）
 #   2行目: ctx バー + コスト + セッション経過時間
 #   3行目: 5h レート制限バー + リセット残り
 #   4行目: 7d レート制限バー + リセット残り
