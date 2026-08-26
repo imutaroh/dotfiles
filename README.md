@@ -23,6 +23,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 | | Claude Code / Codex CLI | コーディングエージェント |
 | | hunk | レビュー特化の差分ビューア（`nh` コマンド・hunk-review スキルから使用） |
 | ユーティリティ | Raycast | ランチャーアプリ |
+| | Karabiner-Elements | キー入力カスタマイズ（BT キーボード接続時に内蔵キーボードを無効化） |
 
 ## ディレクトリ構成
 
@@ -41,6 +42,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   ├── herdr/             # エージェントマルチプレクサ設定
 │   │                       # （agent-taborder-watch.py: Agents サイドバーをタブ順に追従、
 │   │                       #  ログは ~/.config/herdr/agent-taborder.log）
+│   ├── karabiner/         # Karabiner-Elements 設定（karabiner.json のみ）
 │   ├── lazygit/           # Git TUI 設定
 │   ├── mise/              # ランタイム管理設定
 │   ├── nvim/              # Neovim 設定
