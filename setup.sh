@@ -94,6 +94,10 @@ ln -sf "$DOTFILES_DIR/.config/herdr/agent-taborder-watch.py" ~/.config/herdr/age
 mkdir -p ~/.config/hunk
 ln -sf "$DOTFILES_DIR/.config/hunk/config.toml" ~/.config/hunk/config.toml
 
+# karabiner は karabiner.json のみ管理（assets/ や automatic_backups は対象外）
+mkdir -p ~/.config/karabiner
+ln -sf "$DOTFILES_DIR/.config/karabiner/karabiner.json" ~/.config/karabiner/karabiner.json
+
 ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 
 mkdir -p ~/.config/git
