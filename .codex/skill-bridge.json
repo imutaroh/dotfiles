@@ -1,0 +1,383 @@
+{
+  "schema_version": 1,
+  "skills": [
+    {
+      "name": "article-visual-planner",
+      "source": ".claude/skills/article-visual-planner/SKILL.md",
+      "source_sha256": "af63078d09b917615bb86d5240fc4c9f8a86c20d437b215af067b1845bfc4fb4",
+      "description": "記事（Zenn・ブログ・解説文など）を読み、図解・解説画像を「どこに・何の図を・何枚」入れるべきかをベストプラクティス（実務慣行＋学習科学）に基づいて診断し、ChatGPT Images 2.0（gpt-image-2）にそのまま渡せる日本語の画像生成プロンプト一式を出力するスキル。「図解を入れたい」「挿絵プロンプト作って」「この記事に図解を」「どこに画像を入れる」「画像プロンプトまとめて」「記事に図を最適配置して」で使用。生成画像はクリーンなフラットSTYLEで統一し、日本語ラベルは画像内に直接入れる（Image-2.0は日本語描画が高精度）。",
+      "mode": "wrapper",
+      "codex_skill": "article-visual-planner",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "book-apply",
+      "source": ".claude/skills/book-apply/SKILL.md",
+      "source_sha256": "0b548bd187d8a159c6d909197cf1e2db6d266f1893313e2a3229381eb9c68d56",
+      "description": "蔵書（Books/）の枠組みを「問い」に変換し、いむたろ様の Vault の実データ（Private/Journals/ の Action・Notes/・Todo.md・Private/Memos/）と突き合わせてギャップ表を作り、本人が答えたものだけを本文にした ai-work ノートを Private/Memos/ に作る棚卸しスキル。「この本を自分に当てて」「本で自分を診て」「◯◯の知見をVaultに活かして」「本と自分のギャップを出して」「棚卸しして」「/book-apply」で使用。本の内容そのものを聞く相談は books、蔵書の追加は book-to-skill の担当（住み分け）。AI は答えを書かない。",
+      "mode": "wrapper",
+      "codex_skill": "book-apply",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "book-to-skill",
+      "source": ".claude/skills/book-to-skill/SKILL.md",
+      "source_sha256": "0b0a86713cba71c2654e0fa0cd13322209ca30c282dd204688c9bab7c6fe0297",
+      "description": "Kindleスクショから作ったPDF（画像のみ・テキストレイヤーなし）を視覚読解し、蔵書知識貯蔵庫 ~/repos/imutaakihiro/ObsidianImus/Books/ に書籍ノートとして追加するスキル。「本をSkill化して」「この本を本棚に入れて」「PDFをbooksに追加」「蔵書に追加」「/book-to-skill」で使用。分冊ごとにサブエージェントを並列で走らせ、章別ノート→overview/cheatsheet/glossaryを生成し、Vault へのコミットまで行う。",
+      "mode": "wrapper",
+      "codex_skill": "book-to-skill",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "books",
+      "source": ".claude/skills/books/SKILL.md",
+      "source_sha256": "fb811fb2c83d40185d2ec0356f95a26eda8bd92147f4e3f8de1cd0d72fa5dac3",
+      "description": "いむたろ様の蔵書知識貯蔵庫（Obsidian Vault の Books/ にある書籍ノート集・章別ノート14冊＋Kindleハイライト32冊）への唯一の入り口。本・蔵書に相談したいとき、読んだ本の内容を確認したいとき、書名に言及されたとき、および仕事・キャリア・人間関係・自己成長・マーケティング・EC/D2C事業・交渉・チーム運営・プロジェクトマネジメント・思考法・文章術・UXライティング/UI文言・雑談/コミュニケーション・プログラミング哲学・勉強法・優先順位/断り方/時間の使い方・AIエージェント/バイブコーディングの使い方・AI時代の学習法の相談で書籍の知見を根拠に答えるべきときに必ず使用。「本棚に聞いて」「あの本なんて言ってた？」「/books」でも発動。新しい本の追加は /book-to-skill。",
+      "mode": "wrapper",
+      "codex_skill": "books",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "close",
+      "source": ".claude/skills/close/SKILL.md",
+      "source_sha256": "a156bc6c53661fe8312a830f4b5115c3543bee438f46fe5601dea7f5db63b5e3",
+      "description": "セッションを閉じるときに、そのセッション自体を第三者サブエージェントにレビューさせ、「いむたろ様の Claude Code の使い方」を改善するスキル。生のセッションログだけを証拠に、何を指示し・Claude が何をやり・結果どうだったかを検証し、次回そのまま使えるプロンプト書き換え案と、CLAUDE.md / Skill / hooks への改善提案を出す。「/close」「セッション閉じる」「振り返って」「今日のやり取りレビューして」「使い方の改善点ある？」で使用。コードレビューではない（それは /code-review）。",
+      "mode": "adapted",
+      "codex_skill": "close",
+      "note": "Codex 固有補足で実行差異を吸収する。"
+    },
+    {
+      "name": "code-reading",
+      "source": ".claude/skills/code-reading/SKILL.md",
+      "source_sha256": "c2c2fc538c29935a22ad0c63714f18f0befd457e359d3294ef1fa037123b5e11",
+      "description": "ファイルパスやコードスニペットを渡すと、「全部読まない（BFS式）」でコードを読み解けるようにガイドするスキル。まず目的を1行決め、入口から流れだけ地図化し、関数は原則シグネチャ（名前・引数・戻り値）で止める。深掘りは目的に必要な枝だけ。進捗バーを毎ターン末尾に表示し、1ターン1関数で進め、クイズで理解を実証してから完了にする。「このファイルを読みたい」「コードを追いたい」「コードリーディングしたい」「このコードを理解したい」「コードの流れを教えて」「どこから読めばいい」などのリクエストで使用。概念の抽象的な理解が目的なら /progressive-learning を使う。",
+      "mode": "wrapper",
+      "codex_skill": "code-reading",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "cognitive-rhythm-writing",
+      "source": ".claude/skills/cognitive-rhythm-writing/SKILL.md",
+      "source_sha256": "953a532460e26eb1c71fe5ad11b2704010f40447512c4197b281909398300c6c",
+      "description": "説明的な文章に緩急を設計するための規範。緩急を装飾ではなく認知モードの切替（観察→逡巡→断定→再観察）と未回収の緊張の管理として扱い、文の拍、段落の密度波形、節の入り方、緩みと駄文の判別、執筆後の機械的な点検手順を定める。読み物として読ませたい章・記事・解説文を生成するとき、または「密度はあるが平坦でおもしろくない」文章を診断・修正するときに使用する。",
+      "mode": "wrapper",
+      "codex_skill": "cognitive-rhythm-writing",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "ctx-agent-history-search",
+      "source": ".claude/skills/ctx-agent-history-search/SKILL.md",
+      "source_sha256": "d76cd55f506f6d8605f2fed933a16e4ab995b3a4ab8e6d96bfd84d469872b3d6",
+      "description": "Use ctx to search local coding-agent history before acting. Use when prior agent sessions may contain relevant insights, decisions, attempts, or transcript context.",
+      "mode": "existing",
+      "codex_skill": "ctx",
+      "note": "既存の Codex スキルを利用し、同名ファイルを重複作成しない。"
+    },
+    {
+      "name": "daily-ai-log",
+      "source": ".claude/skills/daily-ai-log/SKILL.md",
+      "source_sha256": "9138acedada7e1277da68f5543526eeb1fbd88a818bb4a1cfe2d2eb3f0edf680",
+      "description": "ctx のイベント検索から対象日の Claude Code・Codex セッションを集約し、Obsidian 日報の AIログを作る。日報へのAIログ追記や前日の会話まとめを依頼されたときに使用。",
+      "mode": "adapted",
+      "codex_skill": "daily-ai-log",
+      "note": "ctx の現行イベント検索と完了・ページング検証に置換し、Claude/Codex を provider 別に集約する。"
+    },
+    {
+      "name": "delegate-implementation",
+      "source": ".claude/skills/delegate-implementation/SKILL.md",
+      "source_sha256": "65dbe3e30e6512517f1a788c78e0e3773a6c9000a7d4b0708bfd5d7bbd90aaf0",
+      "description": "新規機能や複数ファイルの実装を Codex サブエージェントに委譲し、親が設計・監査・レビューする。軽微な数行修正は除く。",
+      "mode": "adapted",
+      "codex_skill": "delegate-implementation",
+      "note": "Codex 固有補足で実行差異を吸収する。"
+    },
+    {
+      "name": "doc-coauthoring",
+      "source": ".claude/skills/doc-coauthoring/SKILL.md",
+      "source_sha256": "3a09e87b3e31fcdb08f451e047f962335c866874a6ac455a8f27f269648aef53",
+      "description": "Guide users through a structured workflow for co-authoring documentation. Use when user wants to write documentation, proposals, technical specs, decision docs, or similar structured content. This workflow helps users efficiently transfer context, refine content through iteration, and verify the doc works for readers. Trigger when user mentions writing docs, creating proposals, drafting specs, or similar documentation tasks.",
+      "mode": "wrapper",
+      "codex_skill": "doc-coauthoring",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "dot-help",
+      "source": ".claude/skills/dot-help/SKILL.md",
+      "source_sha256": "f3f45689464f7080b1e36c12012fa4bf43baaf880ea682675eb2b7c7309b11c1",
+      "description": "ユーザーの dotfiles 全体（Neovim / Ghostty / herdr / karabiner / zellij / zsh / lazygit / starship 等）について「〜するにはどのキー？」「このショートカット何？」「Cmd+◯ って何が起きる？」「この設定どこにある？」といった操作方法・キーバインド・設定の質問に、~/dotfiles と ~/.config の実際の設定を参照して回答する。nvim・ターミナル・シェルのキーバインドや設定に関する質問全般で使用（旧 nvim-help の後継）。どのディレクトリからでも使用可能。調査はサブエージェントに委譲してメインのコンテキストを節約する。",
+      "mode": "wrapper",
+      "codex_skill": "dot-help",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "feedback-slack-formatter",
+      "source": ".claude/skills/feedback-slack-formatter/SKILL.md",
+      "source_sha256": "9dd888b5fd2f11cfd9e9dc05cef4ff44a034e23cf4971f92aca85190b640e78d",
+      "description": "文字起こし（メンターとの1on1・日報フィードバックなどの話し言葉）を渡されたら、相手（メンター）の発言だけを抽出し、Slack 送信用フォーマットに整形するスキル。整形結果は日報と同じ `Private/Journals/YYYY-MM-DD.md` の末尾に追記する。 以下のような状況で使うこと： - 「FBをSlackにして」「フィードバックをSlackフォーマットにして」「これSlackに送る形にして」 - 「日報のFBの文字起こしをまとめて」「1on1の文字起こしをSlack用にして」 - メンター（相手）との会話の文字起こしを渡され、相手の発言だけ拾ってほしいとき - 自分の発言ではなく相手のフィードバックを整理したいとき",
+      "mode": "wrapper",
+      "codex_skill": "feedback-slack-formatter",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "find-skills",
+      "source": ".claude/skills/find-skills/SKILL.md",
+      "source_sha256": "5c07f1351822c2433aceb3e6859e86354650d714d50daa5678bfa96cc8abdd23",
+      "description": "Helps users discover and install agent skills. Use this skill when the user asks \"Is there a skill for X?\", \"Find a skill that can...\", \"How do I do X with a skill?\", or wants to extend the agent's capabilities. Also invoked via /find-skills command. 日本語では「〜のSkillある？」「Skillを探して」「Skillをインストールして」でも使う。",
+      "mode": "wrapper",
+      "codex_skill": "find-skills",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "func-anatomy",
+      "source": ".claude/skills/func-anatomy/SKILL.md",
+      "source_sha256": "83f2746c0c461e9d8c2e16c5f5bb3613a35ed9703428f67872119c146c0532d6",
+      "description": "関数名・シグネチャ・コード片を渡すと、その関数の「解剖図」を一発で出す辞書型の解説スキル。 シグネチャ分解（引数・戻り値の意味）、処理の流れ、内部で呼んでいる関数の役割と入出力、 呼び出し元、エラー時の挙動を一画面にまとめ、論理構造を最短で理解させる。 「この関数知りたい」「この関数の全体像を教えて」「この関数何してる？」「関数の中身を解説して」 「executeXxx を解剖して」「/func-anatomy」で使用。Go に限らず全言語対応。 解剖図の後に「理解できた」「OK」と返ってきたら理解チェックのクイズ（挙動予測・代替実装・ダメ実装の3タイプ）を出す。 住み分け: 読み方自体を鍛える訓練コースは code-reading、 概念の解説は learn / progressive-learning。こちらは「今すぐこの1関数を理解したい」への即答＋その場の理解チェック専用。",
+      "mode": "wrapper",
+      "codex_skill": "func-anatomy",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "herdr-control",
+      "source": ".claude/skills/herdr-control/SKILL.md",
+      "source_sha256": "d5e19393cd6ee4e83e6a725ee7b9ffc541fcbe653216ee0ff7de9ef516001488",
+      "description": "herdr（ターミナルワークスペースマネージャ、socket API 付き CLI）のタブ・ペインを Claude が操作するスキル。「新しいタブで開いて」「ペインを分割して実行して」「横のペインでログ見せて」「herdr でタブ/ペイン作成」「ターミナルに TUI（hunk/lazygit 等）を開いて」で使用。herdr セッション内のタブ/ペインの話であり、zellij や Ghostty 自体のタブとは別物。バックグラウンドジョブ（シェルがターミナル外）からでも socket API 経由で操作できるのが価値。",
+      "mode": "wrapper",
+      "codex_skill": "herdr-control",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "hunk-review",
+      "source": ".claude/skills/hunk-review/SKILL.md",
+      "source_sha256": "22ba96f09771f74ad4db81873b4174f38edcd86a53b7af5f90a0359612a0b33c",
+      "description": "Interacts with live Hunk diff review sessions via CLI. Inspects review focus, navigates files and hunks, reloads session contents, and adds inline review comments. Use when the user has a Hunk session running or wants to review diffs interactively.",
+      "mode": "wrapper",
+      "codex_skill": "hunk-review",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "image-generate",
+      "source": ".claude/skills/image-generate/SKILL.md",
+      "source_sha256": "fa5f02b2d47752e45df7a6a73845d99eebee31e00e60eb524961d13c69c5654c",
+      "description": "画像生成プロンプトを既存 imagegen スキルで実行し、指定された保存先と生成物を検証する。画像生成やプロンプトから画像作成を依頼されたときに使う。",
+      "mode": "adapted",
+      "codex_skill": "image-generate",
+      "note": "Codex 固有補足で実行差異を吸収する。"
+    },
+    {
+      "name": "imutaro-visual",
+      "source": ".claude/skills/imutaro-visual/SKILL.md",
+      "source_sha256": "df00513668b588da24c106c8630aa42bb40f9d9541eb5c4b87f4074f462df7e6",
+      "description": "いむたろのビジュアル・アイデンティティ（imutaro.com / Zenn / note / SNS 共通）の正本。画像・図解・アイキャッチ・章扉・アイコン・キャラクターを作る前、および「この色でいいか」「ブランドの配色は」「らしさを出したい」と問われたときに必ず使用する。線画インフォグラフィック（系統A）とドット絵キャラクター（系統B）の使い分け、配色トークン、タイポ、モチーフ、codex での画像生成プロンプトと検品基準を持つ。「画像作って」「図解入れて」「アイキャッチ作って」「アイコン作って」「キャラクターを使いたい」「ブランドカラー」「imutaro らしく」で発動。",
+      "mode": "wrapper",
+      "codex_skill": "imutaro-visual",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "japanese-tech-writing",
+      "source": ".claude/skills/japanese-tech-writing/SKILL.md",
+      "source_sha256": "91a871e0c883924a80f916009e3a3eb42c2b24d88e37ef3787b2abc9464a4275",
+      "description": "日本語の技術文書・解説文を書くときの基礎規範。一文一義・係り受け・冗長表現の削除・用語と表記の統一・ 読点の打ち方・段落構成・具体性の担保を定める。記事・ドキュメント・解説文の生成や推敲の前に読む土台であり、 緩急の設計（cognitive-rhythm-writing）はこの規範の上に適用する。「日本語を整えて」「技術文書として推敲して」 「読みやすくして」で使用する。",
+      "mode": "wrapper",
+      "codex_skill": "japanese-tech-writing",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "kindle-capture",
+      "source": ".claude/skills/kindle-capture/SKILL.md",
+      "source_sha256": "bb46ad16834b6e433a098ad6d7c193d7791c54b993a63ba07278452313a4854f",
+      "description": "Kindle for Mac で開いている本を1冊まるごと自動スクショ→PDF化する全自動フロー。kindle-screenshot-app（Web UI版）をHTTP APIで駆動し、バックグラウンド取り込み（ユーザーはメイン画面で作業継続可）・途中停止の自動検出と復旧・分割PDFの1冊結合まで行う。「本をPDFにして」「Kindleを取り込んで」「1冊まるごとスクショして」「/kindle-capture」で使用。PDF化後の蔵書登録は /book-to-skill に引き継ぐ。",
+      "mode": "wrapper",
+      "codex_skill": "kindle-capture",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "learn",
+      "source": ".claude/skills/learn/SKILL.md",
+      "source_sha256": "760e8bb4a1f5871e4e042e69246ec086e316e25c89d640ca8b3cf656cdece931",
+      "description": "技術的な概念・コード・パターンを段階的に教え、Zenn スクラップにそのまま貼れる markdown を出力する。 「これ学びたい」「この書き方わからない」「勉強したい」「このパターン何？」で使用。 コードの指定、概念の質問、実装パターンの理解に対応。Go に限らず技術全般。",
+      "mode": "wrapper",
+      "codex_skill": "learn",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "life",
+      "source": ".claude/skills/life/SKILL.md",
+      "source_sha256": "4067d0f2b791a3351df2bdfd0bfdb379b301ba2ceba07b2ca7c757d20247f0f3",
+      "description": "生き方・仕事観・信条を life ノートとして Obsidian Vault に書く・磨く・統合するスキル（/tech の Life 版）。「/life」で必ず使用。第1引数で動作を受ける：「/life notesに 今日の気づきをまとめて」（Notes/ 直書き）、「/life memosに ◯◯を下書きして」（Private/Memos/ に ai-work Draft）、「/life memosの◯◯を昇格して」（Draft を Notes/ へ）、「/life ◯◯と◯◯を統合して」「/life 統合候補を探して」（重複ノートの合体・洗練）。「lifeノートにして」「哲学ノートにして」「信条を書き留めて」「気づきをノートにして」「ノートを統合して」でも発動。ネタ元は会話履歴・日報・既存ノートのご主人様自身の言葉に限る（AI の一般論・名言・Web 調査を混ぜない＝哲学書の provenance）。",
+      "mode": "wrapper",
+      "codex_skill": "life",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "month",
+      "source": ".claude/skills/month/SKILL.md",
+      "source_sha256": "73da8c94d1920b308f389eaf384f0f059c0117cb6a90776860f3fb6201a279a9",
+      "description": "月次振り返りサマリーを生成して Private/Journals/Monthly/YYYY-MM-monthly.md に保存するスキル。 対象月の日報を全読みし、「実務ベース」「学びベース」「辛口指摘（反省の再放送検出）」を出す。 以下のような状況で使うこと： - 「/month」「6月の振り返りをまとめて」「月次サマリー作って」 - 「今月の日報を実務ベース・学びベースで教えて」",
+      "mode": "wrapper",
+      "codex_skill": "month",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "morning",
+      "source": ".claude/skills/morning/SKILL.md",
+      "source_sha256": "383cf961461623d6dd7d4e90b95794bf9b94fdceb31ebe4ab84053de983fb3bf",
+      "description": "1日の始まりに実行する朝のブリーフィング・オーケストレータ。「/morning」「おはよう、今日を始めよう」「朝のブリーフィング」「朝のルーティンやって」で使用。 ①昨日の日報の要約とFB確認 ②Claude Code 使用状況（ai-usage-dashboard）②.5 今日のタイムカレンダー（Google Calendar から1時間グリッド） ③昨日のAIログの日報貼り付け（daily-ai-log に委譲）④Todo.md（実行リスト・上限10）の残タスク提示 を1コマンドで実行し、 今日の日報に「## 朝のブリーフィング」として追記するところまで行う（その日の一手を決めるのはご主人様。AI は聞かない）。",
+      "mode": "wrapper",
+      "codex_skill": "morning",
+      "note": "Codex 固有補足で実行差異を吸収する。"
+    },
+    {
+      "name": "note-studio",
+      "source": ".claude/skills/note-studio/SKILL.md",
+      "source_sha256": "24a663151e97d16d0ba53d1878169772bab032a8626d3ed01180a72b39d88b49",
+      "description": "なぐりがき・会話・体験の種を note 公開記事に仕上げる制作室。企画 → 転ゲート → 起を三行で撃つ → 承 → 結 → 多稿推敲 → 禁止リスト lint → FBループ の工程で進める。書籍『三行で撃つ』（近藤康太郎）の作法を土台にした工程型スキルで、転が決まるまで書き始めない。画像生成（imutaro パレット・アイキャッチと「頭の中の図解」）も担当。「note書きたい」「これnoteにしたい」「noteに整形して」「記事化したい」「公開記事にして」「アイキャッチ作って」「note をブラッシュアップして」「/note」「/note-create」「note-studio」で使用。旧 note-create の後継。住み分け: Zenn に載るものはすべて zenn-studio、リサーチ起点のバズ記事は research-to-note、知識の物語化は story-teach。",
+      "mode": "wrapper",
+      "codex_skill": "note-studio",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "output-style",
+      "source": ".claude/skills/output-style/SKILL.md",
+      "source_sha256": "ac134a61115766fde3c48b58a216772fb4a70346ae070c1a78873120ee99cd09",
+      "description": "この Codex 会話の文体を Default / Proactive / Explanatory / Learning または自作スタイルに切り替える。output-style や文体変更を依頼されたときに使う。永続設定は変更しない。",
+      "mode": "adapted",
+      "codex_skill": "output-style",
+      "note": "Codex 固有補足で実行差異を吸収する。"
+    },
+    {
+      "name": "pr-review-fix-coach",
+      "source": ".claude/skills/pr-review-fix-coach/SKILL.md",
+      "source_sha256": "48970a4e0492059b600a1b24fa74a9a7e466d6517c888a6f7ad0d4bbefa77d33",
+      "description": "PRのレビューコメントを取得し、優先度順に整理して、ユーザー自身が1件ずつ修正するのを伴走するコーチングスキル。 「レビューコメント対応したい」「PRの指摘を直したい」「/pr-review-fix-coach」で使用。 自動修正はせず、ユーザーが手を動かすのをガイドする。",
+      "mode": "wrapper",
+      "codex_skill": "pr-review-fix-coach",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "progressive-learning",
+      "source": ".claude/skills/progressive-learning/SKILL.md",
+      "source_sha256": "f62f69c8e7458cfc564633494625c563dbe9d9e60179bc8ec1a65df47b1eb39f",
+      "description": "学習対象を「呪文（要約文）」として確定し、抽象→例え話→実物の3段階で進める対話型・検証つき段階学習。進捗バーを毎ターン維持し、 クイズ（AskUserQuestion）で理解を実証、習熟まで終えない。「これ抽象から教えて」「ゼロから理解したい」「段階的に学習したい」 「呪文が読めるようになりたい」「クイズ出して」で使用。コード/ファイルの解説は learn、コードリーディングは code-reading、こちらは概念の段階的理解に特化。",
+      "mode": "wrapper",
+      "codex_skill": "progressive-learning",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "readable-code-review",
+      "source": ".claude/skills/readable-code-review/SKILL.md",
+      "source_sha256": "c44d185f567de4d3367da5db16e64e7d49885c09b0cbbf5e94feb905dcb45bf5",
+      "description": "「The Art of Readable Code」(O'Reilly) の15章の観点でコードレビューを行うスキル。バグ探しではなく「読みやすさ」専門のレビューで、本人が自力で気づけていない問題まで15章を網羅的に当てて拾い、指摘リスト（章タグ・該当箇所・改善案・1行の理由）を出すのが目的。承認された指摘だけ適用まで行う。以下のようなリクエストで使用：「リーダブルレビューして」「リーダブルコード観点でレビュー」「読みやすさをレビューして」「命名・コメントをレビューして」「このPR/差分を読みやすさで見て」「/readable-code-review」。バグ・正確性のレビューは /code-review、概念の深掘り解説は learn、コードの読み方訓練は code-reading の担当。Go に限らず全言語対応。",
+      "mode": "wrapper",
+      "codex_skill": "readable-code-review",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "research-to-note",
+      "source": ".claude/skills/research-to-note/SKILL.md",
+      "source_sha256": "e32a50b24dd1e1f25091e7ba60857f807ffb80b38f188df4f6231cb0177d1888",
+      "description": "指示を受けて裏取りリサーチを行い、その結果を note の\"大バズ記事\"に近い読みやすいフォーマット（短段落・小見出し頻度・冒頭フック・画像配置間隔）に整形して Private/Memos/ に投入するパイプラインSkill。画像は本文中に機械可読なプレースホルダ（image-slotコメント＋日本語生成プロンプト）で埋め込み、後からAPI連携でURL差し替えできる状態にする。「これリサーチしてnoteドラフトにして」「バズフォーマットでまとめて」「リサーチから記事まで一気に」「調べてnote形式にして」で使用。内蔵リサーチ手順（旧researchスキル継承）・note-studioの文体規約と内蔵の掴み採点（5フックタイプ）を1本に連結するオーケストレータ。",
+      "mode": "wrapper",
+      "codex_skill": "research-to-note",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "skill-creator",
+      "source": ".claude/skills/skill-creator/SKILL.md",
+      "source_sha256": "d57b6e3a44535b9c0ef454dad5c86f5df78185fc80a65c7092885b4b5e10f81b",
+      "description": "Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude's capabilities with specialized knowledge, workflows, or tool integrations.",
+      "mode": "existing",
+      "codex_skill": "skill-creator",
+      "note": "既存の Codex スキルを利用し、同名ファイルを重複作成しない。"
+    },
+    {
+      "name": "story-teach",
+      "source": ".claude/skills/story-teach/SKILL.md",
+      "source_sha256": "ea8ee8827a48797e22b0b30baa470bfc0dcaeec25932153de50b0d7fc26b65d5",
+      "description": "知識の塊（リサーチ結果・辞書的ノート・概念・ハウツー一覧）を、読者本人を主人公にした「完全映画版」の一本の物語に変換し、各幕の末尾に要点カードで結晶化する記事執筆スキル。読み物としての没入と、辞書としての網羅を二層で両取りする。「映画版にして」「物語化して」「ストーリーで教えて」「没入する記事にして」「辞書を読み物に」「知識を物語に」「リストだけど面白くない／引き込まれない」「もっと具体で／映画みたいに」「/story-teach」で使用。体験談を note 公開記事にするのは note-studio、技術をZennで教えるのは learn の担当でこのスキルではない（住み分け）。セールス本文も対象外。出力は Private/Memos/。",
+      "mode": "wrapper",
+      "codex_skill": "story-teach",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "strengths-map",
+      "source": ".claude/skills/strengths-map/SKILL.md",
+      "source_sha256": "c83947428d46b16708bb65b12d0da95b77e77e448abbe9fb57d934d7fdfc4603",
+      "description": "ストレングスファインダー（CliftonStrengths 34）の診断結果PDFやトップ10リストから、エピソード先行の7観点インタビューで行動メカニズムを検証し、攻略本・雑誌風の自己完結HTML「攻略マップ」を生成、Notion格納（/htmlブロック）まで案内するスキル。「攻略マップ作って」「ストレングスファインダーの結果を攻略マップにして」「SF診断から攻略マップ」「/strengths-map」で使用。テンプレートは同ディレクトリの template.html を一字一句コピーして使う（ビジュアル固定）。",
+      "mode": "wrapper",
+      "codex_skill": "strengths-map",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "structured-workflow",
+      "source": ".claude/skills/structured-workflow/SKILL.md",
+      "source_sha256": "4573959824d42816305666480453389c03b1f4a29352e614e06483bbe6e5c1d3",
+      "description": "リサーチ・計画・実装の3段階で複雑なタスクを構造的に進めるワークフロー。計画段階ではアノテーションサイクル（ユーザーがインラインコメント → Claude が反映を繰り返す）で品質を担保する。「/structured-workflow」「構造的に進めたい」「リサーチしてから計画を立てて」「しっかり調べてから実装して」「段階的に進めたい」で使用。コード開発、設計、ドキュメント作成、調査分析など、あらゆる複雑なタスクに対応。",
+      "mode": "wrapper",
+      "codex_skill": "structured-workflow",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "task-dashboard",
+      "source": ".claude/skills/task-dashboard/SKILL.md",
+      "source_sha256": "13cd072e14c646f9b43138f6f3a13dea8ceb7d5dd930bb6ff6a7b6c3e5242425",
+      "description": "やりたいこと・タスク・進捗を1つの固定Artifactダッシュボード（claude.aiのプライベートWebページ）で可視化・管理するスキル。タスクの実体は ~/.claude/task-dashboard/tasks.md（dotfiles管理）に持ち、Artifactはその表示用ビュー。タスクの追加・完了・着手・ブロック・削除・整理、および「進捗見せて」の表示だけの依頼にも使う。「タスク追加して」「〜やることに追加」「タスク完了した」「終わった」「進捗どう？」「ダッシュボード見せて」「タスクボード更新して」「やりたいことを管理したい」「/task-dashboard」で必ず使用。セッション内の一時的なTODO管理（TaskCreate等）とは別物で、セッションをまたいで残す個人タスクはこちら。",
+      "mode": "deferred",
+      "codex_skill": null,
+      "note": "Claude Artifact 依存と Vault Todo.md との正本競合があるため有効化しない。"
+    },
+    {
+      "name": "tech",
+      "source": ".claude/skills/tech/SKILL.md",
+      "source_sha256": "66b87dda215fc268b839abb93f64f323129d5aa485912524297fa0b3c6b836f4",
+      "description": "技術概念を tech ノートとして Obsidian Vault に書く・磨く・昇格するスキル（旧 technical-note の後継）。 「/tech」で必ず使用。第1引数で出力先を受ける：「/tech notesに curlについて教えて」（Notes/ 直書き＋チャット解説）、 「/tech memosに JWTをまとめて」（Private/Memos/ に ai-work Draft）、「/tech memosのcurlを昇格して」（Draft を Notes/ へ昇格）。 「techノートにして」「テクニカルにまとめて」「昇格して」でも発動。どのディレクトリで作業中でも使える（出力先は Vault の絶対パス固定）。 ネタ元は会話履歴か明示されたファイルに限る（勝手な Web 調査はしない）。",
+      "mode": "wrapper",
+      "codex_skill": "tech",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "terminal-browser",
+      "source": ".claude/skills/terminal-browser/SKILL.md",
+      "source_sha256": "7ed3df98ee157d39d488423df2c842b113ad03b04d3a920a49d123fb5d4b6b2c",
+      "description": "A real browser running inside the terminal. It splits the human's terminal pane automatically, so you can show a website side by side with the conversation, render HTML to visualize something, and drive whatever tab is open — snapshot, click, fill, eval — with the `terminal-browser action` subcommand.",
+      "mode": "existing",
+      "codex_skill": "terminal-browser",
+      "note": "既存の Codex スキルを利用し、同名ファイルを重複作成しない。"
+    },
+    {
+      "name": "worktree-parallel",
+      "source": ".claude/skills/worktree-parallel/SKILL.md",
+      "source_sha256": "ea95e23237ef696dc4b741a0463d497b567c07a9c6c5fe11af7f8a7e04dd45a2",
+      "description": "独立した複数の実装タスクを実在する git worktree に隔離して Codex サブエージェントに委譲し、親がレビュー・統合する。並列実装の依頼に使用。",
+      "mode": "adapted",
+      "codex_skill": "worktree-parallel",
+      "note": "Codex 固有補足で実行差異を吸収する。"
+    },
+    {
+      "name": "youtube-research",
+      "source": ".claude/skills/youtube-research/SKILL.md",
+      "source_sha256": "e45d882364afe6cd93b1d4deb56e1956259bd90a2d882e429a010fa41cfc6fb0",
+      "description": "YouTube Data API v3 を使って動画リサーチを行い、結果を整形してチャットで報告するスキル。 テーマを渡されたら検索クエリの設計はAIが行う。キーワード検索・伸びている動画の検出 （再生数÷登録者数の伸び率計算）・特定チャンネルの新着監視に対応。 「YouTubeで◯◯を調べて」「YouTubeリサーチして」「YouTubeで情報収集」「伸びてる動画を探して」 「バズってる動画」「チャンネルの新着チェック」「チャンネル監視」で使用。Web検索でのYouTube調査は 再生数・投稿日が取得不可（2026-08-11検証済み）なので、YouTube の数値調査は必ずこのスキルを使う。",
+      "mode": "wrapper",
+      "codex_skill": "youtube-research",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "zenn-studio",
+      "source": ".claude/skills/zenn-studio/SKILL.md",
+      "source_sha256": "fff80b2ca1bc7ab7190b36f79bdf79a96a30d1a1573d76382a1f764c8dfad986",
+      "description": "Zenn の記事（articles/）と本（books/）を執筆・改訂し、図解生成（imutaro.com パレットの線画スタイル・codex exec 全自動）・章扉カード・多視点FBループでの仕上げ・公開前点検・push までを一貫して行うスキル。「Zennにして」「Zenn記事にして」「Zennの下書き作って」「本の章を書いて/直して」「図解を入れて」「章扉を作って」「ブラッシュアップして」「FB部隊で磨いて」「Zennに公開して」「zenn-studio」で使用。旧 zenn-article の後継。住み分け: 概念の段階的解説（スクラップ向け）は learn、note向け体験談は note-studio。Zenn に載るものはすべてこのスキル。",
+      "mode": "wrapper",
+      "codex_skill": "zenn-studio",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "zukai",
+      "source": ".claude/skills/zukai/SKILL.md",
+      "source_sha256": "898ab718038e2bb0a5a4e56a03be311c550699eb0bdc4e30d4bad1dd6408b656",
+      "description": "トピックを 5歳・15歳・35歳向けの3段階で同時に図解する、タブ切り替え付き HTML アーティファクトを生成する。/zukai トピック のほか、「図解して」「絵で教えて」 「仕組みをわかりやすく」「初心者にもわかるように」など、図が主役の段階的な説明が 役立つ場面で使用する。技術トピックに限らず何にでも使える。",
+      "mode": "adapted",
+      "codex_skill": "zukai",
+      "note": "Codex 固有補足で実行差異を吸収する。"
+    }
+  ]
+}

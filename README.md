@@ -33,6 +33,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 ├── .zshrc                 # インタラクティブシェル設定
 ├── Brewfile               # Homebrew パッケージ
 ├── setup.sh               # セットアップスクリプト
+├── setup-codex-skills.py  # Codex 個人スキルの単独検査・リンク設置
 ├── macos.sh               # macOS 設定用スクリプト
 ├── launchd/               # 常駐エージェント用 plist（~/Library/LaunchAgents/ にコピー）
 │
@@ -56,7 +57,12 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   └── skills/            # カスタムスキル
 │
 └── .codex/                # Codex CLI のdotfiles管理対象
-    └── themes/            # ~/.codex/themes/ にファイル単位でリンク
+    ├── themes/            # ~/.codex/themes/ にファイル単位でリンク
+    ├── skills/            # Claude 個人スキルを実行時参照する Codex 互換入口
+    ├── compatibility.md   # 共通の読み替え規約
+    ├── skill-bridge.json  # 個人42件の対応分類・正本ハッシュ
+    ├── scripts/           # Codex 生ログのローカル抽出
+    └── hook-fragments/    # claude-parity.json: 既存設定へ追加する3フック定義
 ```
 
 詳細は各ディレクトリの README を参照。
@@ -104,6 +110,15 @@ source ~/.zshrc  # またはターミナル再起動
 - 利用枠のリセット日時: `/status` で確認（ステータスラインは残量のみ）
 
 既存の `[tui]` 設定がある場合、`setup.sh` は自動上書きせず確認メッセージを表示する。
+
+個人スキルの Codex 対応は `setup.sh` とは独立して導入する。全セットアップの再実行は不要。
+
+```bash
+python3 ~/dotfiles/setup-codex-skills.py --check
+python3 ~/dotfiles/setup-codex-skills.py --apply
+```
+
+`~/.agents/skills/` に38件のリンクを設置し、Claude 側の本文正本を実行時に参照する。既存スキル利用3件・未移植1件を含む対応範囲、更新検査、巻戻しは [.codex/README.md](.codex/README.md) を参照。フックは `.codex/hook-fragments/claude-parity.json` を既存 `~/.codex/hooks.json` にイベント単位で統合し、Codex の `/hooks` で本人が3件の定義を確認・trust して初めて実行される。既存ファイル全体を fragment で上書きしない。
 
 ## カスタムコマンド
 
