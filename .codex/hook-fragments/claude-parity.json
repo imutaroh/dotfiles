@@ -1,0 +1,38 @@
+{
+  "description": "Claude Codeと共通の迎合防止・確認音・完了音。既存hooks.jsonへイベント単位で追加し、Codexの/hooksで確認する。",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/dotfiles/.claude/hooks/anti-sycophancy.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/dotfiles/.claude/hooks/play-sound.sh ~/dotfiles/.claude/sounds/confirm.wav",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/dotfiles/.claude/hooks/play-sound.sh ~/dotfiles/.claude/sounds/complete.wav",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
