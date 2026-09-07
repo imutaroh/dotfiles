@@ -61,7 +61,8 @@ macOS 用の個人設定ファイル管理リポジトリ。
     ├── skills/            # Claude 個人スキルを実行時参照する Codex 互換入口
     ├── compatibility.md   # 共通の読み替え規約
     ├── skill-bridge.json  # 個人42件の対応分類・正本ハッシュ
-    ├── scripts/           # Codex 生ログのローカル抽出
+    ├── scripts/           # Codex 生ログ抽出・config.toml 更新・output style 同期
+    ├── rules/             # execpolicy ルール（Claude Code の permissions 相当）
     └── hook-fragments/    # claude-parity.json: 既存設定へ追加する3フック定義
 ```
 
@@ -102,14 +103,15 @@ source ~/.zshrc  # またはターミナル再起動
 
 ## Codex CLI カスタマイズ
 
-`setup.sh` は `~/.codex/config.toml` 全体を置き換えず、初回のみTUI設定を追記する。Codexアプリが管理するモデル・権限・Hooksなどの既存設定は保持される。
+`setup.sh` は `~/.codex/config.toml` 全体を置き換えず、`.codex/scripts/apply-codex-config.py --apply` がキー単位で冪等に追記・置換する（Codexアプリが管理するモデル・権限・Hooksなどの既存設定や `[tui]` の他キーは保持される）。
 
-- テーマ: `Imutaro Cool`（Claude Codeと共通のシアン・ブルー・ティール・バイオレット・スレートを使用）
-- ステータスライン: モデルと推論レベル、ディレクトリ、Gitブランチ、コンテキスト残量、5時間枠、週間枠
+- テーマ: `Imutaro Cool`（Claude Codeと共通のシアン・ブルー・ティール・バイオレット・スレートを使用。既存値があれば変更しない）
+- ステータスライン: モデルと推論レベル、ディレクトリ、Gitブランチ、コンテキスト残量、推定コスト、5時間枠、週間枠
+- herdr サイドバーのスレッド名表示用に `terminal_title` も設定する
 - 手動変更: Codex CLIの `/theme` と `/statusline`
 - 利用枠のリセット日時: `/status` で確認（ステータスラインは残量のみ）
 
-既存の `[tui]` 設定がある場合、`setup.sh` は自動上書きせず確認メッセージを表示する。
+権限は `.codex/rules/claude-parity.rules`（execpolicy の prefix_rule。Claude Code の `.claude/settings.json` permissions 相当）を `setup.sh` がリンクする。output style は `.codex/scripts/sync-output-style.py` が `developer_instructions` として永続反映する。詳細な対応表とCLI例は [.codex/README.md](.codex/README.md) の「Claude Code との体験の対応」を参照。
 
 個人スキルの Codex 対応は `setup.sh` とは独立して導入する。全セットアップの再実行は不要。
 
