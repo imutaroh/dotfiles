@@ -159,17 +159,20 @@ ln -sf "$DOTFILES_DIR/.codex/themes/imutaro-cool.tmTheme" ~/.codex/themes/imutar
 if [ ! -e ~/.codex/config.toml ]; then
     touch ~/.codex/config.toml
 fi
-if ! grep -q '^project_doc_fallback_filenames[[:space:]]*=' ~/.codex/config.toml; then
-    printf '\nproject_doc_fallback_filenames = ["CLAUDE.md"]\n' >> ~/.codex/config.toml
-fi
+# project_doc_fallback_filenames・[tui] の theme/status_line/terminal_title は
+# apply-codex-config.py がキー単位で冪等に追記・置換する（詳細はスクリプト先頭のdocstring）。
+python3 "$DOTFILES_DIR/.codex/scripts/apply-codex-config.py" --apply
 
-# Claude Code の寒色デザインに合わせた Codex TUI を初回だけ設定する。
-# [tui] がすでにある場合は、Codex アプリが管理する既存値を壊さない。
-if ! grep -q '^\[tui\]$' ~/.codex/config.toml; then
-    printf '\n[tui]\ntheme = "imutaro-cool"\nstatus_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "current-dir", "git-branch"]\n' >> ~/.codex/config.toml
-elif ! grep -q '^theme[[:space:]]*=[[:space:]]*"imutaro-cool"$' ~/.codex/config.toml \
-    || ! grep -q '^status_line[[:space:]]*=' ~/.codex/config.toml; then
-    echo "⚠️  Codex TUI は既存設定あり。/theme と /statusline で Imutaro Cool 設定を確認してください"
+# Codex の execpolicy ルール（Claude Code の permissions 相当）をリンクする。
+# ~/.codex/rules/default.rules は Codex が承認記憶として自動生成するファイルなので触らない。
+mkdir -p ~/.codex/rules
+ln -sf "$DOTFILES_DIR/.codex/rules/claude-parity.rules" ~/.codex/rules/claude-parity.rules
+
+# output style（developer_instructions）は初回だけ設定する。
+# ユーザーが `sync-output-style.py default` で意図的に消した状態を setup.sh が
+# 勝手に戻さないよう、既に設定がある場合は触らない。
+if ! grep -q '^developer_instructions[[:space:]]*=' ~/.codex/config.toml; then
+    python3 "$DOTFILES_DIR/.codex/scripts/sync-output-style.py" 15sai
 fi
 
 # Claude Code の transcript mode に合わせ、Ctrl+O で Codex の transcript を開く。
