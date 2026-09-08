@@ -1,0 +1,16 @@
+{
+  "description": "Codex 専用。送信のたびに Claude 風の複数行ステータス（セッション名 / モデル·effort / ctx / 5h / 7d）を systemMessage で会話欄に出す。既存 hooks.json の UserPromptSubmit へグループ単位で追加し、Codex の /hooks で確認する。",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/dotfiles/.codex/scripts/codex-hud-hook.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

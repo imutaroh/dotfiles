@@ -125,10 +125,10 @@ PY
     if [ "$trusted" -ge "$defined" ]; then
         ok "全フックが trust 済み"
     else
-        bad "未 trust のフックあり。Codex TUI で /hooks を開き、3件（迎合防止・確認音・完了音）の定義を確認して trust する（スクリプトでは代行しない）"
+        bad "未 trust のフックあり。Codex TUI で /hooks を開き、定義（迎合防止・確認音・完了音・タブ内ステータス）を確認して trust する（スクリプトでは代行しない）"
     fi
 else
-    bad "$CODEX_HOME/hooks.json が無い（.codex/hook-fragments/claude-parity.json を手動統合）"
+    bad "$CODEX_HOME/hooks.json が無い（.codex/hook-fragments/*.json を手動統合）"
 fi
 
 # ── 6. 個人スキルブリッジ ────────────────────────────────

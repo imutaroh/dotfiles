@@ -122,7 +122,7 @@ python3 ~/dotfiles/setup-codex-skills.py --check
 python3 ~/dotfiles/setup-codex-skills.py --apply
 ```
 
-`~/.agents/skills/` に38件のリンクを設置し、Claude 側の本文正本を実行時に参照する。既存スキル利用3件・未移植1件を含む対応範囲、更新検査、巻戻しは [.codex/README.md](.codex/README.md) を参照。フックは `.codex/hook-fragments/claude-parity.json` を既存 `~/.codex/hooks.json` にイベント単位で統合し、Codex の `/hooks` で本人が3件の定義を確認・trust して初めて実行される。既存ファイル全体を fragment で上書きしない。
+`~/.agents/skills/` に38件のリンクを設置し、Claude 側の本文正本を実行時に参照する。既存スキル利用3件・未移植1件を含む対応範囲、更新検査、巻戻しは [.codex/README.md](.codex/README.md) を参照。フックは `.codex/hook-fragments/claude-parity.json`（共通3件）と `codex-hud.json`（Codex のタブ内に送信ごとのステータスを出す1件）を既存 `~/.codex/hooks.json` にイベント単位で統合し、Codex の `/hooks` で本人が定義を確認・trust して初めて実行される。既存ファイル全体を fragment で上書きしない。
 
 ## カスタムコマンド
 
