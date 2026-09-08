@@ -157,7 +157,13 @@ pick_thread() {
     row=$(sqlite3 -readonly -separator $'\t' "$STATE_DB" \
         "SELECT id, rollout_path, COALESCE(NULLIF(name,''), title), COALESCE(model,''), COALESCE(reasoning_effort,''), created_at, cwd, tokens_used
          FROM threads WHERE $where ORDER BY updated_at DESC LIMIT 1" 2>/dev/null)
-    if [ -z "$row" ] && [ -z "$SESSION_ID" ]; then
+    # --session で指定した ID がまだ sqlite に無い（セッション直後）場合は cwd 一致の最新へ倒す
+    if [ -z "$row" ] && [ -n "$SESSION_ID" ]; then
+        row=$(sqlite3 -readonly -separator $'\t' "$STATE_DB" \
+            "SELECT id, rollout_path, COALESCE(NULLIF(name,''), title), COALESCE(model,''), COALESCE(reasoning_effort,''), created_at, cwd, tokens_used
+             FROM threads WHERE archived = 0 AND cwd = '${TARGET_CWD//\'/\'\'}' ORDER BY updated_at DESC LIMIT 1" 2>/dev/null)
+    fi
+    if [ -z "$row" ]; then
         row=$(sqlite3 -readonly -separator $'\t' "$STATE_DB" \
             "SELECT id, rollout_path, COALESCE(NULLIF(name,''), title), COALESCE(model,''), COALESCE(reasoning_effort,''), created_at, cwd, tokens_used
              FROM threads WHERE archived = 0 ORDER BY updated_at DESC LIMIT 1" 2>/dev/null)
