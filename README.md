@@ -110,6 +110,7 @@ source ~/.zshrc  # またはターミナル再起動
 - herdr サイドバーのスレッド名表示用に `terminal_title` も設定する
 - 手動変更: Codex CLIの `/theme` と `/statusline`（TUI で変えた値は次の `setup.sh` で dotfiles 側の定数に戻るため、残したい変更は `apply-codex-config.py` に反映する）
 - 利用枠のリセット日時: `/status` で確認（ステータスラインは残量のみ）
+- 複数行 HUD: Claude Code と同じ5行構成（セッション名 / モデル·effort / ctx バー / 5h / 7d）を herdr の隣ペインに出す `codex-hud`（`.codex/scripts/codex-hud.sh`。Codex 本体の footer には自作出力を描けないため別プロセス）
 - 一括点検: `bash ~/dotfiles/.codex/scripts/check-parity.sh`（リンク・config キー・識別子の実在・フック trust・スキル・注入確認。運用の指針は [.codex/README.md](.codex/README.md) の「運用ベストプラクティス」）
 
 権限は `.codex/rules/claude-parity.rules`（execpolicy の prefix_rule。Claude Code の `.claude/settings.json` permissions 相当）を `setup.sh` がリンクする。output style は `.codex/scripts/sync-output-style.py` が `developer_instructions` として永続反映する。詳細な対応表とCLI例は [.codex/README.md](.codex/README.md) の「Claude Code との体験の対応」を参照。
