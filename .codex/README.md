@@ -35,7 +35,7 @@ CHECK OK でも「未設置」があればまだ導入前です。SOURCE_DRIFT �
 | --- | --- | --- |
 | リポジトリの指示書読み込み（`.claude/CLAUDE.md` フォールバック） | `project_doc_fallback_filenames = ["CLAUDE.md", ".claude/CLAUDE.md"]`（トップレベルキー） | `apply-codex-config.py --apply`（`setup.sh` から自動実行） |
 | output style（`~/.claude/output-styles/*.md`） | `developer_instructions`（トップレベルキー。Codex がモデル入力に注入する指示文字列） | `sync-output-style.py <名前>` / `default` / `--show`（永続反映。会話単位ではない点が Claude と異なる） |
-| ステータスライン（`.claude/statusline.sh`） | `[tui].status_line`（識別子リスト） | `apply-codex-config.py --apply`。Claude 側にあって Codex 側に無い項目: セッション名（`/rename` した名前）・git dirty マーカー・経過時間・5時間/週次リセットまでの残り時間の詳細表示（Codex は `five-hour-limit` / `weekly-limit` の集計値のみ） |
+| ステータスライン（`.claude/statusline.sh`） | `[tui].status_line`（識別子リスト）+ `status_line_use_colors = true` | `apply-codex-config.py --apply`。Claude の5行を1行に畳むため「上の行ほど重要」の順で左から並べる: モデル·effort → ブランチ → dirty マーカー（`branch-changes`）→ ctx 残量 → 5h → 7d → 推定コスト → ディレクトリ。セッション名は `terminal_title`（herdr サイドバー）に出すので入れない。Claude 側にあって Codex 側に無い項目: 経過時間・リセットまでの残り時間（Codex は `/status` で確認） |
 | herdr サイドバーのスレッド名表示 | `[tui].terminal_title = ["thread-title"]`（OSC タイトルにスレッド名を出す）＋ `.config/herdr/config.toml` の `[ui.sidebar.agents.rows_by_agent].codex` | `apply-codex-config.py --apply` と herdr 側の設定（dotfiles にコミット済み、symlink で反映） |
 | 権限（`.claude/settings.json` の permissions allow/deny） | `~/.codex/rules/claude-parity.rules`（execpolicy の prefix_rule） | `setup.sh` が `ln -sf` でリンク。既存 `~/.codex/rules/default.rules`（Codex の承認記憶）とは役割分担しており、そのファイルは触らない。より長い prefix のルールが優先されるため、`git push --force` の forbidden は `git push` の allow より優先される |
 | フック（迎合防止・確認音・完了音） | `~/.codex/hooks.json` + `hook-fragments/claude-parity.json` | 「## 共通フックの導入と trust」節を参照 |
@@ -54,7 +54,25 @@ python3 ~/dotfiles/.codex/scripts/sync-output-style.py default       # developer
 
 # 権限ルールの動作確認（--rules は複数指定可）
 codex execpolicy check --pretty --rules ~/dotfiles/.codex/rules/claude-parity.rules -- git push --force origin main
+
+# 同等体験がまるごと効いているかの一括点検（読み取り専用。NG があれば exit 1）
+bash ~/dotfiles/.codex/scripts/check-parity.sh          # 7項目すべて（末尾の注入確認に数十秒かかる）
+bash ~/dotfiles/.codex/scripts/check-parity.sh --quick  # 注入確認を省略
 ```
+
+### 運用ベストプラクティス（2026-09-08 整理）
+
+原則は「**正本は dotfiles、実環境はスクリプトで再生成、崩れたら検査で気づく**」。手で `~/.codex/config.toml` を直したら、その差分を dotfiles 側（`apply-codex-config.py` の定数か README）に必ず戻す。
+
+1. **codex は1系統だけ持つ。** `brew cask` と `npm -g` の両方に入っていると PATH の先頭だけが更新され、古い版が `status_line` の識別子を知らずに「Ignored invalid status line」で黙って既定に戻る。2026-09-08 時点は npm（mise の node 配下）が PATH 先頭で、brew cask は版を合わせて残してある。片方に寄せるなら Brewfile の `cask "codex"` の扱いも一緒に決める。
+2. **Codex を更新したら `check-parity.sh` を回す。** 識別子・キー名は版ごとに増減する（0.146 → 0.153 で `thread-credits` / `estimated-thread-cost` が増えた）。点検 [4] がバイナリの文字列で実在を確認する。
+3. **status_line は「左が最重要」で8個まで。** footer は1行で、herdr の分割ペインでは右側から欠ける。項目を足すときは Claude の `statusline.sh` で何行目に出していたかを基準に順序を決め、`/statusline` で見た目を確認してから `apply-codex-config.py` の定数に反映する（TUI で変えただけだと次の `setup.sh` で戻される）。
+4. **フックは trust を自作しない。** `hooks.json` に定義を足しても、Codex TUI の `/hooks` で本人が確認・trust するまで走らない。点検 [5] が「定義 N 件 / trust 済み M 件」を出すので、M < N なら `/hooks` を開く。`trusted_hash` を手で書いてはいけない（改ざん検知の仕組みを自分で無効化することになる）。
+5. **output style は永続設定だと理解して切り替える。** Claude の `/output-style` は会話ごとだが、Codex の `developer_instructions` は全セッション共通。実験的なスタイルを試すなら `sync-output-style.py <名前> --dry-run` で確認し、終わったら `default` で戻す。注入されているかは点検 [7]（`codex debug prompt-input`）で見える。
+6. **権限は execpolicy に寄せ、`default.rules` は触らない。** Claude の allow/deny を `claude-parity.rules` に写し、Codex が承認記憶として自動生成する `default.rules` と混ぜない。新しい禁止コマンドを足したら `codex execpolicy check` で forbidden になることを確認する。
+7. **スキル正本が変わったら SHA を追認する。** `setup-codex-skills.py --check` の SOURCE_DRIFT は「本文は新しいものが読まれるが、description と互換補足は再監査していない」の意味。監査してから `skill-bridge.json` の SHA256 を更新する。
+
+再現できないもの（諦めているもの）: ステータスラインの複数行表示、セッション経過時間、利用枠リセットまでの残り時間、会話単位の output style 切り替え、Claude Artifact 依存の task-dashboard。
 
 いずれのスクリプトも一時ファイル→ `os.replace` と `tomllib` による前後の構文検証を行うため、途中で失敗しても `config.toml` を壊れた状態のまま書き込むことはない。
 

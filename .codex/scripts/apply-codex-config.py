@@ -9,6 +9,7 @@ Codex アプリ自身も config.toml を書き換えるため symlink 管理が�
   - トップレベル `project_doc_fallback_filenames`
       → ["CLAUDE.md", ".claude/CLAUDE.md"] に設定（無ければ追加、あれば置換）
   - [tui].status_line   → 固定リストに設定（無ければ追加、あれば置換）
+  - [tui].status_line_use_colors → true に設定（無ければ追加、あれば置換）
   - [tui].terminal_title → ["thread-title"] に設定（無ければ追加、あれば置換）
   - [tui].theme          → "imutaro-cool"（無ければ追加、あれば触らない）
   - [tui] テーブル自体が無ければファイル末尾に新規作成する
@@ -36,10 +37,17 @@ import tempfile
 import tomllib
 
 
+# Codex の footer は1行だけ。狭いペイン（herdr の分割）では右側から欠けるため、
+# Claude の statusline.sh で「上の行ほど重要」だった順に左から並べる。
+# セッション名は terminal_title（herdr サイドバー）に出るので status_line からは外す。
+# 識別子は codex-cli 0.153.4 のバイナリで存在を確認したもの（branch-changes = git dirty マーカー相当）。
 STATUS_LINE_VALUE = (
-    'status_line = ["model-with-reasoning", "current-dir", "git-branch", '
-    '"context-remaining", "estimated-thread-cost", "five-hour-limit", "weekly-limit"]'
+    'status_line = ["model-with-reasoning", "git-branch", "branch-changes", '
+    '"context-remaining", "five-hour-limit", "weekly-limit", '
+    '"estimated-thread-cost", "current-dir"]'
 )
+# Claude の statusline.sh は 24bit 色付きなので Codex 側も色を有効にする
+STATUS_LINE_USE_COLORS_VALUE = "status_line_use_colors = true"
 TERMINAL_TITLE_VALUE = 'terminal_title = ["thread-title"]'
 THEME_VALUE = 'theme = "imutaro-cool"'
 PROJECT_DOC_FALLBACK_VALUE = (
@@ -188,6 +196,14 @@ def apply_changes(original_text: str) -> tuple[str, list[str]]:
     lines, changed = upsert_key(lines, tui_idx + 1, end, "status_line", STATUS_LINE_VALUE)
     if changed:
         changes.append(f"tui.status_line -> {STATUS_LINE_VALUE}")
+
+    # 3.5 status_line_use_colors（無ければ追加、あれば置換）
+    end = section_end(lines, tui_idx)
+    lines, changed = upsert_key(
+        lines, tui_idx + 1, end, "status_line_use_colors", STATUS_LINE_USE_COLORS_VALUE
+    )
+    if changed:
+        changes.append(f"tui.status_line_use_colors -> {STATUS_LINE_USE_COLORS_VALUE}")
 
     # 4. terminal_title（無ければ追加、あれば置換）
     end = section_end(lines, tui_idx)
