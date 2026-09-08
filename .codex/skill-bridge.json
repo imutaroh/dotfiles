@@ -239,7 +239,7 @@
       "name": "output-style",
       "source": ".claude/skills/output-style/SKILL.md",
       "source_sha256": "ac134a61115766fde3c48b58a216772fb4a70346ae070c1a78873120ee99cd09",
-      "description": "この Codex 会話の文体を Default / Proactive / Explanatory / Learning または自作スタイルに切り替える。output-style や文体変更を依頼されたときに使う。永続設定は変更しない。",
+      "description": "Codex の出力スタイル（~/.codex/config.toml の developer_instructions）を自作スタイル（15sai 等）や default に切り替える。output-style や文体変更を依頼されたときに使う。Claude 側の settings.json は変更しない。",
       "mode": "adapted",
       "codex_skill": "output-style",
       "note": "Codex 固有補足で実行差異を吸収する。"
