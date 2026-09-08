@@ -36,6 +36,7 @@ CHECK OK でも「未設置」があればまだ導入前です。SOURCE_DRIFT �
 | リポジトリの指示書読み込み（`.claude/CLAUDE.md` フォールバック） | `project_doc_fallback_filenames = ["CLAUDE.md", ".claude/CLAUDE.md"]`（トップレベルキー） | `apply-codex-config.py --apply`（`setup.sh` から自動実行） |
 | output style（`~/.claude/output-styles/*.md`） | `developer_instructions`（トップレベルキー。Codex がモデル入力に注入する指示文字列） | `sync-output-style.py <名前>` / `default` / `--show`（永続反映。会話単位ではない点が Claude と異なる） |
 | ステータスライン（`.claude/statusline.sh`） | `[tui].status_line`（識別子リスト）+ `status_line_use_colors = true` | `apply-codex-config.py --apply`。Claude の5行を1行に畳むため「上の行ほど重要」の順で左から並べる: モデル·effort → ブランチ → dirty マーカー（`branch-changes`）→ ctx 残量 → 5h → 7d → 推定コスト → ディレクトリ。セッション名は `terminal_title`（herdr サイドバー）に出すので入れない。Claude 側にあって Codex 側に無い項目: 経過時間・リセットまでの残り時間（Codex は `/status` で確認） |
+| ステータスラインの複数行・バー表示（Claude の 5 行構成） | `.codex/scripts/codex-hud.sh`（別プロセス。`~/.codex/state_5.sqlite` の threads と rollout jsonl の `token_count` を読み、statusline.sh と同じ配色・バーで描く） | herdr で Codex のペインを上下分割し、下で `codex-hud`（`.zshrc` の alias）。Codex 本体は自作コマンドの出力を status_line に描けない（openai/codex#17827）ための回避策。コスト（$）は出せず累計トークンで代替。5h/7d はアカウント全体の値なので最近の rollout 5 本から `primary` 非 null の最新を拾い、リセット時刻を過ぎていれば「reset済」と出す |
 | herdr サイドバーのスレッド名表示 | `[tui].terminal_title = ["thread-title"]`（OSC タイトルにスレッド名を出す）＋ `.config/herdr/config.toml` の `[ui.sidebar.agents.rows_by_agent].codex` | `apply-codex-config.py --apply` と herdr 側の設定（dotfiles にコミット済み、symlink で反映） |
 | 権限（`.claude/settings.json` の permissions allow/deny） | `~/.codex/rules/claude-parity.rules`（execpolicy の prefix_rule） | `setup.sh` が `ln -sf` でリンク。既存 `~/.codex/rules/default.rules`（Codex の承認記憶）とは役割分担しており、そのファイルは触らない。より長い prefix のルールが優先されるため、`git push --force` の forbidden は `git push` の allow より優先される |
 | フック（迎合防止・確認音・完了音） | `~/.codex/hooks.json` + `hook-fragments/claude-parity.json` | 「## 共通フックの導入と trust」節を参照 |
@@ -55,6 +56,10 @@ python3 ~/dotfiles/.codex/scripts/sync-output-style.py default       # developer
 # 権限ルールの動作確認（--rules は複数指定可）
 codex execpolicy check --pretty --rules ~/dotfiles/.codex/rules/claude-parity.rules -- git push --force origin main
 
+# 複数行 HUD（Codex の隣のペインで動かす。--once は動作確認用）
+bash ~/dotfiles/.codex/scripts/codex-hud.sh --once
+bash ~/dotfiles/.codex/scripts/codex-hud.sh --cwd ~/repos/imutaakihiro/ObsidianImus   # 別ディレクトリのセッションを見る
+
 # 同等体験がまるごと効いているかの一括点検（読み取り専用。NG があれば exit 1）
 bash ~/dotfiles/.codex/scripts/check-parity.sh          # 7項目すべて（末尾の注入確認に数十秒かかる）
 bash ~/dotfiles/.codex/scripts/check-parity.sh --quick  # 注入確認を省略
@@ -72,7 +77,9 @@ bash ~/dotfiles/.codex/scripts/check-parity.sh --quick  # 注入確認を省略
 6. **権限は execpolicy に寄せ、`default.rules` は触らない。** Claude の allow/deny を `claude-parity.rules` に写し、Codex が承認記憶として自動生成する `default.rules` と混ぜない。新しい禁止コマンドを足したら `codex execpolicy check` で forbidden になることを確認する。
 7. **スキル正本が変わったら SHA を追認する。** `setup-codex-skills.py --check` の SOURCE_DRIFT は「本文は新しいものが読まれるが、description と互換補足は再監査していない」の意味。監査してから `skill-bridge.json` の SHA256 を更新する。
 
-再現できないもの（諦めているもの）: ステータスラインの複数行表示、セッション経過時間、利用枠リセットまでの残り時間、会話単位の output style 切り替え、Claude Artifact 依存の task-dashboard。
+8. **複数行 HUD は「Codex が書いた直後の値」しか知らない。** `codex-hud.sh` は Codex が rollout に書く `token_count` を読むだけなので、ターンの途中は更新されず、5h 枠のリセット時刻を過ぎると次のターンまで「reset済」表示になる。Codex 内部の sqlite カラム名や jsonl のイベント名が変わると「データなし」になる。壊れたら `--once` で素の出力を見てから直す。
+
+再現できないもの（諦めているもの）: Codex 本体の footer での複数行表示（HUD は別ペイン）、セッションの USD コスト、会話単位の output style 切り替え、Claude Artifact 依存の task-dashboard。
 
 いずれのスクリプトも一時ファイル→ `os.replace` と `tomllib` による前後の構文検証を行うため、途中で失敗しても `config.toml` を壊れた状態のまま書き込むことはない。
 
