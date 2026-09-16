@@ -23,6 +23,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 | | Claude Code / Codex CLI | コーディングエージェント |
 | | hunk | レビュー特化の差分ビューア（`nh` コマンド・hunk-review スキルから使用） |
 | | yazi | ターミナルファイラー（`y` で起動し終了時にその場所へ cd。設定は `.config/yazi/` で管理） |
+| | gh-dash | GitHub の PR / Issue を俯瞰する TUI（`gh dash`。gh 拡張のため Brewfile 管理外・setup.sh が導入） |
 | ユーティリティ | Raycast | ランチャーアプリ |
 | | Karabiner-Elements | キー入力カスタマイズ（BT キーボード接続時に内蔵キーボードを無効化） |
 
@@ -37,12 +38,15 @@ macOS 用の個人設定ファイル管理リポジトリ。
 ├── setup-codex-skills.py  # Codex 個人スキルの単独検査・リンク設置
 ├── macos.sh               # macOS 設定用スクリプト
 ├── launchd/               # 常駐エージェント用 plist（~/Library/LaunchAgents/ にコピー）
+├── iphone/                # iPhone アプリの宣言的管理（keep.txt に残すアプリを列挙し apps.sh plan/apply で差分削除）
 │
 ├── .config/               # ~/.config/ にリンク
+│   ├── gh-dash/           # GitHub ダッシュボード設定（gh 拡張）
 │   ├── ghostty/           # ターミナル設定
 │   ├── git/               # Git グローバル gitignore
 │   ├── herdr/             # エージェントマルチプレクサ設定
 │   │                       # （agent-taborder-watch.py: Agents サイドバーをタブ順に追従、
+│   │                       #  タブ名への位置番号の自動付与も担う、
 │   │                       #  ログは ~/.config/herdr/agent-taborder.log）
 │   ├── karabiner/         # Karabiner-Elements 設定（karabiner.json のみ）
 │   ├── lazygit/           # Git TUI 設定
@@ -53,9 +57,9 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   ├── uv/                # Python パッケージ管理設定
 │   └── yazi/              # ターミナルファイラー設定（yazi.toml のみ）
 │
-├── .claude/               # ~/.claude/ にリンク（ユーザーレベル設定）
+├── .claude/               # ユーザーレベル設定（子の選択項目のみ ~/.claude/ へリンク）
 │   ├── CLAUDE.md          # カスタム指示
-│   ├── settings.json      # 設定
+│   ├── settings.json      # 実環境の実ファイルから sync-settings.sh で取り込む
 │   └── skills/            # カスタムスキル
 │
 └── .codex/                # Codex CLI のdotfiles管理対象

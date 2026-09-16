@@ -168,3 +168,9 @@ _ghostty_set_title() {
 add-zsh-hook chpwd _ghostty_set_title
 _ghostty_set_title
 
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
