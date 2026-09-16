@@ -15,6 +15,7 @@ brew "fzf"                    # ファジーファインダー（Ctrl+R で履�
 brew "zoxide"                 # cd の代替（frecency で賢くディレクトリ移動）
 brew "ripgrep"                # 高速 grep（Neovim Telescope でも使用）
 brew "tree"                   # ディレクトリ構造の表示
+brew "yazi"                   # ターミナルファイラー（3列表示・プレビュー・Enter で nvim。シェルからは y で起動）
 brew "trash"                  # rm の代わりに使用（復元可能）
 
 # === 開発ツール ===
