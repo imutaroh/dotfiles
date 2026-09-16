@@ -38,7 +38,7 @@ CHECK OK でも「未設置」があればまだ導入前です。SOURCE_DRIFT �
 | ステータスラインの複数行・バー表示（Claude の 5 行構成） | `.codex/scripts/codex-hud.sh`（別プロセス。`~/.codex/state_5.sqlite` の threads と rollout jsonl の `token_count` を読み、statusline.sh と同じ配色・バーで描く） | herdr で Codex のペインを上下分割し、下で `codex-hud`（`.zshrc` の alias）。Codex 本体は自作コマンドの出力を status_line に描けない（openai/codex#17827）ための回避策。コスト（$）は出せず累計トークンで代替。5h/7d はアカウント全体の値なので最近の rollout 5 本から `primary` 非 null の最新を拾い、リセット時刻を過ぎていれば「reset済」と出す |
 | herdr サイドバーのスレッド名表示 | `[tui].terminal_title = ["thread-title"]`（OSC タイトルにスレッド名を出す）＋ `.config/herdr/config.toml` の `[ui.sidebar.agents.rows_by_agent].codex` | `apply-codex-config.py --apply` と herdr 側の設定（dotfiles にコミット済み、symlink で反映） |
 | 権限（`.claude/settings.json` の permissions allow/deny） | `~/.codex/rules/claude-parity.rules`（execpolicy の prefix_rule） | `setup.sh` が `ln -sf` でリンク。既存 `~/.codex/rules/default.rules`（Codex の承認記憶）とは役割分担しており、そのファイルは触らない。より長い prefix のルールが優先されるため、`git push --force` の forbidden は `git push` の allow より優先される |
-| フック（迎合防止・確認音・完了音） | `~/.codex/hooks.json` + `hook-fragments/claude-parity.json` | 「## 共通フックの導入と trust」節を参照 |
+| フック（確認音・完了音） | `~/.codex/hooks.json` + `hook-fragments/claude-parity.json` | 「## 共通フックの導入と trust」節を参照 |
 | ステータスを Codex のタブの中に出す（Codex 専用） | `hook-fragments/codex-hud.json` → UserPromptSubmit で `scripts/codex-hud-hook.sh` が `codex-hud.sh --once` の 5 行を `systemMessage` として返す | 送信のたびに会話欄へ 1 ブロック表示される（Codex は systemMessage を警告スタイルで UI に描く。固定表示ではなく上へ流れる。色は付かない）。`additionalContext` は返さないのでモデルのトークンは消費しない。同じく `/hooks` で trust が必要 |
 
 ### スクリプトの CLI 例
@@ -95,9 +95,9 @@ ID と session_meta を照合し、可視会話・ツール入出力を元行番
 
 ## 共通フックの導入と trust
 
-`hook-fragments/claude-parity.json` は UserPromptSubmit（迎合防止）、PermissionRequest（確認音）、Stop（完了音）の3定義、`hook-fragments/codex-hud.json` は UserPromptSubmit（ステータス表示）の1定義です。2026-09-07〜09 の導入作業では実環境の `~/.codex/hooks.json` へイベント単位で追加し、既存の herdr 用 SessionStart を保持しました。4件は Codex の `/hooks` でユーザー本人が定義を確認して trust するまで未実行です。信頼情報の `trusted_hash` を自作したり、確認を回避したりしません。
+`hook-fragments/claude-parity.json` は PermissionRequest（確認音）、Stop（完了音）の2定義、`hook-fragments/codex-hud.json` は UserPromptSubmit（ステータス表示）の1定義です。2026-09-07〜09 の導入作業では実環境の `~/.codex/hooks.json` へイベント単位で追加し、既存の herdr 用 SessionStart を保持しました（UserPromptSubmit の迎合防止は 2026-09-16 に撤去。指針は CLAUDE.md 本文に集約）。3件は Codex の `/hooks` でユーザー本人が定義を確認して trust するまで未実行です。信頼情報の `trusted_hash` を自作したり、確認を回避したりしません。
 
-初回導入を別環境で再現するときは、既存 `hooks.json` を読み、既存のイベント・グループを保持したまま fragment の3イベントを手動で統合します。同じイベント内で同じ command が既にある場合は重複追加せず、timeout 等を含む定義を照合してください。fragment を既存 `hooks.json` 全体に上書きしてはいけません。`setup-codex-skills.py` はフックの統合も trust も行いません。
+初回導入を別環境で再現するときは、既存 `hooks.json` を読み、既存のイベント・グループを保持したまま fragment の2イベントを手動で統合します。同じイベント内で同じ command が既にある場合は重複追加せず、timeout 等を含む定義を照合してください。fragment を既存 `hooks.json` 全体に上書きしてはいけません。`setup-codex-skills.py` はフックの統合も trust も行いません。
 
 再移行時も `/hooks` で実際の3件の command・timeout 等が意図した定義と一致することを確認します。定義変更後は以前の trust がそのまま有効とは仮定せず、Codex が示す確認を行ってください。
 

@@ -73,7 +73,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "model": "fable",
   "enabledMcpjsonServers": [
     "obsidian"
   ],
@@ -97,18 +97,13 @@
           }
         ]
       }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/anti-sycophancy.sh"
-          }
-        ]
-      }
     ]
   },
+  "deniedMcpServers": [
+    { "serverName": "claude.ai Gmail" },
+    { "serverName": "claude.ai Google Drive" },
+    { "serverName": "claude.ai freee" }
+  ],
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
