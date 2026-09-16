@@ -18,6 +18,9 @@ return {
         [">"] = "next_source",
         ["H"] = "prev_source", -- 予備（vim 感覚で h/l 方向）
         ["L"] = "next_source",
+        -- neo-tree デフォルトの s(open_vsplit) を外し、グローバルの s（flash ジャンプ）をツリー上でも効かせる
+        ["s"] = "none",
+        ["<C-v>"] = "open_vsplit", -- 縦分割で開くは <C-v> に退避
       },
     },
     filesystem = {

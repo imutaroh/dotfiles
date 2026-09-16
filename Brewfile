@@ -26,6 +26,7 @@ brew "hunk"                   # レビュー特化の差分ビューア（hunk-r
 brew "node"                   # Node.js / npm（Mason LSP: typescript-language-server, pyright 等）
 brew "bun"                    # JavaScript ランタイム / パッケージマネージャ
 brew "go"                     # Go 言語（Mason LSP: gopls）
+brew "hugo"                   # 静的サイト生成（notes.imutaro.com の内製 Publish・_Meta/Site）
 brew "xcodegen"               # Xcode プロジェクトを yml から生成
 brew "postgresql@17"          # PostgreSQL（ローカル開発用 DB）
 
@@ -33,10 +34,14 @@ brew "postgresql@17"          # PostgreSQL（ローカル開発用 DB）
 brew "defaultbrowser"         # デフォルトブラウザを CLI から設定
 brew "laishulu/homebrew/macism"   # IME 切り替え（Neovim で Normal モード時に英数へ）
 brew "ffmpeg"                 # 動画・音声の変換（GIF 生成などで使用）
+brew "yt-dlp"                 # Web動画の取得（bin/vid2text で使用）
 brew "pngquant"               # PNG の減色圧縮（GitHub アバターの 1MB 制限対応など）
+brew "libimobiledevice"       # iPhone と USB 経由で通信（idevice_id / idevicepair）
+brew "ideviceinstaller"       # iPhone のアプリ一覧取得・削除（iphone/ 参照）
 
 # === GUI アプリ ===
 cask "alt-tab"
+cask "antigravity-cli"        # Google Antigravity CLI（agy -p で Claude Code から Gemini を呼ぶ）
 cask "aqua-voice"
 cask "arc"
 # cask "capsomnia"  # caskが存在しないため手動インストール: https://capsomnia.com/ja/ からpkgをDL
