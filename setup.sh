@@ -94,6 +94,10 @@ ln -sf "$DOTFILES_DIR/.config/herdr/agent-taborder-watch.py" ~/.config/herdr/age
 mkdir -p ~/.config/hunk
 ln -sf "$DOTFILES_DIR/.config/hunk/config.toml" ~/.config/hunk/config.toml
 
+# yazi は yazi.toml のみ管理（keymap / theme を足すときはここにも追加）
+mkdir -p ~/.config/yazi
+ln -sf "$DOTFILES_DIR/.config/yazi/yazi.toml" ~/.config/yazi/yazi.toml
+
 # karabiner は karabiner.json のみ管理（assets/ や automatic_backups は対象外）
 mkdir -p ~/.config/karabiner
 ln -sf "$DOTFILES_DIR/.config/karabiner/karabiner.json" ~/.config/karabiner/karabiner.json

@@ -22,6 +22,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 | 開発ツール | Neovim（AstroNvim ベース） | エディタ |
 | | Claude Code / Codex CLI | コーディングエージェント |
 | | hunk | レビュー特化の差分ビューア（`nh` コマンド・hunk-review スキルから使用） |
+| | yazi | ターミナルファイラー（`y` で起動し終了時にその場所へ cd。設定は `.config/yazi/` で管理） |
 | ユーティリティ | Raycast | ランチャーアプリ |
 | | Karabiner-Elements | キー入力カスタマイズ（BT キーボード接続時に内蔵キーボードを無効化） |
 
@@ -49,7 +50,8 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   ├── nvim/              # Neovim 設定
 │   ├── raycast/           # Raycast スクリプト
 │   ├── starship.toml      # プロンプト設定
-│   └── uv/                # Python パッケージ管理設定
+│   ├── uv/                # Python パッケージ管理設定
+│   └── yazi/              # ターミナルファイラー設定（yazi.toml のみ）
 │
 ├── .claude/               # ~/.claude/ にリンク（ユーザーレベル設定）
 │   ├── CLAUDE.md          # カスタム指示
