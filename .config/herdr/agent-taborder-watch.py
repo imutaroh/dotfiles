@@ -6,6 +6,10 @@ herdr (v0.7.5, protocol 17) の `agent.view.set` に組み込みの `tab_order` 
 回避策として各ペインにカスタムトークン `ord`（ワークスペース→タブの表示順そのままの
 通し順位）を焼き込み、それでソートするカスタムビューを適用する。
 
+あわせて、各ワークスペース内のタブラベルにも表示位置の番号（`prefix+1..9` で
+ジャンプする番号と一致）を自動で振り直す。タブを閉じて番号がずれた場合や、
+番号なしでタブを作成・リネームした場合でも、次の reapply で正しい番号に補正される。
+
 タブの並び替え・作成・削除などのイベントを購読し、デバウンスしてから
 上記の再適用（reapply）を行う。接続が切れた場合は指数バックオフで再接続し、
 再接続のたびに必ず reapply する（herdr 再起動でカスタムビューが消えるため）。
@@ -17,6 +21,7 @@ import argparse
 import json
 import logging
 import os
+import re
 import socket
 import sys
 import threading
@@ -39,10 +44,16 @@ SUBSCRIBE_EVENT_TYPES = (
     "tab.created",
     "tab.closed",
     "tab.moved",
+    "tab.renamed",
     "pane.created",
     "pane.closed",
     "pane.agent_detected",
 )
+
+# タブラベル先頭の番号プレフィックスを検出する正規表現。
+# 例: "6.ob" -> "ob" / "7" -> "" / "6 Go" -> "Go"
+# "2026計画" のように数字の直後が区切り文字でないものにはマッチしない（除去しない）。
+_NUMBER_PREFIX_RE = re.compile(r"^\d+(?:[ .]\s*|$)")
 
 _debounce_lock = threading.Lock()
 _debounce_timer: threading.Timer | None = None
@@ -88,19 +99,44 @@ def send_request(method: str, params: dict, timeout: float = 5.0) -> dict:
     return response.get("result", {})
 
 
+def compute_renumbered_label(label: str, position: int) -> str:
+    """既存ラベルから先頭の番号プレフィックスを除いた名前部分に、位置番号を振り直す。"""
+    match = _NUMBER_PREFIX_RE.match(label)
+    name = label[match.end():] if match else label
+    name = name.strip()
+    return str(position) if not name else f"{position} {name}"
+
+
 def reapply() -> None:
-    """workspace/tab の表示順から ord トークンを再計算し、カスタムビューを適用する。"""
+    """workspace/tab の表示順から ord トークンを再計算し、カスタムビューを適用する。
+    あわせて、各ワークスペース内のタブラベルに表示位置の番号を振り直す。
+    """
     workspaces = send_request("workspace.list", {}).get("workspaces", [])
 
     order: dict[str, int] = {}
     rank = 0
+    renamed = 0
     for ws in workspaces:
         tabs = send_request(
             "tab.list", {"workspace_id": ws["workspace_id"]}
         ).get("tabs", [])
-        for tab in tabs:
+        for ws_position, tab in enumerate(tabs, start=1):
             rank += 1
             order[tab["tab_id"]] = rank
+
+            current_label = tab.get("label", "")
+            target_label = compute_renumbered_label(current_label, ws_position)
+            if target_label != current_label:
+                try:
+                    send_request(
+                        "tab.rename",
+                        {"tab_id": tab["tab_id"], "label": target_label},
+                    )
+                    renamed += 1
+                except Exception:
+                    logging.exception(
+                        "tab.rename に失敗しました (tab_id=%s)", tab["tab_id"]
+                    )
 
     agents = send_request("agent.list", {}).get("agents", [])
 
@@ -139,11 +175,12 @@ def reapply() -> None:
     )
 
     logging.info(
-        "reapply 完了: workspaces=%d tabs=%d agents_updated=%d agents_failed=%d",
+        "reapply 完了: workspaces=%d tabs=%d agents_updated=%d agents_failed=%d tabs_renamed=%d",
         len(workspaces),
         rank,
         updated,
         failed,
+        renamed,
     )
 
 
@@ -237,7 +274,8 @@ def watch_forever() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "herdr Agents サイドバーをタブバー表示順に自動追従させる常駐ウォッチャ"
+            "herdr Agents サイドバーをタブバー表示順に自動追従させ、"
+            "タブラベルにも位置番号を自動で振り直す常駐ウォッチャ"
         )
     )
     parser.add_argument(
