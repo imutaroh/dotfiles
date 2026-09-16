@@ -1,0 +1,167 @@
+# yaml-language-server: $schema=https://gh-dash.dev/schema.json
+#
+# gh-dash: GitHub の PR / Issue / 通知をターミナルで俯瞰するダッシュボード
+#
+# 起動:   gh dash
+# ヘルプ: 起動後 `?`（全キーバインドが出る。迷ったらこれ）
+# 導入:   gh extension install dlvhdr/gh-dash（setup.sh が実行する）
+#
+# 役割分担:
+#   gh-dash   … 一覧して探す・チェックアウトする（俯瞰）
+#   octo.nvim … 本文とコメントを書く・レビューする（編集。nvim 内は <leader>O 系）
+#   この設定では gh-dash 上で `O` を押すと octo.nvim へ受け渡す。
+#
+# 注意: キー名は公式ドキュメントより internal/config/parser.go の yaml タグが正。
+# ドキュメントは theme 周りが実装とズレている（table の階層・showSeparator の単複・
+# colors.icon を colors.inline.icons と誤記）。迷ったらソースを見ること。
+
+# ─── PR セクション（タブ。h / l で移動） ───
+# filters は GitHub の検索構文そのまま。`{{ nowModify "-2w" }}` は 2週間前の日付に展開される。
+prSections:
+  - title: 自分
+    filters: is:open author:@me sort:updated-desc
+    layout:
+      author:
+        hidden: true # 全部自分なので著者列は不要
+
+  - title: レビュー待ち
+    filters: is:open review-requested:@me sort:updated-desc
+
+  - title: 会社
+    filters: is:open org:androots sort:updated-desc
+
+  - title: 個人
+    filters: is:open org:imutaroh sort:updated-desc
+
+  - title: 最近マージ
+    # 「あれ何て PR だっけ」を掘り返す用。2週間より前は GitHub で探す。
+    filters: is:merged author:@me updated:>={{ nowModify "-2w" }} sort:updated-desc
+
+# ─── Issue セクション ───
+issuesSections:
+  - title: 自分の担当
+    filters: is:open assignee:@me sort:updated-desc
+
+  - title: 自分が作成
+    filters: is:open author:@me sort:updated-desc
+
+  - title: 会社
+    filters: is:open org:androots sort:updated-desc
+
+  - title: dotfiles
+    # 開発フローが Issue 起点（Issue → gh issue develop → ブランチ）なのでピン留め
+    filters: is:open repo:imutaroh/dotfiles sort:created-desc
+
+# ─── リポジトリ名 → ローカルパスの対応 ───
+# checkout（C）やカスタムコマンドの {{.RepoPath}} がこれを使って解決される。
+# 完全一致はワイルドカードより優先されるため、dotfiles の例外配置を先に書ける。
+# ローカルの実配置は owner 別になりきっていないため、例外を完全一致で明示する（2026-08-28 実測）
+repoPaths:
+  imutaroh/dotfiles: ~/dotfiles # dotfiles だけ ~/ 直下
+  imutaroh/antares: ~/repos/scarlet/antares # owner ではなくプロジェクト名の下にある
+  imutaroh/imutaroh: ~/repos/imutaroh/imutaroh
+  androots/*: ~/repos/androots/*
+  imutaakihiro/*: ~/repos/imutaakihiro/*
+  imutaroh/*: ~/repos/imutaroh/*
+
+# ─── カスタムキーバインド ───
+# 既定キーは internal/tui/keys/*.go の WithKeys() が正（ドキュメントには L や V の記載が無い）。
+#   universal: j k g G p P o r R ctrl+d ctrl+u h l / y Y ? q ctrl+c
+#   prs:       [ ] v a A L c d C space x e X W m u w V t s
+#   issues:    L a A c C x X t s
+# よってカスタムは J K O E z を使う（いずれも未使用）。
+keybindings:
+  universal:
+    # プレビューのスクロール。既定の ctrl+d / ctrl+u が効かない環境があるため通常キーにも割り当てる。
+    # builtin は外部プロセスを起動せず gh-dash 内部のコマンドを呼ぶ。
+    - key: J
+      builtin: pageDown
+    - key: K
+      builtin: pageUp
+
+    - key: z
+      name: lazygit
+      # L は既定の label と衝突するため z に変更（2026-08-28）
+      command: >
+        cd {{.RepoPath}} && lazygit
+
+  prs:
+    - key: O
+      name: octo でレビュー
+      # チェックアウトせず GitHub API 経由でレビューする（octo.nvim の本領）
+      command: >
+        cd {{.RepoPath}} && nvim -c "Octo pr edit {{.PrNumber}}"
+
+    - key: E
+      name: checkout して nvim
+      # ローカルにコードを引いて読みたいとき。diffview で base との差分を開く。
+      command: >
+        cd {{.RepoPath}} &&
+        gh pr checkout {{.PrNumber}} &&
+        nvim -c "DiffviewOpen {{.BaseRefName}}...{{.HeadRefName}}"
+
+  issues:
+    - key: O
+      name: octo で開く
+      command: >
+        cd {{.RepoPath}} && nvim -c "Octo issue edit {{.IssueNumber}}"
+
+# ─── 既定の挙動 ───
+defaults:
+  view: prs
+  # 5分だと org 全体を舐めるセクション構成では GraphQL レート制限に近づく。10分で様子見。
+  refetchIntervalMinutes: 10
+  prsLimit: 20
+  issuesLimit: 20
+  notificationsLimit: 20
+  prApproveComment: LGTM
+  preview:
+    open: true
+    width: 0.5
+  layout:
+    # カラム名は parser.go の PrsLayoutConfig / IssuesLayoutConfig が正（`repo` であって repoName ではない）
+    prs:
+      # 公式サンプルは repo を隠すが、androots と imutaroh を跨ぐのでリポジトリ名は表示する
+      repo:
+        width: 20
+      base:
+        hidden: true # ほぼ main。1列ぶんの幅がもったいない
+      lines:
+        hidden: true
+    issues:
+      repo:
+        width: 20
+
+# ─── テーマ（Ghostty の GitHub Dark に揃える） ───
+# colors を書くなら text / background / border / icon を全部埋める（validate:"required"）。
+theme:
+  ui:
+    sectionsShowCount: true
+    table:
+      showSeparator: true # ドキュメントの showSeparators は誤り（実装は単数）
+      compact: false
+  colors:
+    text:
+      primary: "#e6edf3" # GitHub Dark fg.default
+      secondary: "#c9d1d9" # Ghostty の foreground と同値
+      inverted: "#0d1117" # canvas.default
+      faint: "#8b949e" # fg.muted
+      warning: "#d29922"
+      success: "#3fb950"
+      error: "#f85149" # ドキュメントには載っていないがソースに存在する
+      actor: "#58a6ff" # 著者名。accent 青
+    background:
+      # 背景を 0.9 透過 + blur 30 で使っているため、選択行は青寄りに濃くしないと沈む
+      selected: "#1f3a5f"
+    border:
+      primary: "#30363d" # GitHub Dark border.default
+      secondary: "#484f58"
+      faint: "#21262d"
+    icon:
+      # ドキュメントの colors.inline.icons は誤り。ColorTheme が inline 展開されるため colors.icon が正
+      newcontributor: "#3fb950"
+      contributor: "#58a6ff"
+      collaborator: "#bc8cff"
+      member: "#d29922"
+      owner: "#f0883e"
+      unknownrole: "#8b949e"

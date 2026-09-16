@@ -60,6 +60,16 @@ if ! command -v claude &> /dev/null; then
 fi
 
 # ==================================================
+# gh 拡張
+# ==================================================
+# gh-dash: GitHub の PR / Issue を俯瞰する TUI ダッシュボード（設定は .config/gh-dash/）
+# Homebrew の formula は存在しないため Brewfile では管理できない
+if command -v gh &> /dev/null && ! gh extension list | grep -q "dlvhdr/gh-dash"; then
+    echo "Installing gh-dash..."
+    gh extension install dlvhdr/gh-dash
+fi
+
+# ==================================================
 # Google Cloud SDK
 # ==================================================
 if ! command -v gcloud &> /dev/null && [ ! -d "$HOME/google-cloud-sdk" ]; then
@@ -93,6 +103,14 @@ ln -sf "$DOTFILES_DIR/.config/herdr/agent-taborder-watch.py" ~/.config/herdr/age
 # hunk は config.toml のみ管理（同ディレクトリの state.json は対象外）
 mkdir -p ~/.config/hunk
 ln -sf "$DOTFILES_DIR/.config/hunk/config.toml" ~/.config/hunk/config.toml
+
+# yazi は yazi.toml のみ管理（keymap / theme を足すときはここにも追加）
+mkdir -p ~/.config/yazi
+ln -sf "$DOTFILES_DIR/.config/yazi/yazi.toml" ~/.config/yazi/yazi.toml
+
+# gh-dash（gh 拡張の GitHub ダッシュボード）
+mkdir -p ~/.config/gh-dash
+ln -sf "$DOTFILES_DIR/.config/gh-dash/config.yml" ~/.config/gh-dash/config.yml
 
 # karabiner は karabiner.json のみ管理（assets/ や automatic_backups は対象外）
 mkdir -p ~/.config/karabiner
@@ -130,7 +148,6 @@ ln -sfn "$DOTFILES_DIR/.claude/scripts" ~/.claude/scripts
 # hooksはファイル単位でリンク（dotfiles 管理外のフックを消さないため、
 # skills のようなディレクトリまるごとリンクにはしない）
 mkdir -p ~/.claude/hooks
-ln -sf "$DOTFILES_DIR/.claude/hooks/anti-sycophancy.sh" ~/.claude/hooks/anti-sycophancy.sh
 ln -sf "$DOTFILES_DIR/.claude/hooks/play-sound.sh" ~/.claude/hooks/play-sound.sh
 
 # settings.json は symlink にしない（claude doctor が rename で書き戻して壊すため）。
@@ -159,17 +176,20 @@ ln -sf "$DOTFILES_DIR/.codex/themes/imutaro-cool.tmTheme" ~/.codex/themes/imutar
 if [ ! -e ~/.codex/config.toml ]; then
     touch ~/.codex/config.toml
 fi
-if ! grep -q '^project_doc_fallback_filenames[[:space:]]*=' ~/.codex/config.toml; then
-    printf '\nproject_doc_fallback_filenames = ["CLAUDE.md"]\n' >> ~/.codex/config.toml
-fi
+# project_doc_fallback_filenames・[tui] の theme/status_line/terminal_title は
+# apply-codex-config.py がキー単位で冪等に追記・置換する（詳細はスクリプト先頭のdocstring）。
+python3 "$DOTFILES_DIR/.codex/scripts/apply-codex-config.py" --apply
 
-# Claude Code の寒色デザインに合わせた Codex TUI を初回だけ設定する。
-# [tui] がすでにある場合は、Codex アプリが管理する既存値を壊さない。
-if ! grep -q '^\[tui\]$' ~/.codex/config.toml; then
-    printf '\n[tui]\ntheme = "imutaro-cool"\nstatus_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "current-dir", "git-branch"]\n' >> ~/.codex/config.toml
-elif ! grep -q '^theme[[:space:]]*=[[:space:]]*"imutaro-cool"$' ~/.codex/config.toml \
-    || ! grep -q '^status_line[[:space:]]*=' ~/.codex/config.toml; then
-    echo "⚠️  Codex TUI は既存設定あり。/theme と /statusline で Imutaro Cool 設定を確認してください"
+# Codex の execpolicy ルール（Claude Code の permissions 相当）をリンクする。
+# ~/.codex/rules/default.rules は Codex が承認記憶として自動生成するファイルなので触らない。
+mkdir -p ~/.codex/rules
+ln -sf "$DOTFILES_DIR/.codex/rules/claude-parity.rules" ~/.codex/rules/claude-parity.rules
+
+# output style（developer_instructions）は初回だけ設定する。
+# ユーザーが `sync-output-style.py default` で意図的に消した状態を setup.sh が
+# 勝手に戻さないよう、既に設定がある場合は触らない。
+if ! grep -q '^developer_instructions[[:space:]]*=' ~/.codex/config.toml; then
+    python3 "$DOTFILES_DIR/.codex/scripts/sync-output-style.py" 15sai
 fi
 
 # Claude Code の transcript mode に合わせ、Ctrl+O で Codex の transcript を開く。
@@ -181,12 +201,6 @@ if ! grep -q '^open_transcript[[:space:]]*=[[:space:]]*"ctrl-o"$' ~/.codex/confi
     else
         printf '\n[tui.keymap.global]\nopen_transcript = "ctrl-o"\ncopy = []\n\n[tui.keymap.pager]\nscroll_up = "k"\nscroll_down = "j"\nhalf_page_up = "ctrl-u"\nhalf_page_down = "ctrl-d"\njump_top = "g"\njump_bottom = "shift-g"\nclose_transcript = "q"\n' >> ~/.codex/config.toml
     fi
-fi
-
-# 書籍ノート知識貯蔵庫（private リポジトリ・dotfilesの.gitignore対象）を skills 配下に clone
-if [ ! -d "$DOTFILES_DIR/.claude/skills/books" ]; then
-    git clone https://github.com/imutaroh/book-skills.git "$DOTFILES_DIR/.claude/skills/books" \
-        || echo "⚠️  book-skills のcloneに失敗（private リポジトリのため要認証。後で手動で clone してください）"
 fi
 
 # themesはディレクトリ全体をシンボリックリンク

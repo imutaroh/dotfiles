@@ -1,0 +1,67 @@
+# iPhone に残すアプリのバンドルID（1 行 1 つ、# はコメント）
+# ./apps.sh list の出力から選ぶ。ここに無いアプリは ./apps.sh apply で削除される
+# 消したいアプリは行ごと削除（or 行頭に # を付ける）→ ./apps.sh plan で確認 → ./apps.sh apply
+#
+# ⚠ 消すと引き継ぎが要るもの: 銀行・決済・1Password・LINE（トーク履歴はローカル）
+AlexisBarreyat.BeReal                        # BeReal.
+com.1password.1password                      # 1Password
+com.1track.nearsight                         # AppSheet
+com.amazon.AmazonJP                          # Amazon
+com.amazon.Lassen                            # Kindle
+com.anthropic.claude                         # Claude
+com.apple.music.classical                    # クラシック
+com.brave.ios.browser                        # Brave
+# com.clidoapps.ledbannerpro                   # LEDバナープロ
+# com.cpone.customer                           # Rocket Now
+com.cron.calendar                            # Notion Calendar
+# com.github.stormbreaker.prod                 # GitHub
+com.google.calendar                          # Googleカレンダー
+com.google.chrome.ios                        # Chrome
+# com.google.Drive                             # ドライブ
+com.google.Gmail                             # Gmail
+com.google.ios.youtube                       # YouTube
+com.google.Maps                              # Google Maps
+com.hammerandchisel.discord                  # Discord
+# com.kakaku.tabelog                           # 食べログ
+# com.kouzoh.ios.mercari                       # メルカリ
+com.kubutaku.remimir                         # Re:Mimir
+com.nishitetsu.NNR-BusNavi                   # 西鉄バスナビ
+com.openai.chat                              # ChatGPT
+com.souzoh.ios.merchari                      # チャリチャリ
+# com.starbucks.jp                             # Starbucks
+com.strava.stravaride                        # Strava
+com.supercell.scroll                         # クラロワ
+com.tinyspeck.chatlyio                       # Slack
+# com.trivago.iphone                           # trivago
+com.ubercab.UberEats                         # Uber Eats
+# dokoka.jp                                    # Dokoka
+# jp.bondavi.timer                             # 集中
+# jp.co.burgerkingjapan                        # バーガーキング
+# jp.co.extlink.mycolle                        # マイコレ
+jp.co.freee.expenses                         # 経費精算
+jp.co.freee.freee                            # freee会計
+# jp.co.komeda.ua.ios.pub                      # コメダ珈琲店
+jp.co.ncbank.bankingappli                    # 西日本シティ
+jp.co.pia.ticketpia                          # チケットぴあ
+jp.co.rakuten.link                           # Link
+jp.co.rakuten.mobile.ecare                   # my 楽天モバイル
+jp.co.rakuten.pay.shopper                    # 楽天ペイ
+# jp.co.unisys.yamadamobile                    # ヤマダデンキ
+jp.co.yahoo.transit.app                      # 乗換案内
+jp.co.yahoo.YWeatherApp                      # 天気
+jp.ensystem.enclub                           # えんくらぶ
+jp.japanpost.jp-bank.bankbookapp             # ゆうちょ通帳
+jp.Lifecard.LifecardApp                      # ライフカード
+jp.mcdonalds.coupon                          # マクドナルド
+jp.naver.line                                # LINE
+jp.pay2.app.ios                              # PayPay
+jp.pokemon.pokemonchampions                  # Pokémon Champions
+# jp.zozo.zozotown                             # ZOZOTOWN
+# md.obsidian                                  # Obsidian
+# md.obsidian.Obsidian-Web-Clipper             # Web Clipper
+# mu.note                                      # note
+notion.id                                    # Notion
+# org.tmurakam.presentationTimer               # プレゼンタイマ
+# space.manus.life.countdown.t20260228033556   # 寿命
+tokyo.komaji.soundlessalarm                  # バイブアラーム
+# tv.every.delishkitchen                       # デリッシュ

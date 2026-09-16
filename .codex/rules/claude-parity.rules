@@ -1,0 +1,85 @@
+# claude-parity.rules
+# Claude Code の .claude/settings.json permissions（allow/deny）と
+# グローバル CLAUDE.md の禁止コマンドを Codex の execpolicy prefix_rule に変換したもの。
+# 既存の ~/.codex/rules/default.rules（Codex が承認記憶として自動生成）は触らない。
+# より長い prefix にマッチするルールが優先される（例: git push --force は
+# git push の allow より git push --force の forbidden が優先される）。
+
+# ─── forbidden（破壊的操作・グローバル CLAUDE.md の禁止コマンド） ───
+prefix_rule(pattern=["rm"], decision="forbidden", justification="削除は trash コマンドを使う（復元可能にするため）")
+prefix_rule(pattern=["rmdir"], decision="forbidden", justification="削除は trash コマンドを使う（復元可能にするため）")
+prefix_rule(pattern=["git", "push", "--force"], decision="forbidden", justification="force push は履歴破壊。明示指示がない限り禁止")
+prefix_rule(pattern=["git", "push", "-f"], decision="forbidden", justification="force push は履歴破壊。明示指示がない限り禁止")
+prefix_rule(pattern=["git", "push", "--force-with-lease"], decision="forbidden", justification="force push は履歴破壊。明示指示がない限り禁止")
+prefix_rule(pattern=["git", "reset", "--hard"], decision="forbidden", justification="作業ツリーを破壊的に巻き戻すため禁止")
+prefix_rule(pattern=["git", "clean", "-f"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
+prefix_rule(pattern=["git", "clean", "-fd"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
+prefix_rule(pattern=["git", "clean", "-fdx"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
+prefix_rule(pattern=["git", "clean", "-df"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
+prefix_rule(pattern=["git", "clean", "-dfx"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
+prefix_rule(pattern=["git", "clean", "-xdf"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
+prefix_rule(pattern=["git", "clean", "-ff"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
+
+# ─── allow: brew（読み取り系のみ） ───
+prefix_rule(pattern=["brew", "--prefix"], decision="allow", justification="読み取り専用の情報照会")
+prefix_rule(pattern=["brew", "--version"], decision="allow", justification="読み取り専用の情報照会")
+prefix_rule(pattern=["brew", "config"], decision="allow", justification="読み取り専用の情報照会")
+prefix_rule(pattern=["brew", "deps"], decision="allow", justification="読み取り専用の情報照会")
+prefix_rule(pattern=["brew", "doctor"], decision="allow", justification="読み取り専用の診断")
+prefix_rule(pattern=["brew", "info"], decision="allow", justification="読み取り専用の情報照会")
+prefix_rule(pattern=["brew", "leaves"], decision="allow", justification="読み取り専用の情報照会")
+prefix_rule(pattern=["brew", "list"], decision="allow", justification="読み取り専用の情報照会")
+prefix_rule(pattern=["brew", "outdated"], decision="allow", justification="読み取り専用の情報照会")
+prefix_rule(pattern=["brew", "search"], decision="allow", justification="読み取り専用の検索")
+prefix_rule(pattern=["brew", "services", "list"], decision="allow", justification="読み取り専用の状態確認")
+
+# ─── allow: 日常コマンド ───
+prefix_rule(pattern=["cd"], decision="allow", justification="ディレクトリ移動は無害")
+prefix_rule(pattern=["date"], decision="allow", justification="日時取得は無害")
+prefix_rule(pattern=["echo"], decision="allow", justification="標準出力への表示は無害")
+prefix_rule(pattern=["fd"], decision="allow", justification="読み取り専用のファイル検索")
+prefix_rule(pattern=["ls"], decision="allow", justification="読み取り専用の一覧表示")
+prefix_rule(pattern=["pwd"], decision="allow", justification="読み取り専用のパス表示")
+prefix_rule(pattern=["tree"], decision="allow", justification="読み取り専用のディレクトリ表示")
+prefix_rule(pattern=["wc"], decision="allow", justification="読み取り専用の集計")
+prefix_rule(pattern=["which"], decision="allow", justification="読み取り専用のパス解決")
+prefix_rule(pattern=["trash"], decision="allow", justification="復元可能な削除手段として推奨しているため許可")
+
+# ─── allow: gh（読み取り系のみ） ───
+prefix_rule(pattern=["gh", "issue", "list"], decision="allow", justification="読み取り専用のIssue一覧")
+prefix_rule(pattern=["gh", "issue", "view"], decision="allow", justification="読み取り専用のIssue閲覧")
+prefix_rule(pattern=["gh", "pr", "checks"], decision="allow", justification="読み取り専用のPRチェック確認")
+prefix_rule(pattern=["gh", "pr", "diff"], decision="allow", justification="読み取り専用のPR差分確認")
+prefix_rule(pattern=["gh", "pr", "list"], decision="allow", justification="読み取り専用のPR一覧")
+prefix_rule(pattern=["gh", "pr", "view"], decision="allow", justification="読み取り専用のPR閲覧")
+prefix_rule(pattern=["gh", "repo", "list"], decision="allow", justification="読み取り専用のリポジトリ一覧")
+prefix_rule(pattern=["gh", "repo", "view"], decision="allow", justification="読み取り専用のリポジトリ閲覧")
+prefix_rule(pattern=["gh", "run", "list"], decision="allow", justification="読み取り専用のCI実行一覧")
+prefix_rule(pattern=["gh", "run", "view"], decision="allow", justification="読み取り専用のCI実行閲覧")
+prefix_rule(pattern=["gh", "search"], decision="allow", justification="読み取り専用の検索")
+prefix_rule(pattern=["gh", "status"], decision="allow", justification="読み取り専用の状態確認")
+prefix_rule(pattern=["gh", "workflow", "list"], decision="allow", justification="読み取り専用のワークフロー一覧")
+prefix_rule(pattern=["gh", "workflow", "view"], decision="allow", justification="読み取り専用のワークフロー閲覧")
+
+# ─── allow: git（日常操作。破壊的な組み合わせは上の forbidden が優先される） ───
+prefix_rule(pattern=["git", "add"], decision="allow", justification="ステージングは可逆")
+prefix_rule(pattern=["git", "branch"], decision="allow", justification="ブランチ確認・作成は日常操作")
+prefix_rule(pattern=["git", "checkout"], decision="allow", justification="ブランチ切り替えは日常操作")
+prefix_rule(pattern=["git", "commit"], decision="allow", justification="コミットは可逆（後で取り消せる）")
+prefix_rule(pattern=["git", "diff"], decision="allow", justification="読み取り専用の差分確認")
+prefix_rule(pattern=["git", "log"], decision="allow", justification="読み取り専用の履歴確認")
+prefix_rule(pattern=["git", "push"], decision="allow", justification="通常pushは日常操作（force系は上のforbiddenで個別禁止）")
+prefix_rule(pattern=["git", "stash"], decision="allow", justification="一時退避は可逆")
+prefix_rule(pattern=["git", "status"], decision="allow", justification="読み取り専用の状態確認")
+prefix_rule(pattern=["git", "switch"], decision="allow", justification="ブランチ切り替えは日常操作")
+prefix_rule(pattern=["git", "rebase"], decision="allow", justification="日常操作（--hardのような破壊的サブコマンドは無い）")
+prefix_rule(pattern=["git", "reset"], decision="allow", justification="通常resetは日常操作（--hardは上のforbiddenで個別禁止）")
+prefix_rule(pattern=["git", "merge"], decision="allow", justification="マージは日常操作")
+prefix_rule(pattern=["git", "fetch"], decision="allow", justification="読み取り専用のリモート取得")
+prefix_rule(pattern=["git", "pull"], decision="allow", justification="日常操作（fetch+mergeの組み合わせ）")
+
+# ─── allow: 開発ツール ───
+prefix_rule(pattern=["go", "version"], decision="allow", justification="読み取り専用の情報照会")
+prefix_rule(pattern=["go", "mod"], decision="allow", justification="依存関係の確認・整理は日常操作")
+prefix_rule(pattern=["mise"], decision="allow", justification="ツールバージョン管理は日常操作")
+prefix_rule(pattern=["npm", "test"], decision="allow", justification="テスト実行は副作用のない日常操作")
