@@ -11,7 +11,7 @@ Claude Code のユーザーレベル設定。`~/.claude/` にシンボリック�
 ├── design.md          # 寒色トーン&マナー（statusline / テーマの配色リファレンス）
 ├── statusline.sh      # ステータスライン表示スクリプト
 ├── hooks/             # イベントフック
-│   └── anti-sycophancy.sh # 迎合防止リマインダー（UserPromptSubmit）
+│   └── play-sound.sh  # 確認要求時・完了時の効果音（PermissionRequest / Stop）
 ├── scripts/           # ステータスライン等で使用するスクリプト
 │   └── fetch_usage.sh # API 使用量取得（キーチェーンから実行時にトークン取得）
 ├── sounds/            # 通知音

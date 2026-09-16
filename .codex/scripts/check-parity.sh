@@ -13,7 +13,7 @@
 #   2. ~/.codex/AGENTS.md / rules / themes のシンボリックリンクが dotfiles を指しているか
 #   3. config.toml のキー（apply-codex-config.py --check）
 #   4. status_line の識別子がこの codex バイナリに実在するか（バイナリの文字列を検索）
-#   5. hooks.json の共通フック3件が config.toml で trust 済みか（未 trust は /hooks で本人が行う）
+#   5. hooks.json の共通フック（確認音・完了音・タブ内ステータス）が config.toml で trust 済みか（未 trust は /hooks で本人が行う）
 #   6. 個人スキルブリッジ（setup-codex-skills.py --check）
 #   7. developer_instructions（output style）と CLAUDE.md がモデル入力に実際に注入されているか
 set -u
@@ -125,7 +125,7 @@ PY
     if [ "$trusted" -ge "$defined" ]; then
         ok "全フックが trust 済み"
     else
-        bad "未 trust のフックあり。Codex TUI で /hooks を開き、定義（迎合防止・確認音・完了音・タブ内ステータス）を確認して trust する（スクリプトでは代行しない）"
+        bad "未 trust のフックあり。Codex TUI で /hooks を開き、定義（確認音・完了音・タブ内ステータス）を確認して trust する（スクリプトでは代行しない）"
     fi
 else
     bad "$CODEX_HOME/hooks.json が無い（.codex/hook-fragments/*.json を手動統合）"

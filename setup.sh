@@ -148,7 +148,6 @@ ln -sfn "$DOTFILES_DIR/.claude/scripts" ~/.claude/scripts
 # hooksはファイル単位でリンク（dotfiles 管理外のフックを消さないため、
 # skills のようなディレクトリまるごとリンクにはしない）
 mkdir -p ~/.claude/hooks
-ln -sf "$DOTFILES_DIR/.claude/hooks/anti-sycophancy.sh" ~/.claude/hooks/anti-sycophancy.sh
 ln -sf "$DOTFILES_DIR/.claude/hooks/play-sound.sh" ~/.claude/hooks/play-sound.sh
 
 # settings.json は symlink にしない（claude doctor が rename で書き戻して壊すため）。
