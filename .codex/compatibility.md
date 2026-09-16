@@ -6,7 +6,7 @@
 - AskUserQuestion は現在利用可能な質問ツールへ読み替える。モード上使えなければ通常の日本語で必要な質問をする。探索の好みを選択肢で閉じず、既存の権限や分かっている内容を再確認しない。
 - Agent / Task / SendMessage は利用可能な Codex collaboration 機能へ読み替える。Claude 専用のモデル名、effort、subagent_type、isolation、allowed-tools、権限拡張構文は Codex の設定・権限を変更しない。委譲先モデルは現在設定を継承する。ツールがなければ実行済みと偽らない。
 - 元文書の相対参照（scripts/、references/、assets/、template 等）は元 SKILL.md の実体ディレクトリを基準に解決する。symlink の元ファイルや同梱資源を再確認する。ラッパーのディレクトリに複製しない。
-- /name は Codex の $name または同じ目的の明示依頼として扱う。依存スキルは現在の一覧から探し、必要な SKILL.md を読む。skill-creator は Codex 標準、ctx-agent-history-search は ctx、terminal-browser は既存版を使用する。
+- /name は Codex の $name または同じ目的の明示依頼として扱う。依存スキルは現在の一覧から探し、必要な SKILL.md を読む。skill-creator は Codex 標準、ctx-agent-history-search は ctx、grill-me / grilling は `~/.agents/skills/` の既存実体を使用する。
 - 要求されたスキルが一覧にない場合は対象リポジトリの `.claude/skills/<name>/SKILL.md` を探し、存在すれば全文を読み、そのスキル実体を基準に相対参照を解決する。別リポジトリや組織のスキルをグローバルへコピーしない。
 - ブラウザは現在の既存 browser / chrome / agent-browser スキルから状況に合うものを使う。Claude 固有ブラウザ MCP が接続済みと仮定しない。画像生成や codex exec での画像委譲は Codex 既存 imagegen に読み替え、Codex を再帰起動しない。
 - artifact-design / artifact-diagramming / Claude Artifact が必要な場合は既存 visualize 等を確認する。適切な機能がなければローカル HTML 等の成果物を提示し、公開済みURLを捏造しない。公開依頼があるときだけ Sites 等の公開手順を使う。

@@ -60,6 +60,16 @@ if ! command -v claude &> /dev/null; then
 fi
 
 # ==================================================
+# gh 拡張
+# ==================================================
+# gh-dash: GitHub の PR / Issue を俯瞰する TUI ダッシュボード（設定は .config/gh-dash/）
+# Homebrew の formula は存在しないため Brewfile では管理できない
+if command -v gh &> /dev/null && ! gh extension list | grep -q "dlvhdr/gh-dash"; then
+    echo "Installing gh-dash..."
+    gh extension install dlvhdr/gh-dash
+fi
+
+# ==================================================
 # Google Cloud SDK
 # ==================================================
 if ! command -v gcloud &> /dev/null && [ ! -d "$HOME/google-cloud-sdk" ]; then
@@ -97,6 +107,10 @@ ln -sf "$DOTFILES_DIR/.config/hunk/config.toml" ~/.config/hunk/config.toml
 # yazi は yazi.toml のみ管理（keymap / theme を足すときはここにも追加）
 mkdir -p ~/.config/yazi
 ln -sf "$DOTFILES_DIR/.config/yazi/yazi.toml" ~/.config/yazi/yazi.toml
+
+# gh-dash（gh 拡張の GitHub ダッシュボード）
+mkdir -p ~/.config/gh-dash
+ln -sf "$DOTFILES_DIR/.config/gh-dash/config.yml" ~/.config/gh-dash/config.yml
 
 # karabiner は karabiner.json のみ管理（assets/ や automatic_backups は対象外）
 mkdir -p ~/.config/karabiner
@@ -188,12 +202,6 @@ if ! grep -q '^open_transcript[[:space:]]*=[[:space:]]*"ctrl-o"$' ~/.codex/confi
     else
         printf '\n[tui.keymap.global]\nopen_transcript = "ctrl-o"\ncopy = []\n\n[tui.keymap.pager]\nscroll_up = "k"\nscroll_down = "j"\nhalf_page_up = "ctrl-u"\nhalf_page_down = "ctrl-d"\njump_top = "g"\njump_bottom = "shift-g"\nclose_transcript = "q"\n' >> ~/.codex/config.toml
     fi
-fi
-
-# 書籍ノート知識貯蔵庫（private リポジトリ・dotfilesの.gitignore対象）を skills 配下に clone
-if [ ! -d "$DOTFILES_DIR/.claude/skills/books" ]; then
-    git clone https://github.com/imutaroh/book-skills.git "$DOTFILES_DIR/.claude/skills/books" \
-        || echo "⚠️  book-skills のcloneに失敗（private リポジトリのため要認証。後で手動で clone してください）"
 fi
 
 # themesはディレクトリ全体をシンボリックリンク
