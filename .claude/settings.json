@@ -61,7 +61,6 @@
       "Bash(git fetch:*)",
       "Bash(git pull:*)",
       "Bash(mise:*)",
-      "Bash(npm run:*)",
       "Bash(npm test:*)"
     ],
     "deny": [
@@ -74,12 +73,21 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "fable",
   "enabledMcpjsonServers": [
     "obsidian"
   ],
-  "skillOverrides": {
-    "month": "off"
-  },
+  "deniedMcpServers": [
+    {
+      "serverName": "claude.ai Gmail"
+    },
+    {
+      "serverName": "claude.ai Google Drive"
+    },
+    {
+      "serverName": "claude.ai freee"
+    }
+  ],
   "hooks": {
     "PermissionRequest": [
       {
@@ -100,16 +108,6 @@
           }
         ]
       }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/anti-sycophancy.sh"
-          }
-        ]
-      }
     ]
   },
   "statusLine": {
@@ -119,7 +117,7 @@
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": false,
     "skill-creator@claude-plugins-official": false,
-    "claude-security@claude-plugins-official": true
+    "claude-security@claude-plugins-official": false
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -129,11 +127,41 @@
       }
     }
   },
+  "outputStyle": "Explanatory",
   "awaySummaryEnabled": true,
+  "showClearContextOnPlanAccept": true,
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "theme": "custom:dark-daltonized-cool",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
+  "autoMode": {
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: Private — imutaroh/ObsidianImus (GitHub)",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured",
+      "**Default / protected branches**: Default branch main; no protected branches or rulesets listed (rulesets not queryable here)",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Source control**: The trusted repo (imutaroh/ObsidianImus) and its origin remote on github.com only — no additional orgs configured",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: Private/Finance/ (gitignored — financial data); Private/AI workspace/ draft notes pending manual review before promotion to Notes/; any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited — e.g. matches `prod-db`, not `producer`)",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: personal knowledge-management (Obsidian vault: notes, learning, journaling) — hobby/personal use",
+      "**Trusted repo**: imutaroh/ObsidianImus (private, github.com/imutaroh/ObsidianImus) — the working directory and its origin remote; confidential personal notes are fine to commit here given private visibility, but Private/Finance/ and other credential/regulated material are excluded regardless of visibility",
+      "**Org-specific CLIs**: None configured — routine personal CLIs observed: ctx, codex, trash, brew, nvim, herdr, gdev, hunk (no org affiliation evidenced)",
+      "**routine under ~/repos/imutaroh/ObsidianImus/ prefix**: Notes/, Private/AI workspace/, and .claude/ file operations are routine for this vault"
+    ]
+  },
   "voiceEnabled": true
 }

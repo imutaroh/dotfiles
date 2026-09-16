@@ -22,6 +22,8 @@ macOS 用の個人設定ファイル管理リポジトリ。
 | 開発ツール | Neovim（AstroNvim ベース） | エディタ |
 | | Claude Code / Codex CLI | コーディングエージェント |
 | | hunk | レビュー特化の差分ビューア（`nh` コマンド・hunk-review スキルから使用） |
+| | yazi | ターミナルファイラー（`y` で起動し終了時にその場所へ cd。設定は `.config/yazi/` で管理） |
+| | gh-dash | GitHub の PR / Issue を俯瞰する TUI（`gh dash`。gh 拡張のため Brewfile 管理外・setup.sh が導入） |
 | ユーティリティ | Raycast | ランチャーアプリ |
 | | Karabiner-Elements | キー入力カスタマイズ（BT キーボード接続時に内蔵キーボードを無効化） |
 
@@ -33,14 +35,18 @@ macOS 用の個人設定ファイル管理リポジトリ。
 ├── .zshrc                 # インタラクティブシェル設定
 ├── Brewfile               # Homebrew パッケージ
 ├── setup.sh               # セットアップスクリプト
+├── setup-codex-skills.py  # Codex 個人スキルの単独検査・リンク設置
 ├── macos.sh               # macOS 設定用スクリプト
 ├── launchd/               # 常駐エージェント用 plist（~/Library/LaunchAgents/ にコピー）
+├── iphone/                # iPhone アプリの宣言的管理（keep.txt に残すアプリを列挙し apps.sh plan/apply で差分削除）
 │
 ├── .config/               # ~/.config/ にリンク
+│   ├── gh-dash/           # GitHub ダッシュボード設定（gh 拡張）
 │   ├── ghostty/           # ターミナル設定
 │   ├── git/               # Git グローバル gitignore
 │   ├── herdr/             # エージェントマルチプレクサ設定
 │   │                       # （agent-taborder-watch.py: Agents サイドバーをタブ順に追従、
+│   │                       #  タブ名への位置番号の自動付与も担う、
 │   │                       #  ログは ~/.config/herdr/agent-taborder.log）
 │   ├── karabiner/         # Karabiner-Elements 設定（karabiner.json のみ）
 │   ├── lazygit/           # Git TUI 設定
@@ -48,15 +54,22 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   ├── nvim/              # Neovim 設定
 │   ├── raycast/           # Raycast スクリプト
 │   ├── starship.toml      # プロンプト設定
-│   └── uv/                # Python パッケージ管理設定
+│   ├── uv/                # Python パッケージ管理設定
+│   └── yazi/              # ターミナルファイラー設定（yazi.toml のみ）
 │
-├── .claude/               # ~/.claude/ にリンク（ユーザーレベル設定）
+├── .claude/               # ユーザーレベル設定（子の選択項目のみ ~/.claude/ へリンク）
 │   ├── CLAUDE.md          # カスタム指示
-│   ├── settings.json      # 設定
+│   ├── settings.json      # 実環境の実ファイルから sync-settings.sh で取り込む
 │   └── skills/            # カスタムスキル
 │
 └── .codex/                # Codex CLI のdotfiles管理対象
-    └── themes/            # ~/.codex/themes/ にファイル単位でリンク
+    ├── themes/            # ~/.codex/themes/ にファイル単位でリンク
+    ├── skills/            # Claude 個人スキルを実行時参照する Codex 互換入口
+    ├── compatibility.md   # 共通の読み替え規約
+    ├── skill-bridge.json  # 個人42件の対応分類・正本ハッシュ
+    ├── scripts/           # Codex 生ログ抽出・config.toml 更新・output style 同期
+    ├── rules/             # execpolicy ルール（Claude Code の permissions 相当）
+    └── hook-fragments/    # claude-parity.json: 既存設定へ追加する3フック定義
 ```
 
 詳細は各ディレクトリの README を参照。
@@ -96,14 +109,26 @@ source ~/.zshrc  # またはターミナル再起動
 
 ## Codex CLI カスタマイズ
 
-`setup.sh` は `~/.codex/config.toml` 全体を置き換えず、初回のみTUI設定を追記する。Codexアプリが管理するモデル・権限・Hooksなどの既存設定は保持される。
+`setup.sh` は `~/.codex/config.toml` 全体を置き換えず、`.codex/scripts/apply-codex-config.py --apply` がキー単位で冪等に追記・置換する（Codexアプリが管理するモデル・権限・Hooksなどの既存設定や `[tui]` の他キーは保持される）。
 
-- テーマ: `Imutaro Cool`（Claude Codeと共通のシアン・ブルー・ティール・バイオレット・スレートを使用）
-- ステータスライン: モデルと推論レベル、ディレクトリ、Gitブランチ、コンテキスト残量、5時間枠、週間枠
-- 手動変更: Codex CLIの `/theme` と `/statusline`
+- テーマ: `Imutaro Cool`（Claude Codeと共通のシアン・ブルー・ティール・バイオレット・スレートを使用。既存値があれば変更しない）
+- ステータスライン（色付き・1行）: 左から モデルと推論レベル、Gitブランチ、変更ありマーカー、コンテキスト残量、5時間枠、週間枠、推定コスト、ディレクトリ（狭いペインでは右から欠けるので重要順）
+- herdr サイドバーのスレッド名表示用に `terminal_title` も設定する
+- 手動変更: Codex CLIの `/theme` と `/statusline`（TUI で変えた値は次の `setup.sh` で dotfiles 側の定数に戻るため、残したい変更は `apply-codex-config.py` に反映する）
 - 利用枠のリセット日時: `/status` で確認（ステータスラインは残量のみ）
+- 複数行 HUD: Claude Code と同じ5行構成（セッション名 / モデル·effort / ctx バー / 5h / 7d）を herdr の隣ペインに出す `codex-hud`（`.codex/scripts/codex-hud.sh`。Codex 本体の footer には自作出力を描けないため別プロセス）
+- 一括点検: `bash ~/dotfiles/.codex/scripts/check-parity.sh`（リンク・config キー・識別子の実在・フック trust・スキル・注入確認。運用の指針は [.codex/README.md](.codex/README.md) の「運用ベストプラクティス」）
 
-既存の `[tui]` 設定がある場合、`setup.sh` は自動上書きせず確認メッセージを表示する。
+権限は `.codex/rules/claude-parity.rules`（execpolicy の prefix_rule。Claude Code の `.claude/settings.json` permissions 相当）を `setup.sh` がリンクする。output style は `.codex/scripts/sync-output-style.py` が `developer_instructions` として永続反映する。詳細な対応表とCLI例は [.codex/README.md](.codex/README.md) の「Claude Code との体験の対応」を参照。
+
+個人スキルの Codex 対応は `setup.sh` とは独立して導入する。全セットアップの再実行は不要。
+
+```bash
+python3 ~/dotfiles/setup-codex-skills.py --check
+python3 ~/dotfiles/setup-codex-skills.py --apply
+```
+
+`~/.agents/skills/` に38件のリンクを設置し、Claude 側の本文正本を実行時に参照する。既存スキル利用3件・未移植1件を含む対応範囲、更新検査、巻戻しは [.codex/README.md](.codex/README.md) を参照。フックは `.codex/hook-fragments/claude-parity.json`（共通3件）と `codex-hud.json`（Codex のタブ内に送信ごとのステータスを出す1件）を既存 `~/.codex/hooks.json` にイベント単位で統合し、Codex の `/hooks` で本人が定義を確認・trust して初めて実行される。既存ファイル全体を fragment で上書きしない。
 
 ## カスタムコマンド
 

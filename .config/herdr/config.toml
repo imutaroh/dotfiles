@@ -1,5 +1,19 @@
 onboarding = false
 
+# ─── テーマ ───
+# ベーステーマは既定の catppuccin のまま。個別トークンだけ上書きする。
+# 上書き可能なトークン（herdr 0.7.5 の CustomThemeColors より）:
+#   accent / panel_bg / surface0 / surface1 / surface_dim / overlay0 / overlay1
+#   text / subtext0 / mauve / green / yellow / red / blue / teal / peach
+[theme.custom]
+# Ghostty を background-opacity で透過させたことで（当時 0.55、2026-08-27 に 0.9 へ）、
+# サイドバーの見出し（spaces / agents / tab order）や非アクティブなタブ名が沈んで読めない。
+# 明度の梯子 overlay0 < overlay1 < subtext0 < text の順序を保ったまま、全体を白側へ平行移動する（2026-08-24）
+overlay0 = "#8b93a7"   # 最も沈む要素（catppuccin 既定 #6c7086）
+overlay1 = "#a3abbf"   # 既定 #7f849c
+subtext0 = "#c2c9da"   # 副次ラベル（既定 #a6adc8）
+text     = "#e4e9f5"   # 主文字（既定 #cdd6f4）
+
 [keys]
 # プレフィックスキー: ctrl+q を押してから各キーを押す（tmux の ctrl+b 相当）
 prefix = "ctrl+q"
@@ -30,10 +44,17 @@ close_tab = "prefix+shift+x"
 # ─── ペイン（分割） ───
 split_vertical = "prefix+v"    # 左右に分割
 split_horizontal = "prefix+minus" # 上下に分割
+# focus_pane は Cmd+h/j/k/l と同一入力（Ghostty が text:\x11h 形式で prefix+h に変換している）。
+# ここを別機能に変えると Cmd 側も道連れになるので注意。リサイズは resize_mode（prefix+r）で行う
+#（0.8.2 の resize_pane_* による「1打リサイズ化」案は 2026-08-20 に取りやめ）
 focus_pane_left = "prefix+h"   # vim 風に h/j/k/l で移動
 focus_pane_down = "prefix+j"
 focus_pane_up = "prefix+k"
 focus_pane_right = "prefix+l"
+swap_pane_left  = "prefix+shift+h" # ペイン入れ替え（vim の Ctrl-w H と同じ「大文字=モノが動く」）
+swap_pane_down  = "prefix+shift+j"
+swap_pane_up    = "prefix+shift+k"
+swap_pane_right = "prefix+shift+l"
 zoom = "prefix+z"              # ペインを最大化/戻す
 last_pane = "prefix+m"         # 直前のペインとトグル（Cmd+P から呼ぶ。エディタ⇔AI の一撃往復用）
 resize_mode = "prefix+r"       # リサイズモード
@@ -58,6 +79,14 @@ command = "exec \"${SHELL:-sh}\""
 description = "open scratch terminal"
 width = "80%"
 height = "80%"
+
+# 手動の保険: agent-taborder-watch.py の番号振り直しを即時に1回実行する。
+# 常駐ウォッチャは自動追従するが、番号ずれをすぐ直したいときに使う。
+[[keys.command]]
+key = "prefix+shift+o"
+type = "shell"
+command = "/usr/bin/python3 \"$HOME/.config/herdr/agent-taborder-watch.py\" --once"
+description = "renumber tabs"
 
 [ui.toast]
 # エージェントが完了(idle)・入力待ち(blocked)になったら in-app popup を表示する。
@@ -85,11 +114,15 @@ directory = "~/.claude/worktrees"
 # Space の見出しを消して agent 一覧だけにするため priority を使う（2026-08-18）
 agent_panel_sort = "priority"
 
+# ペイン枠線にエージェント名を出す（既定 false）。手動 pane 名が未設定のときだけ効く。
+# 手で名付けると中身を差し替えた瞬間に嘘になるので、自動ラベルに寄せる（2026-08-28）
+show_agent_labels_on_pane_borders = true
+
 # ─── サイドバーの agent 行（0.7.4〜） ───
 # 既定は rows = [["state_icon","workspace","tab"], ["agent"]] で、
-# 2行目が agent 種別名（"claude"）になる。Claude Code のときだけ
-# 2行目を /rename したセッション名（OSC タイトル）に差し替える。
-# codex など他エージェントは既定のまま（種別名が出る）。
+# 2行目が agent 種別名（"claude"）になる。Claude Code と Codex のときだけ
+# 2行目を自動命名のセッション名（OSC タイトル）に差し替える。
+# それ以外のエージェントは既定のまま（種別名が出る）。
 # 使える組み込みトークン: state_icon / state_text / workspace / tab / pane /
 #                         agent / terminal_title / terminal_title_stripped
 # サイドバー上部の spaces セクションを実質非表示にする実験（rows を空にする）
@@ -109,6 +142,12 @@ rows = [
 [ui.sidebar.agents.rows_by_agent]
 # Claude だけ2行目を自動命名のセッション名（明るい青）に差し替え
 claude = [
+  ["state_icon", { token = "tab", fg = "#e6edf3", bold = true, dim = false }],
+  [{ token = "terminal_title_stripped", fg = "#79c0ff", dim = false }],
+]
+# Codex は [tui].terminal_title = ["thread-title"] でスレッド名を OSC タイトルに
+# 出す設定と対（2026-09-07）。claude と同じ表示形式・色にする。
+codex = [
   ["state_icon", { token = "tab", fg = "#e6edf3", bold = true, dim = false }],
   [{ token = "terminal_title_stripped", fg = "#79c0ff", dim = false }],
 ]

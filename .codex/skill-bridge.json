@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "skills": [
+    {
+      "name": "ctx-agent-history-search",
+      "source": ".claude/skills/ctx-agent-history-search/SKILL.md",
+      "source_sha256": "d76cd55f506f6d8605f2fed933a16e4ab995b3a4ab8e6d96bfd84d469872b3d6",
+      "description": "Use ctx to search local coding-agent history before acting. Use when prior agent sessions may contain relevant insights, decisions, attempts, or transcript context.",
+      "mode": "existing",
+      "codex_skill": "ctx",
+      "note": "既存の Codex スキルを利用し、同名ファイルを重複作成しない。"
+    },
+    {
+      "name": "dot-help",
+      "source": ".claude/skills/dot-help/SKILL.md",
+      "source_sha256": "f3f45689464f7080b1e36c12012fa4bf43baaf880ea682675eb2b7c7309b11c1",
+      "description": "ユーザーの dotfiles 全体（Neovim / Ghostty / herdr / karabiner / zellij / zsh / lazygit / starship 等）について「〜するにはどのキー？」「このショートカット何？」「Cmd+◯ って何が起きる？」「この設定どこにある？」といった操作方法・キーバインド・設定の質問に、~/dotfiles と ~/.config の実際の設定を参照して回答する。nvim・ターミナル・シェルのキーバインドや設定に関する質問全般で使用（旧 nvim-help の後継）。どのディレクトリからでも使用可能。調査はサブエージェントに委譲してメインのコンテキストを節約する。",
+      "mode": "wrapper",
+      "codex_skill": "dot-help",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "find-skills",
+      "source": ".claude/skills/find-skills/SKILL.md",
+      "source_sha256": "5c07f1351822c2433aceb3e6859e86354650d714d50daa5678bfa96cc8abdd23",
+      "description": "Helps users discover and install agent skills. Use this skill when the user asks \"Is there a skill for X?\", \"Find a skill that can...\", \"How do I do X with a skill?\", or wants to extend the agent's capabilities. Also invoked via /find-skills command. 日本語では「〜のSkillある？」「Skillを探して」「Skillをインストールして」でも使う。",
+      "mode": "wrapper",
+      "codex_skill": "find-skills",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "grill-me",
+      "source": ".claude/skills/grill-me/SKILL.md",
+      "source_sha256": "caaf8b8de1684f96e26b28f3c29189db5c89cce4b73e1c93d86164f66ef88637",
+      "description": "A relentless interview to sharpen a plan or design.",
+      "mode": "existing",
+      "codex_skill": "grill-me",
+      "note": "外部インストーラ（npx skills add）が ~/.agents/skills に置いた実体を Claude/Codex 双方が直接読む。重複作成しない。"
+    },
+    {
+      "name": "grilling",
+      "source": ".claude/skills/grilling/SKILL.md",
+      "source_sha256": "10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2",
+      "description": "Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.",
+      "mode": "existing",
+      "codex_skill": "grilling",
+      "note": "外部インストーラ（npx skills add）が ~/.agents/skills に置いた実体を Claude/Codex 双方が直接読む。重複作成しない。"
+    },
+    {
+      "name": "herdr-control",
+      "source": ".claude/skills/herdr-control/SKILL.md",
+      "source_sha256": "d5e19393cd6ee4e83e6a725ee7b9ffc541fcbe653216ee0ff7de9ef516001488",
+      "description": "herdr（ターミナルワークスペースマネージャ、socket API 付き CLI）のタブ・ペインを Claude が操作するスキル。「新しいタブで開いて」「ペインを分割して実行して」「横のペインでログ見せて」「herdr でタブ/ペイン作成」「ターミナルに TUI（hunk/lazygit 等）を開いて」で使用。herdr セッション内のタブ/ペインの話であり、zellij や Ghostty 自体のタブとは別物。バックグラウンドジョブ（シェルがターミナル外）からでも socket API 経由で操作できるのが価値。",
+      "mode": "wrapper",
+      "codex_skill": "herdr-control",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "hunk-review",
+      "source": ".claude/skills/hunk-review/SKILL.md",
+      "source_sha256": "22ba96f09771f74ad4db81873b4174f38edcd86a53b7af5f90a0359612a0b33c",
+      "description": "Interacts with live Hunk diff review sessions via CLI. Inspects review focus, navigates files and hunks, reloads session contents, and adds inline review comments. Use when the user has a Hunk session running or wants to review diffs interactively.",
+      "mode": "wrapper",
+      "codex_skill": "hunk-review",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "output-style",
+      "source": ".claude/skills/output-style/SKILL.md",
+      "source_sha256": "ac134a61115766fde3c48b58a216772fb4a70346ae070c1a78873120ee99cd09",
+      "description": "Codex の出力スタイル（~/.codex/config.toml の developer_instructions）を自作スタイル（15sai 等）や default に切り替える。output-style や文体変更を依頼されたときに使う。Claude 側の settings.json は変更しない。",
+      "mode": "adapted",
+      "codex_skill": "output-style",
+      "note": "Codex 固有補足で実行差異を吸収する。"
+    },
+    {
+      "name": "skill-creator",
+      "source": ".claude/skills/skill-creator/SKILL.md",
+      "source_sha256": "d57b6e3a44535b9c0ef454dad5c86f5df78185fc80a65c7092885b4b5e10f81b",
+      "description": "Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude's capabilities with specialized knowledge, workflows, or tool integrations.",
+      "mode": "existing",
+      "codex_skill": "skill-creator",
+      "note": "既存の Codex スキルを利用し、同名ファイルを重複作成しない。"
+    },
+    {
+      "name": "zukai",
+      "source": ".claude/skills/zukai/SKILL.md",
+      "source_sha256": "898ab718038e2bb0a5a4e56a03be311c550699eb0bdc4e30d4bad1dd6408b656",
+      "description": "トピックを 5歳・15歳・35歳向けの3段階で同時に図解する、タブ切り替え付き HTML アーティファクトを生成する。/zukai トピック のほか、「図解して」「絵で教えて」 「仕組みをわかりやすく」「初心者にもわかるように」など、図が主役の段階的な説明が 役立つ場面で使用する。技術トピックに限らず何にでも使える。",
+      "mode": "adapted",
+      "codex_skill": "zukai",
+      "note": "Codex 固有補足で実行差異を吸収する。"
+    }
+  ]
+}

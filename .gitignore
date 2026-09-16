@@ -21,11 +21,6 @@ token.json
 # 私的データ（タスク実体は公開しない）
 .claude/task-dashboard/
 
-# /close の蓄積データ（実セッションの session_id・失敗履歴を含むため公開しない。
-# スキル本体 close/SKILL.md は公開する）
-.claude/skills/close/ledger.md
-.claude/skills/close/prompts.md
-
 # OS生成ファイル
 .DS_Store
 Thumbs.db
@@ -39,12 +34,7 @@ Thumbs.db
 __pycache__/
 *.pyc
 
-# terminal-browser インストーラ生成物（~/.agents/skills/ への symlink。再生成はインストーラで）
-.claude/skills/terminal-browser
-
-# 書籍ノート知識貯蔵庫（著作物の要約を含むため private リポジトリ imutaroh/book-skills で管理）
-.claude/skills/books/
-
-# book-to-skill は books/ と同じ private リポジトリに同居。実体は books/book-to-skill/ で、
-# ここにあるのは symlink（スキルは1階層目しか読まれないため symlink が必要）
-.claude/skills/book-to-skill
+# 外部インストーラ（npx skills add）生成物。実体は ~/.agents/skills/ にあり、ここにあるのは symlink。
+# 再導入は /find-skills 経由で行う
+.claude/skills/grill-me
+.claude/skills/grilling

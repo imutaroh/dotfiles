@@ -1,0 +1,57 @@
+#!/bin/bash
+# vid2text: Web動画/ローカル動画 → 音声抽出 → whisper 文字起こし
+# 使い方:
+#   vid2text <URL or file> [出力dir]
+# 環境変数:
+#   VID2TEXT_BROWSER=chrome   yt-dlp がブラウザのログインCookieを使う（"none" で無効）
+#   VID2TEXT_REFERER=https://fincs.jp/   直リンク(m3u8)取得時の Referer
+#   VID2TEXT_QUALITY=480      画質上限（文字起こし目的なら480で十分）
+# Fincs の場合: DevTools/Network で *.m3u8 (b-cdn.net, master) の URL を拾い、
+#   VID2TEXT_BROWSER=none VID2TEXT_REFERER=https://fincs.jp/ vid2text '<m3u8 URL>'
+#   ※トークンは約24時間で失効するので取ったらすぐ実行
+#   VID2TEXT_MODEL=~/.cache/whisper-cpp/ggml-large-v3-turbo.bin
+#   VID2TEXT_LANG=ja
+set -euo pipefail
+exec </dev/null   # ffmpeg/yt-dlp が親ループの stdin を食わないように
+
+SRC="${1:?URL かファイルパスを指定}"
+OUT="${2:-$HOME/Downloads/vid2text}"
+BROWSER="${VID2TEXT_BROWSER:-chrome}"
+MODEL="${VID2TEXT_MODEL:-$HOME/.cache/whisper-cpp/ggml-large-v3-turbo.bin}"
+LANG_="${VID2TEXT_LANG:-ja}"
+REFERER="${VID2TEXT_REFERER:-}"
+Q="${VID2TEXT_QUALITY:-720}"
+TITLE="${VID2TEXT_TITLE:-%(title).80s}"
+mkdir -p "$OUT"
+
+# 1. 取得（URLなら yt-dlp、ファイルならそのまま）
+if [[ "$SRC" =~ ^https?:// ]]; then
+  echo "▶ yt-dlp で取得中..."
+  ARGS=()
+  [[ "$BROWSER" != "none" ]] && ARGS+=(--cookies-from-browser "$BROWSER")
+  [[ -n "$REFERER" ]] && ARGS+=(--referer "$REFERER")
+  yt-dlp ${ARGS[@]+"${ARGS[@]}"} \
+    -f "bv*[height<=$Q]+ba/b[height<=$Q]/b" \
+    --merge-output-format mp4 \
+    -o "$OUT/$TITLE.%(ext)s" \
+    --print after_move:filepath "$SRC" | tail -1 > "$OUT/.last"
+  VIDEO="$(cat "$OUT/.last")"
+else
+  VIDEO="$SRC"
+fi
+[[ -f "$VIDEO" ]] || { echo "動画が見つからない: $VIDEO" >&2; exit 1; }
+BASE="$OUT/$(basename "${VIDEO%.*}")"
+
+# 2. 音声抽出（whisper.cpp は 16kHz mono wav 前提）
+echo "▶ 音声抽出..."
+ffmpeg -nostdin -y -loglevel error -i "$VIDEO" -vn -ac 1 -ar 16000 -c:a pcm_s16le "$BASE.wav"
+
+# 3. 文字起こし（txt + srt）
+echo "▶ whisper 文字起こし ($(basename "$MODEL"))..."
+whisper-cli -m "$MODEL" -l "$LANG_" -f "$BASE.wav" -otxt -osrt -of "$BASE" -np >/dev/null
+rm -f "$BASE.wav"
+
+echo "✅ 完了"
+echo "  動画: $VIDEO"
+echo "  文字: $BASE.txt"
+echo "  字幕: $BASE.srt"

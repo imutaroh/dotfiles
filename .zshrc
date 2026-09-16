@@ -63,9 +63,20 @@ alias v='nvim'
 alias g='git'
 alias gb='git branch'
 alias gs='git switch'
-alias ll='ls -la'
-alias la='ls -a'
+# y: yazi を起動し、終了時にその場所へ cd する（q で cd、Q で cd せず終了）
+#   一時ファイルは毎回作って捨てるので trash ではなく rm
+y() {
+  local tmp cwd
+  tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+  yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd < "$tmp"
+  [[ -n $cwd && $cwd != "$PWD" ]] && builtin cd -- "$cwd"
+  command rm -f -- "$tmp"
+}
 alias c='claude'
+# codex-hud: Codex の隣ペインに Claude Code 風の複数行ステータス（ctx / 5h / 7d バー）を出す
+#   herdr で Codex のペインを prefix+minus で上下分割 → 下で codex-hud
+alias codex-hud='bash ~/dotfiles/.codex/scripts/codex-hud.sh'
 # nh: Hunk を自動リロード付きで起動
 #   nh        → 全差分（main 分岐点から手元の未コミット編集まで）。分岐点が取れなければ nh c と同じ
 #   nh c      → 前回 commit してからの手元の編集だけ
@@ -157,3 +168,9 @@ _ghostty_set_title() {
 add-zsh-hook chpwd _ghostty_set_title
 _ghostty_set_title
 
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
