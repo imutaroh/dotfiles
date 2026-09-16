@@ -77,6 +77,17 @@
   "enabledMcpjsonServers": [
     "obsidian"
   ],
+  "deniedMcpServers": [
+    {
+      "serverName": "claude.ai Gmail"
+    },
+    {
+      "serverName": "claude.ai Google Drive"
+    },
+    {
+      "serverName": "claude.ai freee"
+    }
+  ],
   "hooks": {
     "PermissionRequest": [
       {
@@ -99,11 +110,6 @@
       }
     ]
   },
-  "deniedMcpServers": [
-    { "serverName": "claude.ai Gmail" },
-    { "serverName": "claude.ai Google Drive" },
-    { "serverName": "claude.ai freee" }
-  ],
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
@@ -111,7 +117,7 @@
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": false,
     "skill-creator@claude-plugins-official": false,
-    "claude-security@claude-plugins-official": true
+    "claude-security@claude-plugins-official": false
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
