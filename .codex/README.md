@@ -1,6 +1,6 @@
 # Codex 個人スキルブリッジ
 
-Claude 側の個人スキル42件を分類し、38件を Codex の同名スキルとして使うための入口を用意しています。本文は複製せず、実行時に `.claude/skills/<name>/SKILL.md` を読みます。Codex に合わせた差異は `compatibility.md` と各ラッパーに置きます。
+Claude 側の個人スキル10件（2026-09-16 の棚卸しで45件から削減）を分類し、6件を Codex の同名スキルとして使うための入口を用意しています。本文は複製せず、実行時に `.claude/skills/<name>/SKILL.md` を読みます。Codex に合わせた差異は `compatibility.md` と各ラッパーに置きます。
 
 ## 導入と検査
 
@@ -14,18 +14,17 @@ python3 ~/dotfiles/setup-codex-skills.py --check
 
 CHECK OK でも「未設置」があればまだ導入前です。SOURCE_DRIFT は元スキル更新を検出した意味です。実行時には更新後の本文が読まれますが、description と固有互換処理を再確認し、監査後に `skill-bridge.json` の SHA256 を更新します。自動で hash を追認しません。
 
-導入済みスキルは新しい Codex セッションで一覧を更新して確認してください。既存セッションに即座に再読込されるとは保証しません。`$morning`、`$tech`、`$close` 等で明示できます。
+導入済みスキルは新しい Codex セッションで一覧を更新して確認してください。既存セッションに即座に再読込されるとは保証しません。`$zukai`、`$dot-help` 等で明示できます。
 
 ## 対応範囲と制限
 
-- 31件: 共通規約を介して元スキルを参照（morning は追加補足あり）。
-- 7件: close / daily-ai-log / delegate-implementation / image-generate / output-style / worktree-parallel / zukai の実行方法を Codex 向けに補正。
-- 3件: skill-creator は Codex 標準、ctx-agent-history-search は既存 ctx、terminal-browser は既存同名スキルを使用。重複配置しません。
-- 1件: task-dashboard は未移植。Claude Artifact 依存と Vault Todo.md との正本競合を解消せずに有効化しません。
+- 4件: dot-help / find-skills / herdr-control / hunk-review は共通規約を介して元スキルを参照。
+- 2件: output-style / zukai は実行方法を Codex 向けに補正。
+- 4件: skill-creator は Codex 標準、ctx-agent-history-search は既存 ctx、grill-me / grilling は `npx skills add` が `~/.agents/skills/` に置いた実体をそのまま使用。重複配置しません。
 
-スキルの入口があることと、MCP 接続・APIキー・実サービス操作が成功することは別です。Calendar 等は未接続なら未確認と報告します。既存スキルの導入状態と各業務フローの実運用はこのスクリプトだけでは検証しません。画像は既存 imagegen、図解は既存 visualize 等を優先します。Codex から codex exec を再帰起動しません。output-style は `~/.codex/config.toml` の `developer_instructions` として永続反映されます（Claude の output style と異なり会話限定ではない。詳細は次節）。元スキルや books の symlink 先が移動すると参照が壊れます。
+スキルの入口があることと、MCP 接続・APIキー・実サービス操作が成功することは別です。Calendar 等は未接続なら未確認と報告します。既存スキルの導入状態と各業務フローの実運用はこのスクリプトだけでは検証しません。画像は既存 imagegen、図解は既存 visualize 等を優先します。Codex から codex exec を再帰起動しません。output-style は `~/.codex/config.toml` の `developer_instructions` として永続反映されます（Claude の output style と異なり会話限定ではない。詳細は次節）。元スキルや `~/.agents/skills/` の実体が移動すると参照が壊れます。
 
-対象リポジトリにある commit / push / golang-pro 等は、そのリポジトリの `.claude/skills/` を探して実行時に読みます。個人スキルとして勝手にコピーしません。manifest は個人42件の対応表であり、全リポジトリの全スキル一覧ではありません。
+対象リポジトリにある commit / push / golang-pro 等は、そのリポジトリの `.claude/skills/` を探して実行時に読みます。個人スキルとして勝手にコピーしません。manifest は個人10件の対応表であり、全リポジトリの全スキル一覧ではありません。
 
 ## Claude Code との体験の対応（config.toml / rules / herdr）
 
@@ -80,19 +79,19 @@ bash ~/dotfiles/.codex/scripts/check-parity.sh --quick  # 注入確認を省略
 
 8. **複数行 HUD は「Codex が書いた直後の値」しか知らない。** `codex-hud.sh` は Codex が rollout に書く `token_count` を読むだけなので、ターンの途中は更新されず、5h 枠のリセット時刻を過ぎると次のターンまで「reset済」表示になる。Codex 内部の sqlite カラム名や jsonl のイベント名が変わると「データなし」になる。壊れたら `--once` で素の出力を見てから直す。
 
-再現できないもの（諦めているもの）: Codex 本体の footer での複数行表示（HUD は別ペイン）、セッションの USD コスト、会話単位の output style 切り替え、Claude Artifact 依存の task-dashboard。
+再現できないもの（諦めているもの）: Codex 本体の footer での複数行表示（HUD は別ペイン）、セッションの USD コスト、会話単位の output style 切り替え。
 
 いずれのスクリプトも一時ファイル→ `os.replace` と `tomllib` による前後の構文検証を行うため、途中で失敗しても `config.toml` を壊れた状態のまま書き込むことはない。
 
-## close の証拠抽出
+## Codex セッションログの抽出
 
 ```bash
-python3 ~/dotfiles/.codex/scripts/extract-session.py --session-id <現在のID> --source <Codexログ.jsonl> --output <プロジェクト>/.claude/tmp/close/session-<ID>.md
+python3 ~/dotfiles/.codex/scripts/extract-session.py --session-id <現在のID> --source <Codexログ.jsonl> --output <プロジェクト>/.claude/tmp/session-<ID>.md
 ```
 
 ID と session_meta を照合し、可視会話・ツール入出力を元行番号付きで抽出します。最新ファイルの自動選択、内部推論の抽出、既存出力の上書きはしません。不明形式と省略件数を出力に明示し、最終行の書込み途中は警告、中間行の破損はエラーにします。新規ディレクトリは0700、出力は0600。既存親の権限は変更しません。添付本文を含まないため、画像だけの証拠は原本と画像を別途確認する必要があります。生ログと抽出結果は外部公開しません。
 
-この抽出だけでレビュー完了ではありません。close は別担当によるレビューと引用・話者・文脈の検証を経て報告します。台帳・プロンプト追記は元スキルの正本を共用し、Codex セッションと記録します。書込み権限が必要ならその工程は権限内で扱い、未反映を隠しません。
+元は `/close`（セッション振り返りスキル、2026-09-16 に削除）の証拠抽出用だったが、`setup-codex-skills.py` が共通依存として検査するため単体ツールとして残している。
 
 ## 共通フックの導入と trust
 
