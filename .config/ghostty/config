@@ -172,6 +172,9 @@ keybind = super+p=text:\x11t
 # Cmd+Shift+r でタブの名前変更（R = Rename。herdr 側は prefix+shift+t）
 keybind = super+shift+r=text:\x11T
 
+# Cmd+u でエージェントの最新返答にコメント（herdr-annotate。herdr 側は prefix+u）
+keybind = super+u=text:\x11u
+
 # Cmd+] / Cmd+[ で次/前のエージェントへ巡回（連打で順番に進む。herdr 側は prefix+a / shift+a）
 # 注意: Ghostty ネイティブの goto_split:next/previous を上書きする（分割移動は herdr の Cmd+h/j/k/l を使う）
 keybind = super+]=text:\x11a
