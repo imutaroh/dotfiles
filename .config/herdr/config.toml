@@ -88,6 +88,13 @@ type = "shell"
 command = "/usr/bin/python3 \"$HOME/.config/herdr/agent-taborder-watch.py\" --once"
 description = "renumber tabs"
 
+# herdr-annotate: フォーカス中エージェントの最新返答にコメントして送り返す（Cmd+U から呼ぶ）
+[[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "annotate.last-newest"
+description = "review agent's newest reply"
+
 [ui.toast]
 # エージェントが完了(idle)・入力待ち(blocked)になったら in-app popup を表示する。
 # popup が出たら Cmd+O（= prefix+o / open_notification_target）でそのエージェントに直行できる。

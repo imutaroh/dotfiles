@@ -104,6 +104,10 @@ ln -sf "$DOTFILES_DIR/.config/herdr/agent-taborder-watch.py" ~/.config/herdr/age
 mkdir -p ~/.config/hunk
 ln -sf "$DOTFILES_DIR/.config/hunk/config.toml" ~/.config/hunk/config.toml
 
+# plannotator-tui（herdr-annotate のレビュー画面）は config.toml のみ管理
+mkdir -p ~/.config/plannotator-tui
+ln -sf "$DOTFILES_DIR/.config/plannotator-tui/config.toml" ~/.config/plannotator-tui/config.toml
+
 # yazi は yazi.toml のみ管理（keymap / theme を足すときはここにも追加）
 mkdir -p ~/.config/yazi
 ln -sf "$DOTFILES_DIR/.config/yazi/yazi.toml" ~/.config/yazi/yazi.toml

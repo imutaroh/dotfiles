@@ -1,0 +1,4 @@
+# plannotator-tui（herdr-annotate の Cmd+U で開くレビュー画面）
+[herdr]
+placement = "split"        # overlay(既定=全画面) / split / popup
+split_direction = "right"
