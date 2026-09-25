@@ -99,6 +99,15 @@ ln -sf "$DOTFILES_DIR/.config/ghostty/config" ~/.config/ghostty/config
 mkdir -p ~/.config/herdr
 ln -sf "$DOTFILES_DIR/.config/herdr/config.toml" ~/.config/herdr/config.toml
 ln -sf "$DOTFILES_DIR/.config/herdr/agent-taborder-watch.py" ~/.config/herdr/agent-taborder-watch.py
+ln -sf "$DOTFILES_DIR/.config/herdr/annotate-refresh.sh" ~/.config/herdr/annotate-refresh.sh
+
+# herdr の Claude integration: Claude Code の SessionStart hook でセッション ID を herdr に報告する。
+# herdr-annotate（Cmd+U）が「そのペインの Claude の返答」を特定するのに必要（無いと全体で最新の
+# transcript を拾って別セッションの返答が開く）。冪等。settings.json に hook を追記し、
+# hook 本体 ~/.claude/hooks/herdr-agent-state.sh は herdr が生成・管理する（dotfiles 管理外）
+if command -v herdr >/dev/null 2>&1; then
+    herdr integration install claude >/dev/null || echo "herdr integration install claude に失敗しました"
+fi
 
 # hunk は config.toml のみ管理（同ディレクトリの state.json は対象外）
 mkdir -p ~/.config/hunk

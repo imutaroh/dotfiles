@@ -88,12 +88,24 @@ type = "shell"
 command = "/usr/bin/python3 \"$HOME/.config/herdr/agent-taborder-watch.py\" --once"
 description = "renumber tabs"
 
-# herdr-annotate: フォーカス中エージェントの最新返答にコメントして送り返す（Cmd+U から呼ぶ）
+# herdr-annotate: エージェントの最新返答にコメントして送り返す（Cmd+U から呼ぶ）
+# 対象はフォーカス中の Claude > そのタブで前回選んだ Claude > タブ内の先頭。
+# 同じタブに Annotate ペインがあれば閉じてから開き直す（連打しても1枚のまま中身だけ更新）
 [[keys.command]]
 key = "prefix+u"
-type = "plugin_action"
-command = "annotate.last-newest"
+type = "shell"
+command = "\"$HOME/.config/herdr/annotate-refresh.sh\" direct"
 description = "review agent's newest reply"
+
+# herdr-annotate: タブ内の Claude を popup（fzf）で選んでから、その最新返答にコメント（Cmd+Shift+U から呼ぶ）
+# 同じタブに Claude が複数いるときに使う。選んだ Claude は記録され、以後の Cmd+U もそれを対象にする
+[[keys.command]]
+key = "prefix+shift+u"
+type = "popup"
+command = "exec \"$HOME/.config/herdr/annotate-refresh.sh\" pick"
+description = "pick agent, then review its newest reply"
+width = "60%"
+height = 12
 
 [ui.toast]
 # エージェントが完了(idle)・入力待ち(blocked)になったら in-app popup を表示する。
@@ -158,3 +170,6 @@ codex = [
   ["state_icon", { token = "tab", fg = "#e6edf3", bold = true, dim = false }],
   [{ token = "terminal_title_stripped", fg = "#79c0ff", dim = false }],
 ]
+
+[experimental]
+kitty_graphics = true

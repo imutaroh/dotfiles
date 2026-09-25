@@ -47,7 +47,9 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   ├── herdr/             # エージェントマルチプレクサ設定
 │   │                       # （agent-taborder-watch.py: Agents サイドバーをタブ順に追従、
 │   │                       #  タブ名への位置番号の自動付与も担う、
-│   │                       #  ログは ~/.config/herdr/agent-taborder.log）
+│   │                       #  ログは ~/.config/herdr/agent-taborder.log。
+│   │                       #  annotate-refresh.sh: Cmd+U / Cmd+Shift+U の herdr-annotate 呼び出し口。
+│   │                       #  要 `herdr integration install claude`（setup.sh が実行））
 │   ├── karabiner/         # Karabiner-Elements 設定（karabiner.json のみ）
 │   ├── lazygit/           # Git TUI 設定
 │   ├── mise/              # ランタイム管理設定
