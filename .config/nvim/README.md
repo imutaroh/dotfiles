@@ -70,7 +70,7 @@ nvim/
 | `dropbar.lua` | パンくずリスト（VSCode breadcrumb 相当） | `<leader>;` ピック |
 | `smear-cursor.lua` | カーソル移動アニメーション | — |
 | `twilight.lua` | カーソル周辺以外をフェードする集中モード | `<leader>uT` |
-| `snacks-image.lua` | snacks.image を無効化（treesitter 互換クラッシュ回避） | — |
+| `snacks-image.lua` | snacks.image で画像ファイルと md 内の画像（`![[x.png]]` は `_assets/` から）を表示。要 ImageMagick | — |
 
 ### 編集 / 移動
 
