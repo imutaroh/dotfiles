@@ -17,6 +17,7 @@ brew "ripgrep"                # 高速 grep（Neovim Telescope でも使用）
 brew "tree"                   # ディレクトリ構造の表示
 brew "yazi"                   # ターミナルファイラー（3列表示・プレビュー・Enter で nvim。シェルからは y で起動）
 brew "trash"                  # rm の代わりに使用（復元可能）
+brew "chafa"                  # ターミナルで画像表示（kitty graphics。シェルからは icat で起動）
 
 # === 開発ツール ===
 brew "gh"                     # GitHub CLI
@@ -33,6 +34,7 @@ brew "postgresql@17"          # PostgreSQL（ローカル開発用 DB）
 # === macOS ユーティリティ ===
 brew "defaultbrowser"         # デフォルトブラウザを CLI から設定
 brew "laishulu/homebrew/macism"   # IME 切り替え（Neovim で Normal モード時に英数へ）
+brew "imagemagick"            # 画像変換・情報取得（Neovim snacks.image が PNG でも identify で必須）
 brew "ffmpeg"                 # 動画・音声の変換（GIF 生成などで使用）
 brew "yt-dlp"                 # Web動画の取得（bin/vid2text で使用）
 brew "pngquant"               # PNG の減色圧縮（GitHub アバターの 1MB 制限対応など）
