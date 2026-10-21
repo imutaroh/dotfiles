@@ -1,0 +1,4 @@
+{
+  "description": "The task pane: /task-panel toggles it, a poll and Claude's task tool calls redraw it from ~/.claude/tasks/session-<id>/*.json",
+  "modules": ["./register.ts"]
+}

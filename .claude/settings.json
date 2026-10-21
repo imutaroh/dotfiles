@@ -1,6 +1,8 @@
 {
   "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_ENABLE_TODO_TOOLS": "1",
+    "CLAUDE_CODE_FORCE_TERMINAL_IMAGES": "1"
   },
   "permissions": {
     "allow": [
@@ -73,13 +75,11 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "opus",
   "enabledMcpjsonServers": [
     "obsidian"
   ],
   "deniedMcpServers": [
-    {
-      "serverName": "claude.ai Gmail"
-    },
     {
       "serverName": "claude.ai Google Drive"
     },
@@ -129,7 +129,9 @@
     "frontend-design@claude-plugins-official": false,
     "skill-creator@claude-plugins-official": false,
     "claude-security@claude-plugins-official": false,
-    "terminal-browser@terminal-browser": true
+    "terminal-browser@terminal-browser": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "image-view@claude-image-view": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -143,15 +145,25 @@
         "source": "github",
         "repo": "zenbu-labs/terminal-browser"
       }
+    },
+    "claude-image-view": {
+      "source": {
+        "source": "github",
+        "repo": "jarrodwatts/claude-image-view"
+      }
     }
   },
   "outputStyle": "Explanatory",
   "modelSettings": {
     "claude-opus-5": {
       "effortLevel": "high"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
     }
   },
-  "awaySummaryEnabled": true,
+  "advisorModel": "fable",
+  "awaySummaryEnabled": false,
   "showClearContextOnPlanAccept": true,
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,

@@ -1,0 +1,181 @@
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: 1カラムの講義ノート。各節は「汎用の説明 → Goで覗く → 効く本試 → 会で言う一言」 */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1b2230;
+  --muted: #5a6475;
+  --line: #dde1e8;
+  --accent: #2f5bd3;
+  --accent-soft: #e6ecfb;
+  --hl: #b45309;
+  --hl-soft: #fdf1e3;
+  --code-bg: #eef0f4;
+  --bad: #b42318;
+  --font-body: "IBM Plex Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151c; --surface: #1a1f29; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3340;
+    --accent: #8fb0ff; --accent-soft: #1f2a44; --hl: #f0a95a; --hl-soft: #3a2a17;
+    --code-bg: #20262f; --bad: #ff8a80; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151c; --surface: #1a1f29; --fg: #e4e8ef; --muted: #9aa4b5; --line: #2c3340;
+  --accent: #8fb0ff; --accent-soft: #1f2a44; --hl: #f0a95a; --hl-soft: #3a2a17;
+  --code-bg: #20262f; --bad: #ff8a80; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.8; padding-inline: 16px; padding-block: 32px 64px; }
+.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+header h1 { font-size: 2rem; line-height: 1.3; margin: 0 0 8px; text-wrap: balance; }
+header p { margin: 0; color: var(--muted); }
+h2 { font-size: 1.4rem; line-height: 1.4; margin: 0 0 4px; text-wrap: balance; }
+h3 { font-size: 1.05rem; margin: 24px 0 4px; }
+.eyebrow { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; color: var(--accent); text-transform: uppercase; }
+section { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+section > p, section > ul { margin: 0; }
+code { font-family: var(--font-mono); font-size: .88em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre { margin: 0; background: var(--code-bg); border-radius: 8px; padding: 14px 16px; overflow-x: auto; font-family: var(--font-mono); font-size: .85rem; line-height: 1.6; }
+pre code { background: none; padding: 0; font-size: inherit; }
+.cm { color: var(--muted); }
+.out { color: var(--hl); }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { color: var(--muted); font-weight: 500; font-size: .82rem; }
+.toc { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 20px; }
+.toc ol { margin: 0; padding-left: 1.4em; }
+.toc a { color: var(--accent); text-decoration: none; }
+.toc a:hover, .toc a:focus-visible { text-decoration: underline; }
+.toc span { color: var(--muted); font-size: .88rem; }
+.say { background: var(--accent-soft); border-radius: 8px; padding: 12px 16px; }
+.say b { display: block; font-size: .75rem; letter-spacing: .06em; color: var(--accent); font-weight: 600; }
+details { border: 1px solid var(--line); border-radius: 8px; padding: 10px 16px; background: var(--surface); }
+summary { cursor: pointer; font-weight: 500; }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+details > div { padding-top: 8px; }
+/* バイト図 */
+.bytes { overflow-x: auto; padding-bottom: 4px; }
+.strip { display: inline-grid; grid-auto-flow: column; grid-auto-columns: 52px; gap: 4px; font-family: var(--font-mono); font-size: .8rem; text-align: center; }
+.strip .i { color: var(--muted); font-size: .72rem; }
+.strip .b { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 6px 0; }
+.strip .g { border-radius: 4px; padding: 4px 0; font-family: var(--font-body); font-size: .95rem; }
+.g1 { background: var(--accent-soft); }
+.g2 { background: var(--hl-soft); }
+.b.g1, .b.g2 { border-color: transparent; }
+.legend { font-size: .82rem; color: var(--muted); }
+.bad { color: var(--bad); }
+:root { --good: #1f7a4d; --good-soft: #e3f4ea; --bad-soft: #fdeceb; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --good: #7dd3a3; --good-soft: #17301f; --bad-soft: #3a1d1b; } }
+:root[data-theme="dark"] { --good: #7dd3a3; --good-soft: #17301f; --bad-soft: #3a1d1b; }
+.score { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; background: var(--bg); border-bottom: 1px solid var(--line); padding-block: 10px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; font-variant-numeric: tabular-nums; }
+.score strong { font-size: 1.1rem; }
+.btn { font: inherit; font-size: .88rem; border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn:focus-visible, .opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.q { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.q h2 { font-size: 1.05rem; margin: 0; line-height: 1.6; }
+.q .meta { display: flex; flex-wrap: wrap; gap: 6px; font-size: .75rem; }
+.pill { background: var(--code-bg); color: var(--muted); border-radius: 999px; padding: 1px 9px; }
+.pill.focus { background: var(--hl-soft); color: var(--hl); font-weight: 600; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt { text-align: left; font: inherit; font-size: .94rem; line-height: 1.6; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; cursor: pointer; display: flex; gap: 10px; }
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt:disabled { cursor: default; }
+.opt .k { font-family: var(--font-mono); color: var(--muted); flex: none; }
+.opt.right { background: var(--good-soft); border-color: var(--good); }
+.opt.wrong { background: var(--bad-soft); border-color: var(--bad); }
+.why { width: 100%; font: inherit; font-size: .9rem; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; resize: vertical; min-height: 2.6em; }
+.why::placeholder { color: var(--muted); }
+.ans { border-top: 1px dashed var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.ans .verdict { font-weight: 700; }
+.ans .verdict.ok { color: var(--good); }
+.ans .verdict.ng { color: var(--bad); }
+.ans p { margin: 0; }
+.list { display: flex; flex-direction: column; gap: 16px; }
+</style>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">{{EYEBROW}}</p>
+  <h1>{{TITLE}}</h1>
+  <p>{{INTRO}}</p>
+</header>
+
+<div class="score" role="status" aria-live="polite">
+  <span>正解 <strong id="ok">0</strong> / 回答 <span id="done">0</span> / 全 <span id="total">0</span> 問</span>
+  <button class="btn" id="reset" type="button">最初からやり直す</button>
+</div>
+
+<div class="list" id="list"></div>
+</div>
+
+<script>
+const Q = [
+/*QUESTIONS*/
+];
+
+const FOCUS_LABEL = "{{FOCUS_LABEL}}";
+const KEYS = ["A", "B", "C", "D"];
+const list = document.getElementById("list");
+const okEl = document.getElementById("ok");
+const doneEl = document.getElementById("done");
+document.getElementById("total").textContent = Q.length;
+let ok = 0, done = 0;
+
+function render() {
+  list.innerHTML = "";
+  ok = 0; done = 0; okEl.textContent = 0; doneEl.textContent = 0;
+  Q.forEach((item, i) => {
+    const card = document.createElement("article");
+    card.className = "q";
+    card.innerHTML =
+      '<div class="meta"><span class="pill">Q' + (i + 1) + '</span><span class="pill">' + item.level + '</span><span class="pill">' + item.tag + '</span>' +
+      (item.focus ? '<span class="pill focus">' + FOCUS_LABEL + '</span>' : '') + '</div>' +
+      '<h2>' + item.q + '</h2>' +
+      '<label class="legend" for="why' + i + '">選ぶ前に、理由を一言</label>' +
+      '<textarea class="why" id="why' + i + '" rows="1" placeholder="例：これは〜の話だから"></textarea>' +
+      '<div class="opts"></div><div class="ans" hidden></div>';
+    const opts = card.querySelector(".opts");
+    item.o.forEach((text, j) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "opt"; b.id = "q" + i + "o" + j;
+      b.innerHTML = '<span class="k">' + KEYS[j] + '</span><span>' + text + '</span>';
+      b.addEventListener("click", () => answer(card, item, j));
+      opts.appendChild(b);
+    });
+    list.appendChild(card);
+  });
+}
+
+function answer(card, item, j) {
+  const btns = card.querySelectorAll(".opt");
+  btns.forEach((b, k) => {
+    b.disabled = true;
+    if (k === item.a) b.classList.add("right");
+    else if (k === j) b.classList.add("wrong");
+  });
+  const hit = j === item.a;
+  done++; if (hit) ok++;
+  okEl.textContent = ok; doneEl.textContent = done;
+  const why = card.querySelector(".why").value.trim();
+  const ans = card.querySelector(".ans");
+  ans.innerHTML =
+    '<p class="verdict ' + (hit ? 'ok">正解' : 'ng">不正解') + '（正答は ' + KEYS[item.a] + '）</p>' +
+    (why ? '<p class="legend">書いた理由：' + why.replace(/[<>&]/g, c => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c])) + '</p>'
+         : '<p class="legend">理由が空。正解でも、理由を説明できなければクリアにならない。</p>') +
+    '<p><strong>理由の論点</strong>　' + item.point + '</p>' +
+    '<p><strong>他の選択肢が違う理由</strong>　' + item.wrong + '</p>' +
+    (item.more ? '<p><strong>追加で聞くなら</strong>　' + item.more + '</p>' : '');
+  ans.hidden = false;
+}
+
+document.getElementById("reset").addEventListener("click", () => { render(); window.scrollTo(0, 0); });
+render();
+</script>

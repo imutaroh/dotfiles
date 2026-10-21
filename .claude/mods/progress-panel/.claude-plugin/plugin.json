@@ -1,0 +1,8 @@
+{
+  "name": "progress-panel",
+  "version": "0.1.0",
+  "description": "/progress opens the project's .claude/tmp/progress.md in a pane beside the transcript, redrawn as the file changes.",
+  "author": {
+    "name": "imutaakihiro"
+  }
+}
