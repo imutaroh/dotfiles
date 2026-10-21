@@ -75,11 +75,17 @@ LINE0=""
 
 # ── 1行目: モデル·effort + ディレクトリ + git ブランチ + output style ──
 GIT_SEG=""
-if git -C "$CURRENT_DIR" rev-parse --git-dir > /dev/null 2>&1; then
-    BRANCH=$(git -C "$CURRENT_DIR" branch --show-current 2>/dev/null)
+# CURRENT_DIR はクローンした他人のリポジトリの中にもなり得る。そのリポジトリの config に
+# 書かれた core.fsmonitor 等をコマンドとして実行させないよう、実行系の設定を無効化して呼ぶ
+safe_git() {
+    git -c core.fsmonitor=false -c core.hooksPath=/dev/null -c safe.bareRepository=explicit \
+        --no-optional-locks -C "$CURRENT_DIR" "$@"
+}
+if safe_git rev-parse --git-dir > /dev/null 2>&1; then
+    BRANCH=$(safe_git branch --show-current 2>/dev/null)
     if [ -n "$BRANCH" ]; then
         DIRTY=""
-        [ -n "$(git -C "$CURRENT_DIR" status --porcelain 2>/dev/null)" ] && DIRTY="${VIOLET}*${RESET}"
+        [ -n "$(safe_git status --porcelain 2>/dev/null)" ] && DIRTY="${VIOLET}*${RESET}"
         GIT_SEG=" ${ICE}|${RESET} ${TEAL}${BRANCH}${RESET}${DIRTY}"
     fi
 fi

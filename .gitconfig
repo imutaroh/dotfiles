@@ -24,3 +24,8 @@
 
 [help]
 	autocorrect = 0
+
+# リポジトリ内にコミットされた bare リポジトリ形のディレクトリを暗黙に認識させない。
+# その config の core.fsmonitor 等がプロンプトやエディタの git 呼び出しで実行されるのを防ぐ
+[safe]
+	bareRepository = explicit

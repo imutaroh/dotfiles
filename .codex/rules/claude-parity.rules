@@ -2,8 +2,15 @@
 # Claude Code の .claude/settings.json permissions（allow/deny）と
 # グローバル CLAUDE.md の禁止コマンドを Codex の execpolicy prefix_rule に変換したもの。
 # 既存の ~/.codex/rules/default.rules（Codex が承認記憶として自動生成）は触らない。
-# より長い prefix にマッチするルールが優先される（例: git push --force は
-# git push の allow より git push --force の forbidden が優先される）。
+# 複数のルールに一致したときは最も制限の強い結果が採用される。ただし prefix は argv の
+# 先頭からの位置で一致するため、`git push origin --force` のように後ろに置いたフラグは
+# forbidden に一致しない。forbidden は補助と考え、allow 自体を狭く保つこと。
+#
+# allow に一致したコマンドは Codex のサンドボックス外で確認なしに実行される。
+# 引数次第で任意コマンド実行・任意ファイル書き込みになるもの（git rebase -x /
+# git push --receive-pack / git fetch|pull --upload-pack / git diff|log --output /
+# fd -x / mise exec|run / npm test）は allow に入れない。外したコマンドは
+# サンドボックス内で動くか、必要に応じて承認を求められる。
 
 # ─── forbidden（破壊的操作・グローバル CLAUDE.md の禁止コマンド） ───
 prefix_rule(pattern=["rm"], decision="forbidden", justification="削除は trash コマンドを使う（復元可能にするため）")
@@ -37,7 +44,6 @@ prefix_rule(pattern=["brew", "services", "list"], decision="allow", justificatio
 prefix_rule(pattern=["cd"], decision="allow", justification="ディレクトリ移動は無害")
 prefix_rule(pattern=["date"], decision="allow", justification="日時取得は無害")
 prefix_rule(pattern=["echo"], decision="allow", justification="標準出力への表示は無害")
-prefix_rule(pattern=["fd"], decision="allow", justification="読み取り専用のファイル検索")
 prefix_rule(pattern=["ls"], decision="allow", justification="読み取り専用の一覧表示")
 prefix_rule(pattern=["pwd"], decision="allow", justification="読み取り専用のパス表示")
 prefix_rule(pattern=["tree"], decision="allow", justification="読み取り専用のディレクトリ表示")
@@ -66,20 +72,17 @@ prefix_rule(pattern=["git", "add"], decision="allow", justification="ステー�
 prefix_rule(pattern=["git", "branch"], decision="allow", justification="ブランチ確認・作成は日常操作")
 prefix_rule(pattern=["git", "checkout"], decision="allow", justification="ブランチ切り替えは日常操作")
 prefix_rule(pattern=["git", "commit"], decision="allow", justification="コミットは可逆（後で取り消せる）")
-prefix_rule(pattern=["git", "diff"], decision="allow", justification="読み取り専用の差分確認")
-prefix_rule(pattern=["git", "log"], decision="allow", justification="読み取り専用の履歴確認")
-prefix_rule(pattern=["git", "push"], decision="allow", justification="通常pushは日常操作（force系は上のforbiddenで個別禁止）")
 prefix_rule(pattern=["git", "stash"], decision="allow", justification="一時退避は可逆")
 prefix_rule(pattern=["git", "status"], decision="allow", justification="読み取り専用の状態確認")
 prefix_rule(pattern=["git", "switch"], decision="allow", justification="ブランチ切り替えは日常操作")
-prefix_rule(pattern=["git", "rebase"], decision="allow", justification="日常操作（--hardのような破壊的サブコマンドは無い）")
 prefix_rule(pattern=["git", "reset"], decision="allow", justification="通常resetは日常操作（--hardは上のforbiddenで個別禁止）")
 prefix_rule(pattern=["git", "merge"], decision="allow", justification="マージは日常操作")
-prefix_rule(pattern=["git", "fetch"], decision="allow", justification="読み取り専用のリモート取得")
-prefix_rule(pattern=["git", "pull"], decision="allow", justification="日常操作（fetch+mergeの組み合わせ）")
 
 # ─── allow: 開発ツール ───
 prefix_rule(pattern=["go", "version"], decision="allow", justification="読み取り専用の情報照会")
 prefix_rule(pattern=["go", "mod"], decision="allow", justification="依存関係の確認・整理は日常操作")
-prefix_rule(pattern=["mise"], decision="allow", justification="ツールバージョン管理は日常操作")
-prefix_rule(pattern=["npm", "test"], decision="allow", justification="テスト実行は副作用のない日常操作")
+prefix_rule(pattern=["mise", "ls"], decision="allow", justification="読み取り専用のツール一覧")
+prefix_rule(pattern=["mise", "current"], decision="allow", justification="読み取り専用の現在バージョン表示")
+prefix_rule(pattern=["mise", "which"], decision="allow", justification="読み取り専用のパス解決")
+prefix_rule(pattern=["mise", "doctor"], decision="allow", justification="読み取り専用の診断")
+prefix_rule(pattern=["mise", "--version"], decision="allow", justification="読み取り専用の情報照会")

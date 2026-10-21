@@ -163,9 +163,12 @@ _ghostty_set_title() {
   # stdout が端末でない（コマンド置換 $(cd ...) の中など）場合は何もしない。
   # エスケープ列が置換結果に混入してパス文字列等を壊すのを防ぐ
   [[ -t 1 ]] || return 0
-  local repo_dir
+  local repo_dir name
   repo_dir=$(git rev-parse --show-toplevel 2>/dev/null) || repo_dir=$PWD
-  printf '\e]2;%s\a' "${repo_dir##*/}"
+  # ディレクトリ名に BEL/ESC が含まれると OSC が途中で閉じて残りが端末に解釈されるので除去する
+  name=${repo_dir##*/}
+  name=${name//[[:cntrl:]]/}
+  printf '\e]2;%s\a' "$name"
 }
 add-zsh-hook chpwd _ghostty_set_title
 _ghostty_set_title
