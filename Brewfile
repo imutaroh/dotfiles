@@ -17,22 +17,25 @@ brew "ripgrep"                # 高速 grep（Neovim Telescope でも使用）
 brew "tree"                   # ディレクトリ構造の表示
 brew "yazi"                   # ターミナルファイラー（3列表示・プレビュー・Enter で nvim。シェルからは y で起動）
 brew "trash"                  # rm の代わりに使用（復元可能）
+brew "chafa"                  # ターミナルで画像表示（kitty graphics。シェルからは icat で起動）
 
 # === 開発ツール ===
 brew "gh"                     # GitHub CLI
 brew "mise"                   # ランタイムバージョン管理（Node / Python 等）
-brew "lazygit"                # Git TUI クライアント（Neovim から呼び出し可能）
 brew "hunk"                   # レビュー特化の差分ビューア（hunk-review スキルで AI と往復レビュー）
 brew "node"                   # Node.js / npm（Mason LSP: typescript-language-server, pyright 等）
 brew "bun"                    # JavaScript ランタイム / パッケージマネージャ
 brew "go"                     # Go 言語（Mason LSP: gopls）
+brew "gopls"                  # Go 言語サーバー（Claude Code の gopls-lsp プラグインが PATH から呼ぶ）
 brew "hugo"                   # 静的サイト生成（notes.imutaro.com の内製 Publish・_Meta/Site）
 brew "xcodegen"               # Xcode プロジェクトを yml から生成
+brew "shellcheck"             # シェルスクリプトの静的検査（pomo の docs/install.sh で使用）
 brew "postgresql@17"          # PostgreSQL（ローカル開発用 DB）
 
 # === macOS ユーティリティ ===
 brew "defaultbrowser"         # デフォルトブラウザを CLI から設定
 brew "laishulu/homebrew/macism"   # IME 切り替え（Neovim で Normal モード時に英数へ）
+brew "imagemagick"            # 画像変換・情報取得（Neovim snacks.image が PNG でも identify で必須）
 brew "ffmpeg"                 # 動画・音声の変換（GIF 生成などで使用）
 brew "yt-dlp"                 # Web動画の取得（bin/vid2text で使用）
 brew "pngquant"               # PNG の減色圧縮（GitHub アバターの 1MB 制限対応など）
@@ -54,6 +57,7 @@ cask "font-hackgen"
 cask "font-moralerspace"
 cask "ghostty"
 cask "google-chrome"
+cask "handy"                  # ローカル音声入力（OSS・Whisper large-v3-turbo で日本語）
 cask "karabiner-elements"    # BTキーボード接続時に内蔵キーボードを無効化
 cask "logi-options+"
 cask "nani"
@@ -64,3 +68,4 @@ cask "raindropio"
 cask "raycast"
 cask "slack"
 brew "whisper-cpp"
+brew "sevenzip"           # 7zz（VOICEVOX エンジンの .7z 展開用）
