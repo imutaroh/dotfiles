@@ -1,0 +1,4 @@
+{
+  "description": "The progress pane: /progress toggles it, a poll and Claude's edits and shell commands redraw it from .claude/tmp/progress.md",
+  "modules": ["./register.ts"]
+}

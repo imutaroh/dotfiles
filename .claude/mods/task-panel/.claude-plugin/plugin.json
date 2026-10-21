@@ -1,0 +1,8 @@
+{
+  "name": "task-panel",
+  "version": "0.1.0",
+  "description": "/task-panel opens the session's task list (the built-in TaskCreate/TaskUpdate tasks) in a pane beside the transcript, redrawn as the tasks change.",
+  "author": {
+    "name": "imutaakihiro"
+  }
+}

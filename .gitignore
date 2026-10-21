@@ -38,3 +38,8 @@ __pycache__/
 # 再導入は /find-skills 経由で行う
 .claude/skills/grill-me
 .claude/skills/grilling
+
+# claude.ai が同期するスキル（Anthropic 提供・アカウント側で管理され自動で書き換わる）
+.claude/skills/synced/
+# terminal-browser のインストーラが張る symlink（実体は ~/.local/share/terminal-browser/）
+.claude/skills/terminal-browser
