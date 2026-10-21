@@ -38,7 +38,6 @@
 | トピック | 見るファイル（`lua/plugins/`） |
 |---|---|
 | Git 差分・未push・ブランチ比較 | `diffview.lua` |
-| lazygit | `lazygit.lua` |
 | hunk 単位の git 操作・インライン diff | `gitsigns.lua` |
 | GitHub の PR / Issue / レビュー | `octo.lua` |
 | 診断・quickfix 一覧 | `trouble.lua` |

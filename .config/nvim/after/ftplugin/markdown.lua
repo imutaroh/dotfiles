@@ -9,3 +9,8 @@ pcall(vim.treesitter.stop)
 -- （scope.lua:404 で parser:parse() がクラッシュするため）
 vim.b.snacks_scope = false
 vim.b.snacks_indent = false
+
+-- 今のファイルを Obsidian アプリで開く（vault 外の md も開ける）
+vim.keymap.set("n", "<Leader>mp", function()
+  vim.system({ "open", "-a", "Obsidian", vim.api.nvim_buf_get_name(0) })
+end, { buffer = true, desc = "Obsidian で開く" })

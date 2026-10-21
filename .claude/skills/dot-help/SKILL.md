@@ -1,6 +1,6 @@
 ---
 name: dot-help
-description: ユーザーの dotfiles 全体（Neovim / Ghostty / herdr / karabiner / zellij / zsh / lazygit / starship 等）について「〜するにはどのキー？」「このショートカット何？」「Cmd+◯ って何が起きる？」「この設定どこにある？」といった操作方法・キーバインド・設定の質問に、~/dotfiles と ~/.config の実際の設定を参照して回答する。nvim・ターミナル・シェルのキーバインドや設定に関する質問全般で使用（旧 nvim-help の後継）。どのディレクトリからでも使用可能。調査はサブエージェントに委譲してメインのコンテキストを節約する。
+description: ユーザーの dotfiles 全体（Neovim / Ghostty / herdr / karabiner / zellij / zsh / starship 等）について「〜するにはどのキー？」「このショートカット何？」「Cmd+◯ って何が起きる？」「この設定どこにある？」といった操作方法・キーバインド・設定の質問に、~/dotfiles と ~/.config の実際の設定を参照して回答する。nvim・ターミナル・シェルのキーバインドや設定に関する質問全般で使用（旧 nvim-help の後継）。どのディレクトリからでも使用可能。調査はサブエージェントに委譲してメインのコンテキストを節約する。
 ---
 
 # dot-help
@@ -38,7 +38,6 @@ dotfiles 全体の設定を実際に読んで、キーバインドと設定の�
 | zsh の alias・関数・環境変数 | `~/dotfiles/.zshrc` | 不要（直接読む） |
 | karabiner | 設定ファイルなし（dotfiles にも `~/.config` にも不在。GUI設定のみ） | 不要 |
 | zellij | 設定削除済み（ターミナル多重化は herdr に移行完了） | 不要 |
-| lazygit | `~/dotfiles/.config/lazygit/config.yml` | 不要（直接読む） |
 | プロンプト表示 | `~/dotfiles/.config/starship.toml` | 不要（直接読む） |
 | インストール済みツール | `~/dotfiles/Brewfile` | 不要（直接読む） |
 

@@ -51,7 +51,6 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   │                       #  annotate-refresh.sh: Cmd+U / Cmd+Shift+U の herdr-annotate 呼び出し口。
 │   │                       #  要 `herdr integration install claude`（setup.sh が実行））
 │   ├── karabiner/         # Karabiner-Elements 設定（karabiner.json のみ）
-│   ├── lazygit/           # Git TUI 設定
 │   ├── mise/              # ランタイム管理設定
 │   ├── nvim/              # Neovim 設定
 │   ├── raycast/           # Raycast スクリプト
