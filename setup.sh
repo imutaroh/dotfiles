@@ -100,6 +100,7 @@ mkdir -p ~/.config/herdr
 ln -sf "$DOTFILES_DIR/.config/herdr/config.toml" ~/.config/herdr/config.toml
 ln -sf "$DOTFILES_DIR/.config/herdr/agent-taborder-watch.py" ~/.config/herdr/agent-taborder-watch.py
 ln -sf "$DOTFILES_DIR/.config/herdr/annotate-refresh.sh" ~/.config/herdr/annotate-refresh.sh
+ln -sf "$DOTFILES_DIR/.config/herdr/sidechat.sh" ~/.config/herdr/sidechat.sh
 
 # herdr の Claude integration: Claude Code の SessionStart hook でセッション ID を herdr に報告する。
 # herdr-annotate（Cmd+U）が「そのペインの Claude の返答」を特定するのに必要（無いと全体で最新の
@@ -133,10 +134,6 @@ ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 
 mkdir -p ~/.config/git
 ln -sf "$DOTFILES_DIR/.config/git/ignore" ~/.config/git/ignore
-
-# lazygit
-mkdir -p "$HOME/Library/Application Support/lazygit"
-ln -sf "$DOTFILES_DIR/.config/lazygit/config.yml" "$HOME/Library/Application Support/lazygit/config.yml"
 
 # raycast script-commandsはディレクトリ全体をシンボリックリンク
 if [ -d ~/.config/raycast/script-commands ] && [ ! -L ~/.config/raycast/script-commands ]; then

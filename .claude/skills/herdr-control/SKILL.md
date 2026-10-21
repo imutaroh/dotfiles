@@ -1,6 +1,6 @@
 ---
 name: herdr-control
-description: herdr（ターミナルワークスペースマネージャ、socket API 付き CLI）のタブ・ペインを Claude が操作するスキル。「新しいタブで開いて」「ペインを分割して実行して」「横のペインでログ見せて」「herdr でタブ/ペイン作成」「ターミナルに TUI（hunk/lazygit 等）を開いて」で使用。herdr セッション内のタブ/ペインの話であり、zellij や Ghostty 自体のタブとは別物。バックグラウンドジョブ（シェルがターミナル外）からでも socket API 経由で操作できるのが価値。
+description: herdr（ターミナルワークスペースマネージャ、socket API 付き CLI）のタブ・ペインを Claude が操作するスキル。「新しいタブで開いて」「ペインを分割して実行して」「横のペインでログ見せて」「herdr でタブ/ペイン作成」「ターミナルに TUI（hunk/yazi 等）を開いて」で使用。herdr セッション内のタブ/ペインの話であり、zellij や Ghostty 自体のタブとは別物。バックグラウンドジョブ（シェルがターミナル外）からでも socket API 経由で操作できるのが価値。
 ---
 
 # herdr-control
@@ -79,7 +79,7 @@ herdr tab close <tab_id>
 
 - **自分が作ったタブ/ペイン以外は閉じない**。ユーザーの既存タブ（特に稼働中の hunk-review 等）には触れない
 - ユーザーの既存タブ/ペインを閉じる必要が生じた場合は、実行前に必ず確認する
-- TUI（hunk, lazygit 等）を起動したペインは、ユーザーが使い終わるまで放置。勝手に close しない
+- TUI（hunk, yazi 等）を起動したペインは、ユーザーが使い終わるまで放置。勝手に close しない
 - 作業後は `herdr workspace list` で pane_count / tab_count が作業前と一致することを確認する（後片付け漏れの検知）
 
 ## 隠しコマンドの再発見（セルフヒール）
