@@ -13,8 +13,8 @@
     {
       "name": "dot-help",
       "source": ".claude/skills/dot-help/SKILL.md",
-      "source_sha256": "f3f45689464f7080b1e36c12012fa4bf43baaf880ea682675eb2b7c7309b11c1",
-      "description": "ユーザーの dotfiles 全体（Neovim / Ghostty / herdr / karabiner / zellij / zsh / lazygit / starship 等）について「〜するにはどのキー？」「このショートカット何？」「Cmd+◯ って何が起きる？」「この設定どこにある？」といった操作方法・キーバインド・設定の質問に、~/dotfiles と ~/.config の実際の設定を参照して回答する。nvim・ターミナル・シェルのキーバインドや設定に関する質問全般で使用（旧 nvim-help の後継）。どのディレクトリからでも使用可能。調査はサブエージェントに委譲してメインのコンテキストを節約する。",
+      "source_sha256": "42b7014679634424fc53915dace150ed21a04163da1449aed9f561f63257ab41",
+      "description": "ユーザーの dotfiles 全体（Neovim / Ghostty / herdr / karabiner / zellij / zsh / starship 等）について「〜するにはどのキー？」「このショートカット何？」「Cmd+◯ って何が起きる？」「この設定どこにある？」といった操作方法・キーバインド・設定の質問に、~/dotfiles と ~/.config の実際の設定を参照して回答する。nvim・ターミナル・シェルのキーバインドや設定に関する質問全般で使用（旧 nvim-help の後継）。どのディレクトリからでも使用可能。調査はサブエージェントに委譲してメインのコンテキストを節約する。",
       "mode": "wrapper",
       "codex_skill": "dot-help",
       "note": "共通互換規約を介して元スキルを実行時参照する。"
@@ -49,8 +49,8 @@
     {
       "name": "herdr-control",
       "source": ".claude/skills/herdr-control/SKILL.md",
-      "source_sha256": "d5e19393cd6ee4e83e6a725ee7b9ffc541fcbe653216ee0ff7de9ef516001488",
-      "description": "herdr（ターミナルワークスペースマネージャ、socket API 付き CLI）のタブ・ペインを Claude が操作するスキル。「新しいタブで開いて」「ペインを分割して実行して」「横のペインでログ見せて」「herdr でタブ/ペイン作成」「ターミナルに TUI（hunk/lazygit 等）を開いて」で使用。herdr セッション内のタブ/ペインの話であり、zellij や Ghostty 自体のタブとは別物。バックグラウンドジョブ（シェルがターミナル外）からでも socket API 経由で操作できるのが価値。",
+      "source_sha256": "30b7fd12e7757b3cbb0767baab58b01d9cfca1901800b3edc66042382cee935f",
+      "description": "herdr（ターミナルワークスペースマネージャ、socket API 付き CLI）のタブ・ペインを Claude が操作するスキル。「新しいタブで開いて」「ペインを分割して実行して」「横のペインでログ見せて」「herdr でタブ/ペイン作成」「ターミナルに TUI（hunk/yazi 等）を開いて」で使用。herdr セッション内のタブ/ペインの話であり、zellij や Ghostty 自体のタブとは別物。バックグラウンドジョブ（シェルがターミナル外）からでも socket API 経由で操作できるのが価値。",
       "mode": "wrapper",
       "codex_skill": "herdr-control",
       "note": "共通互換規約を介して元スキルを実行時参照する。"

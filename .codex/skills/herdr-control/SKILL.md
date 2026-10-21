@@ -1,6 +1,6 @@
 ---
 name: herdr-control
-description: "herdr（ターミナルワークスペースマネージャ、socket API 付き CLI）のタブ・ペインを Claude が操作するスキル。「新しいタブで開いて」「ペインを分割して実行して」「横のペインでログ見せて」「herdr でタブ/ペイン作成」「ターミナルに TUI（hunk/lazygit 等）を開いて」で使用。herdr セッション内のタブ/ペインの話であり、zellij や Ghostty 自体のタブとは別物。バックグラウンドジョブ（シェルがターミナル外）からでも socket API 経由で操作できるのが価値。"
+description: "herdr（ターミナルワークスペースマネージャ、socket API 付き CLI）のタブ・ペインを Claude が操作するスキル。「新しいタブで開いて」「ペインを分割して実行して」「横のペインでログ見せて」「herdr でタブ/ペイン作成」「ターミナルに TUI（hunk/yazi 等）を開いて」で使用。herdr セッション内のタブ/ペインの話であり、zellij や Ghostty 自体のタブとは別物。バックグラウンドジョブ（シェルがターミナル外）からでも socket API 経由で操作できるのが価値。"
 ---
 
 # herdr-control — Codex ブリッジ

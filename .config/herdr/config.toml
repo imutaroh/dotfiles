@@ -107,6 +107,17 @@ description = "pick agent, then review its newest reply"
 width = "60%"
 height = 12
 
+# サイドチャット: フォーカス中の Claude の会話を fork して popup で開く（Cmd+; から呼ぶ）。
+# Desktop の side chat 相当。メインの文脈を読めるが、話した内容はメインに戻らない（plan モード）
+[[keys.command]]
+key = "prefix+semicolon"
+type = "popup"
+command = "exec \"$HOME/.config/herdr/sidechat.sh\""
+description = "side chat (fork focused Claude)"
+# 位置は指定できず中央固定。サイズは % かセル数（例: width = 100）で指定できる
+width = "60%"
+height = "60%"
+
 [ui.toast]
 # エージェントが完了(idle)・入力待ち(blocked)になったら in-app popup を表示する。
 # popup が出たら Cmd+O（= prefix+o / open_notification_target）でそのエージェントに直行できる。
