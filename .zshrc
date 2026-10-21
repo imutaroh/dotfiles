@@ -74,6 +74,8 @@ y() {
   command rm -f -- "$tmp"
 }
 alias c='claude'
+# icat: ターミナルに画像を表示（herdr 越しだと自動判定を誤るので kitty protocol を明示）
+alias icat='chafa -f kitty'
 # codex-hud: Codex の隣ペインに Claude Code 風の複数行ステータス（ctx / 5h / 7d バー）を出す
 #   herdr で Codex のペインを prefix+minus で上下分割 → 下で codex-hud
 alias codex-hud='bash ~/dotfiles/.codex/scripts/codex-hud.sh'
