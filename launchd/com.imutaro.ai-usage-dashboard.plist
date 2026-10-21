@@ -7,7 +7,7 @@
   <key>ProgramArguments</key>
   <array>
     <string>/bin/zsh</string>
-    <string>/Users/imutaakihiro/repos/imutaakihiro/ai-usage-dashboard/run.sh</string>
+    <string>/Users/imutaakihiro/repos/imutaroh/ai-usage-dashboard/run.sh</string>
   </array>
   <key>StartCalendarInterval</key>
   <dict>
@@ -19,8 +19,8 @@
   <key>RunAtLoad</key>
   <true/>
   <key>StandardOutPath</key>
-  <string>/Users/imutaakihiro/repos/imutaakihiro/ai-usage-dashboard/run.log</string>
+  <string>/Users/imutaakihiro/repos/imutaroh/ai-usage-dashboard/run.log</string>
   <key>StandardErrorPath</key>
-  <string>/Users/imutaakihiro/repos/imutaakihiro/ai-usage-dashboard/run.log</string>
+  <string>/Users/imutaakihiro/repos/imutaroh/ai-usage-dashboard/run.log</string>
 </dict>
 </plist>

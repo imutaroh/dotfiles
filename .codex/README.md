@@ -58,7 +58,7 @@ codex execpolicy check --pretty --rules ~/dotfiles/.codex/rules/claude-parity.ru
 
 # 複数行 HUD（Codex の隣のペインで動かす。--once は動作確認用）
 bash ~/dotfiles/.codex/scripts/codex-hud.sh --once
-bash ~/dotfiles/.codex/scripts/codex-hud.sh --cwd ~/repos/imutaakihiro/ObsidianImus   # 別ディレクトリのセッションを見る
+bash ~/dotfiles/.codex/scripts/codex-hud.sh --cwd ~/repos/imutaroh/ObsidianImus   # 別ディレクトリのセッションを見る
 
 # 同等体験がまるごと効いているかの一括点検（読み取り専用。NG があれば exit 1）
 bash ~/dotfiles/.codex/scripts/check-parity.sh          # 7項目すべて（末尾の注入確認に数十秒かかる）

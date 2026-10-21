@@ -32,7 +32,8 @@ macOS 用の個人設定ファイル管理リポジトリ。
 ## リポジトリ配置
 
 - ローカルリポジトリは `~/repos/<owner>/` で管理（オーナー別に整理）
-  - 個人リポジトリ: `~/repos/imutaakihiro/`
-  - 会社・組織のリポジトリ: `~/repos/<組織名>/`
+  - 個人リポジトリ: `~/repos/imutaroh/`（GitHub アカウントは imutaroh の 1 つ。Imutaakihiro は旧名）
+  - 会社・組織のリポジトリ: `~/repos/<組織名>/`（androots、scarlet はプロジェクト名）
+  - 他人のリポジトリを参照用にクローンするときは `~/repos/others/`
 - dotfiles のみ例外として `~/dotfiles/` に配置
-- Obsidian Vault: `~/repos/imutaakihiro/ObsidianImus/`
+- Obsidian Vault: `~/repos/imutaroh/ObsidianImus/`

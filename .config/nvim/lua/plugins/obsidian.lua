@@ -46,7 +46,7 @@ return {
   opts = {
     legacy_commands = false, -- 旧 :ObsidianXxx コマンド形式は使わない（4.0.0 で削除予定）
     workspaces = {
-      { name = "ObsidianImus", path = "~/repos/imutaakihiro/ObsidianImus" },
+      { name = "ObsidianImus", path = "~/repos/imutaroh/ObsidianImus" },
     },
     -- vault 外の markdown では何もしない（workspace 判定で自動的に不活性）
 
