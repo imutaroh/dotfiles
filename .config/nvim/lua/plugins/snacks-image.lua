@@ -18,6 +18,12 @@ return {
       -- ![[x.png]] は md と同じ階層の _assets/ から探す（Obsidian の attachmentFolderPath = ./_assets）
       -- 既定値の後ろに足す。リストは opts マージで添字ごとに上書きされるので既定値も書き並べる
       img_dirs = { "img", "images", "assets", "static", "public", "media", "attachments", "_assets" },
+      -- doc を有効にすると、開いたファイル内の ![](https://...) を curl で取りに行く。
+      -- 他人のリポジトリや PR の md を開いただけで任意の URL（localhost 含む）へアクセスされるので、
+      -- リモートの画像は存在しないパスに差し替えて取得させない（"File not found" と表示される）
+      resolve = function(_, src)
+        if src:find("^%w%w+://") then return vim.fn.stdpath("cache") .. "/snacks-remote-image-blocked" end
+      end,
     },
   },
 }

@@ -1,6 +1,6 @@
 -- storyline.nvim: PR の差分を AI が「意味のあるチャプター」に分割して読ませる
 -- 既存ツールとの住み分け:
---   diffview  … 差分をファイル単位で見る（読む順序は与えない）
+--   neotree-diffstat … 普段の画面のまま差分の基準を切り替えて見る（読む順序は与えない）
 --   octo      … PR コメントの読み書き・レビュー投稿
 --   storyline … 「どの順で読むか」を AI に決めさせる読解モード
 -- メインペインが実ファイルバッファなので gd / gr / hover がそのまま効くのが差別化点。
@@ -20,6 +20,12 @@ return {
   opts = {
     -- cursor-agent は未インストールのため claude 固定（auto にすると探索が走る）
     backend = "claude",
+    -- PR のタイトル・本文・差分（他人が書いた文章）を stdin で渡すので、ツールを一切持たせない。
+    -- プロンプトは stdin で完結し、読むモードもパス一覧だけで動くのでツールは要らない。
+    -- --setting-sources user は checkout 先の .claude/settings.json（hooks 含む）を読ませないため
+    backends = {
+      claude = { cmd = "claude", args = { "-p", "--tools", "", "--strict-mcp-config", "--setting-sources", "user" } },
+    },
     -- 差分全文を claude -p に投げるので、1ファイルあたりの上限は既定より絞る
     max_diff_lines_per_file = 300,
     layout = "unified",

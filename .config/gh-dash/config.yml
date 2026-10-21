@@ -87,11 +87,13 @@ keybindings:
 
     - key: E
       name: checkout して nvim
-      # ローカルにコードを引いて読みたいとき。diffview で base との差分を開く。
+      # ローカルにコードを引いて読みたいとき。diffbase で main との差分を基準にして開く。
+      # {{.HeadRefName}} 等の PR 作者が決められる値はシェルに埋め込まない（fork の PR は
+      # ブランチ名に $( ) や ; を仕込めるため）。テンプレートに入れてよいのは数値の PrNumber だけ
       command: >
         cd {{.RepoPath}} &&
         gh pr checkout {{.PrNumber}} &&
-        nvim -c "DiffviewOpen {{.BaseRefName}}...{{.HeadRefName}}"
+        nvim -c "DiffBase main"
 
   issues:
     - key: O
