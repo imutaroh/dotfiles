@@ -61,7 +61,6 @@ repoPaths:
   imutaroh/antares: ~/repos/scarlet/antares # owner ではなくプロジェクト名の下にある
   imutaroh/imutaroh: ~/repos/imutaroh/imutaroh
   androots/*: ~/repos/androots/*
-  imutaakihiro/*: ~/repos/imutaakihiro/*
   imutaroh/*: ~/repos/imutaroh/*
 
 # ─── カスタムキーバインド ───
@@ -78,12 +77,6 @@ keybindings:
       builtin: pageDown
     - key: K
       builtin: pageUp
-
-    - key: z
-      name: lazygit
-      # L は既定の label と衝突するため z に変更（2026-08-28）
-      command: >
-        cd {{.RepoPath}} && lazygit
 
   prs:
     - key: O

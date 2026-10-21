@@ -42,8 +42,6 @@
 
 | キー | 動作 | 備考 |
 |------|------|------|
-| `<leader>gg` | LazyGit を開く | Git の TUI クライアント。コミット・差分確認など何でもできる |
-| `<leader>gf` | 現在ファイルの Git 履歴（LazyGit） | |
 | `<leader>gd` | Diffview を開く | git diff を横並びパネルで確認 |
 | `<leader>gD` | Diffview を閉じる | |
 | `<leader>gh` | 現在ファイルの Git 履歴（Diffview） | |
@@ -81,11 +79,25 @@
 
 ---
 
+## Claude へのコメント（nudge.nvim）
+
+| キー | 動作 | 備考 |
+|------|------|------|
+| `<leader>aa` | この行/選択範囲にコメント | ビジュアルモードでも使える |
+| `<leader>ae` / `<leader>ad` | カーソル下のコメントを編集 / 削除 | |
+| `<leader>al` | コメント一覧 | quickfix に出る |
+| `<leader>as` | Claude にまとめて送る | 同じ herdr タブの Claude の入力欄に貼るだけ。Enter は自分で押す |
+| `<leader>at` | 送り先の Claude を選び直す | 同じタブに Claude が複数いるとき |
+| `<leader>aC` | コメントを全部消す | |
+
+---
+
 ## Markdown
 
 | キー | 動作 | 備考 |
 |------|------|------|
-| `<leader>mp` | ブラウザでプレビュー | .md ファイルを開いている時のみ有効 |
+| `<leader>mp` | Obsidian アプリで開く | .md ファイルを開いている時のみ有効。vault 外の md も開ける（`open -a Obsidian`） |
+| `<leader>mb` | ブラウザでプレビュー | .md ファイルを開いている時のみ有効 |
 | `gd` | `[[wikilink]]` 先のノートへジャンプ | Obsidian vault 内のみ（obsidian.nvim の LSP 経由）。短縮形・フルパス形・`\|別名` 付きすべて対応 |
 | `go` | `gd` のジャンプ元へ戻る | vault 内のみ（`<C-o>` 相当。連打でさらに前へ戻れる。逆方向は `<C-i>`） |
 | `<CR>` | カーソル下のリンクを follow | obsidian.nvim の smart_action（vault 内のみ） |

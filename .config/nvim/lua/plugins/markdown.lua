@@ -3,7 +3,7 @@
 
 return {
   -- ブラウザでリアルタイムプレビュー
-  -- <leader>mp でブラウザが開き、編集と同時にレンダリングされる
+  -- <leader>mb でブラウザが開き、編集と同時にレンダリングされる
   --
   -- NOTE: build は app/install.sh を直接叩く方式に変更。
   -- 旧: vim.fn["mkdp#util#install"]() は Lazy 初回ビルド時に
@@ -17,7 +17,7 @@ return {
     ft = { "markdown" },
     build = "cd app && bash install.sh",
     keys = {
-      { "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview (browser)" },
+      { "<leader>mb", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview (browser)" },
     },
     init = function()
       -- テーマをダークモードに（config だと cmd 経路だけ初期化されないので init で設定）
@@ -39,6 +39,6 @@ return {
   -- injection 処理（languagetree _get_injections → _apply_directives）で master(archived) の
   -- 0.12 非互換ディレクティブを踏み、treesitter.lua:196 の range() nil で落ちる。
   -- 恒久解は nvim-treesitter main 移行だが AstroNvim v5 コアが master 固定のため見送り。
-  -- バッファ内装飾は諦め、プレビューは上の markdown-preview.nvim（<leader>mp）で代替する。
+  -- バッファ内装飾は諦め、プレビューは上の markdown-preview.nvim（<leader>mb）で代替する。
   -- treesitter main へ移行できたら再検討する。
 }

@@ -48,15 +48,14 @@ nvim/
 
 ### Git / GitHub
 
-役割分担: **書きながら見る = gitsigns、ひとりで読む = diffview、GitHub に書く = octo、ローカル git 操作 = lazygit**。
+役割分担: **書きながら見る = gitsigns、ひとりで読む = diffbase（普段の画面のまま差分の基準を切り替える）、GitHub に書く = octo**。
 （Claude とペアレビューするときは nvim 外の [Hunk](https://hunk.dev/) を使う）
 
 | ファイル | 役割 | 主なキー |
 |----------|------|----------|
 | `gitsigns.lua` | バッファ内 hunk 表示・blame（blame は既定 OFF） | `gh`/`gH` hunk 移動、`<leader>gB` blame |
-| `diffview.lua` | 差分閲覧・ブランチ比較（読み専用） | `<leader>gd` diff、`<leader>gm` vs main、`<leader>gu` 未push、`<leader>gh` ファイル履歴 |
+| `diffbase.lua` | 自作プラグイン diffbase.nvim（`~/repos/imutaroh/diffbase.nvim`）の読み込み。普段の画面のまま差分の基準を切り替える（main / 直前のコミット / 未push / コミットを選ぶ / OFF）。ツリーに +追加 -削除 の行数、コードに GitHub 風の緑・赤の行。コミットを選ぶとその時点に移動し、`<leader>gn` の「元のブランチに戻る」で戻る（Neovim を閉じたときは `git switch -`） | `<leader>gn` 基準を選ぶ、`gh`/`gH` 変更箇所へ移動 |
 | `octo.lua` | GitHub PR / Issue の閲覧・コメント・レビュー提出 | `<leader>Ob` 現ブランチPR、`<leader>Op`/`Oi` 一覧、`<leader>Or` レビュー |
-| `lazygit.lua` | Git TUI（snacks 経由） | `<leader>gg` 起動、`<leader>gf` ファイル履歴 |
 
 ### テーマ / 見た目
 
@@ -92,7 +91,7 @@ nvim/
 | `conform.lua` | 保存時の自動フォーマット |
 | `treesitter.lua` | シンタックスハイライト（言語パーサー設定） |
 | `neoconf.lua` | VSCode 設定の取り込みを無効化（LSP 二重起動対策） |
-| `markdown.lua` | Markdown プレビュー（`<leader>mp` でブラウザ表示） |
+| `markdown.lua` | Markdown プレビュー（`<leader>mb` でブラウザ表示。`<leader>mp` は Obsidian で開く） |
 
 ### その他
 
@@ -101,6 +100,7 @@ nvim/
 | `astrocore.lua` | コア設定（折り返し、カーソルライン、autocmd） |
 | `im-select.lua` | Insert モードを抜けたら IME を英語に自動切替 |
 | `keymaps-ja.lua` | which-key の説明文を日本語化 |
+| `nudge.lua` | 自作プラグイン nudge.nvim（`~/repos/imutaroh/nudge.nvim`）の読み込み。行・範囲に Claude へのコメントを溜め、同じ herdr タブの Claude ペインへまとめて貼り付ける（Enter は押さない）。`<leader>aa` 追加、`<leader>as` 送信 |
 
 ## 基本設定
 

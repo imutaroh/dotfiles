@@ -12,7 +12,6 @@
 ├── git/               # Git グローバル設定
 ├── herdr/             # エージェントマルチプレクサ
 ├── hunk/              # ターミナル diff ビューア
-├── lazygit/           # Git TUI クライアント
 ├── mise/              # ランタイムバージョン管理
 ├── nvim/              # エディタ（詳細は nvim/README.md）
 ├── raycast/           # ランチャー
@@ -134,13 +133,3 @@ macOS 用ランチャーアプリ。Spotlight の高機能版で、カスタム�
 | 項目 | 値 | 説明 |
 |------|-----|------|
 | `wrap_lines` | `true` | 長い行を折り返す（デフォルトは切り捨て）。日本語ドキュメントや長い SQL が右端で切れるのを防ぐ |
-
-## [lazygit](https://github.com/jesseduffield/lazygit)
-
-Git の TUI クライアント。Neovim からも呼び出して使用する。
-
-### ファイル構成
-
-| ファイル | 説明 |
-|----------|------|
-| `config.yml` | 設定ファイル（カスタムコミットコマンド等） |
