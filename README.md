@@ -45,8 +45,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   ├── ghostty/           # ターミナル設定
 │   ├── git/               # Git グローバル gitignore
 │   ├── herdr/             # エージェントマルチプレクサ設定
-│   │                       # （agent-taborder-watch.py: Agents サイドバーをタブ順に追従、
-│   │                       #  タブ名への位置番号の自動付与も担う、
+│   │                       # （agent-taborder-watch.py: タブ名への位置番号の自動付与、
 │   │                       #  ログは ~/.config/herdr/agent-taborder.log。
 │   │                       #  annotate-refresh.sh: Cmd+U / Cmd+Shift+U の herdr-annotate 呼び出し口。
 │   │                       #  要 `herdr integration install claude`（setup.sh が実行））
