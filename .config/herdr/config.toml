@@ -142,6 +142,9 @@ directory = "~/.claude/worktrees"
 [ui]
 # "spaces" = Space ごとにグループ化 / "priority" = グループ化なしの注意待ちキュー
 # Space の見出しを消して agent 一覧だけにするため priority を使う（2026-08-18）
+# ここは起動時の初期値。サイドバーの agents 見出し右端のラベル（priority / grouped）を
+# クリックすると実行中に切り替わる。カスタムビュー（agent.view.set）が有効な間は
+# ラベルがビュー名に置き換わりクリックできないため、ビューは使わない（2026-10-23）
 agent_panel_sort = "priority"
 
 # ペイン枠線にエージェント名を出す（既定 false）。手動 pane 名が未設定のときだけ効く。
@@ -155,9 +158,13 @@ show_agent_labels_on_pane_borders = true
 # それ以外のエージェントは既定のまま（種別名が出る）。
 # 使える組み込みトークン: state_icon / state_text / workspace / tab / pane /
 #                         agent / terminal_title / terminal_title_stripped
-# サイドバー上部の spaces セクションを実質非表示にする実験（rows を空にする）
+# サイドバー上部の spaces セクション。rows = [] で消す実験をやめ、既定の表示に戻す（2026-10-23）
+# 状態アイコンと workspace 名の1行だけにする（ブランチ名は長くて切れるので出さない）。
+# 使える組み込みトークン: state_icon / state_text / workspace / branch / git_status / $name
 [ui.sidebar.spaces]
-rows = []
+rows = [
+  ["state_icon", "workspace"],
+]
 row_gap = 0
 
 [ui.sidebar.agents]

@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""herdr の Agents サイドバーをタブバーの表示順に自動追従させる常駐ウォッチャ。
+"""herdr のタブラベルに表示位置の番号を自動で振り直す常駐ウォッチャ。
 
-herdr (v0.7.5, protocol 17) の `agent.view.set` に組み込みの `tab_order` ソートは
-タブ作成の通し番号順であり、実際の表示順（並べ替え後の順序）ではないバグがある。
-回避策として各ペインにカスタムトークン `ord`（ワークスペース→タブの表示順そのままの
-通し順位）を焼き込み、それでソートするカスタムビューを適用する。
-
-あわせて、各ワークスペース内のタブラベルにも表示位置の番号（`prefix+1..9` で
-ジャンプする番号と一致）を自動で振り直す。タブを閉じて番号がずれた場合や、
+各ワークスペース内のタブラベルに表示位置の番号（`prefix+1..9` で
+ジャンプする番号と一致）を振り直す。タブを閉じて番号がずれた場合や、
 番号なしでタブを作成・リネームした場合でも、次の reapply で正しい番号に補正される。
 
+以前は Agents サイドバーをタブの表示順に並べるカスタムビュー（`agent.view.set`）も
+適用していたが、カスタムビューがあるとサイドバーの並べ方トグル（priority / grouped）が
+クリックできなくなるため廃止した（2026-10-23）。組み込みの `tab_order` ソートは
+herdr 0.9.5 でもタブ作成順のままだが、grouped 表示はタブの表示順に従う。
+
 タブの並び替え・作成・削除などのイベントを購読し、デバウンスしてから
-上記の再適用（reapply）を行う。接続が切れた場合は指数バックオフで再接続し、
-再接続のたびに必ず reapply する（herdr 再起動でカスタムビューが消えるため）。
+reapply を行う。接続が切れた場合は指数バックオフで再接続し、
+再接続のたびに必ず reapply する（切断中に番号がずれている可能性があるため）。
 """
 
 from __future__ import annotations
@@ -45,9 +45,6 @@ SUBSCRIBE_EVENT_TYPES = (
     "tab.closed",
     "tab.moved",
     "tab.renamed",
-    "pane.created",
-    "pane.closed",
-    "pane.agent_detected",
 )
 
 # タブラベル先頭の番号プレフィックスを検出する正規表現。
@@ -108,21 +105,17 @@ def compute_renumbered_label(label: str, position: int) -> str:
 
 
 def reapply() -> None:
-    """workspace/tab の表示順から ord トークンを再計算し、カスタムビューを適用する。
-    あわせて、各ワークスペース内のタブラベルに表示位置の番号を振り直す。
-    """
+    """各ワークスペース内のタブラベルに表示位置の番号を振り直す。"""
     workspaces = send_request("workspace.list", {}).get("workspaces", [])
 
-    order: dict[str, int] = {}
-    rank = 0
+    tab_count = 0
     renamed = 0
     for ws in workspaces:
         tabs = send_request(
             "tab.list", {"workspace_id": ws["workspace_id"]}
         ).get("tabs", [])
         for ws_position, tab in enumerate(tabs, start=1):
-            rank += 1
-            order[tab["tab_id"]] = rank
+            tab_count += 1
 
             current_label = tab.get("label", "")
             target_label = compute_renumbered_label(current_label, ws_position)
@@ -138,48 +131,10 @@ def reapply() -> None:
                         "tab.rename に失敗しました (tab_id=%s)", tab["tab_id"]
                     )
 
-    agents = send_request("agent.list", {}).get("agents", [])
-
-    updated = 0
-    failed = 0
-    for agent in agents:
-        pane_id = agent.get("pane_id")
-        tab_id = agent.get("tab_id")
-        if not pane_id:
-            continue
-        pos = order.get(tab_id, 999)
-        ord_token = f"{pos:03d}"
-        try:
-            send_request(
-                "pane.report_metadata",
-                {
-                    "pane_id": pane_id,
-                    "source": "taborder",
-                    "tokens": {"ord": ord_token},
-                },
-            )
-            updated += 1
-        except Exception:
-            failed += 1
-            logging.exception(
-                "pane.report_metadata に失敗しました (pane_id=%s)", pane_id
-            )
-
-    send_request(
-        "agent.view.set",
-        {
-            "source": "taborder",
-            "label": "tab order",
-            "sort": [{"field": {"token": "ord"}, "order": "asc"}],
-        },
-    )
-
     logging.info(
-        "reapply 完了: workspaces=%d tabs=%d agents_updated=%d agents_failed=%d tabs_renamed=%d",
+        "reapply 完了: workspaces=%d tabs=%d tabs_renamed=%d",
         len(workspaces),
-        rank,
-        updated,
-        failed,
+        tab_count,
         renamed,
     )
 
@@ -233,7 +188,7 @@ def _run_subscription(backoff_state: list[int]) -> None:
         logging.info("herdr イベント購読を確立しました")
         backoff_state[0] = 0
 
-        # 再接続直後は必ず reapply する（herdr 再起動でビューが消えるため）
+        # 再接続直後は必ず reapply する（切断中に番号がずれている可能性があるため）
         try:
             reapply()
         except Exception:
@@ -273,10 +228,7 @@ def watch_forever() -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description=(
-            "herdr Agents サイドバーをタブバー表示順に自動追従させ、"
-            "タブラベルにも位置番号を自動で振り直す常駐ウォッチャ"
-        )
+        description="herdr のタブラベルに表示位置の番号を自動で振り直す常駐ウォッチャ"
     )
     parser.add_argument(
         "--once",
