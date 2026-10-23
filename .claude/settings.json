@@ -138,10 +138,12 @@
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": false,
     "skill-creator@claude-plugins-official": false,
-    "claude-security@claude-plugins-official": false,
+    "claude-security@claude-plugins-official": true,
     "terminal-browser@terminal-browser": true,
     "gopls-lsp@claude-plugins-official": true,
-    "image-view@claude-image-view": true
+    "image-view@claude-image-view": true,
+    "effort-auto@hide10": true,
+    "cloudflare@cloudflare": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -160,6 +162,18 @@
       "source": {
         "source": "github",
         "repo": "jarrodwatts/claude-image-view"
+      }
+    },
+    "hide10": {
+      "source": {
+        "source": "github",
+        "repo": "k-hide10/claude-code-plugins"
+      }
+    },
+    "cloudflare": {
+      "source": {
+        "source": "github",
+        "repo": "cloudflare/skills"
       }
     }
   },
