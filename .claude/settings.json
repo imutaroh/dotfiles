@@ -228,5 +228,9 @@
       "**routine under ~/repos/imutaroh/ObsidianImus/ prefix**: Notes/, Private/Memos/, Studio/, and .claude/ file operations are routine for this vault (Private/People/ is excluded)"
     ]
   },
-  "voiceEnabled": true
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "language": "japanese"
 }
