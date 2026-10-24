@@ -83,6 +83,12 @@
       "Bash(git reset --hard*)",
       "Bash(git clean -f*)"
     ],
+    "ask": [
+      "Bash(gh pr create*)",
+      "Bash(gh pr merge*)",
+      "Bash(gh pr close*)",
+      "Bash(gh pr ready*)"
+    ],
     "defaultMode": "auto"
   },
   "model": "opus",
@@ -210,7 +216,7 @@
       "**Trusted cloud buckets**: None configured",
       "**Key internal services**: None configured",
       "**Internal package registry**: None configured",
-      "**Sensitive data locations & audiences**: Private/Finance/ (gitignored — financial data); Private/AI workspace/ draft notes pending manual review before promotion to Notes/; any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
+      "**Sensitive data locations & audiences**: Private/Finance/ (gitignored — financial data); Private/People/ (personal information about real people — AI access forbidden); Private/Memos/ draft notes pending manual review before promotion to Notes/; any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
       "**Data retention / declassification**: None configured",
       "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited — e.g. matches `prod-db`, not `producer`)",
       "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
@@ -219,7 +225,7 @@
       "**Primary use of Claude Code**: personal knowledge-management (Obsidian vault: notes, learning, journaling) — hobby/personal use",
       "**Trusted repo**: imutaroh/ObsidianImus (private, github.com/imutaroh/ObsidianImus) — the working directory and its origin remote; confidential personal notes are fine to commit here given private visibility, but Private/Finance/ and other credential/regulated material are excluded regardless of visibility",
       "**Org-specific CLIs**: None configured — routine personal CLIs observed: ctx, codex, trash, brew, nvim, herdr, gdev, hunk (no org affiliation evidenced)",
-      "**routine under ~/repos/imutaroh/ObsidianImus/ prefix**: Notes/, Private/AI workspace/, and .claude/ file operations are routine for this vault"
+      "**routine under ~/repos/imutaroh/ObsidianImus/ prefix**: Notes/, Private/Memos/, Studio/, and .claude/ file operations are routine for this vault (Private/People/ is excluded)"
     ]
   },
   "voiceEnabled": true
