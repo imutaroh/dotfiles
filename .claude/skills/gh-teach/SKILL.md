@@ -49,9 +49,9 @@ argument-hint: "[項目ID 例 C01-101]"
 
 ### 4. 確認ドリル
 
-- `references/quiz-rules.md` を読み、`assets/drill.html` を雛形に、本試10問（基本6＋応用4）＋追試4問を作る
+- `${CLAUDE_SKILL_DIR}/references/quiz-rules.md` を読み、`${CLAUDE_SKILL_DIR}/assets/drill.html` を雛形に、本試10問（基本6＋応用4）＋追試4問を作る
 - 工程2〜3の穴は `focus: true` で必ず入れる
-- 公開前に `node scripts/check_drill.mjs <file>` を通し、NG と WARN をすべて直す
+- 公開前に `node ${CLAUDE_SKILL_DIR}/scripts/check_drill.mjs <file>` を通し、NG と WARN をすべて直す
 - 解き終わったら、間違えた問題の番号と、そのとき書いた理由を貼ってもらう。理由のどこで外れたかを工程3の形で解説する
 - 穴が残っていれば、追試の第2ラウンドを同じ手順で作る
 

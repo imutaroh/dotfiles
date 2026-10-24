@@ -81,7 +81,8 @@
       "Bash(git log *--output*)",
       "Bash(git diff *--output*)",
       "Bash(git reset --hard*)",
-      "Bash(git clean -f*)"
+      "Bash(git clean -f*)",
+      "Skill(anthropic-skills:obsidian-daily)"
     ],
     "ask": [
       "Bash(gh pr create*)",
@@ -125,6 +126,17 @@
           {
             "type": "command",
             "command": "bash ~/.claude/hooks/play-sound.sh ~/.claude/sounds/complete.wav"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "matcher": "rate_limit|overloaded|server_error|max_output_tokens|billing_error|authentication_failed",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/play-sound.sh ~/.claude/sounds/confirm.wav"
           }
         ]
       }
@@ -194,9 +206,12 @@
       "effortLevel": "high"
     },
     "claude-opus-5-5": {
-      "effortLevel": "medium"
+      "effortLevel": "high"
     }
   },
+  "fallbackModel": ["claude-opus-5", "claude-sonnet-5-5"],
+  "showThinkingSummaries": true,
+  "cleanupPeriodDays": 365,
   "advisorModel": "fable",
   "awaySummaryEnabled": false,
   "showClearContextOnPlanAccept": true,
