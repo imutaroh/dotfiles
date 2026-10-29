@@ -1,4 +1,5 @@
 {
+  "cleanupPeriodDays": 365,
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_ENABLE_TODO_TOOLS": "1",
@@ -98,6 +99,10 @@
     "defaultMode": "auto"
   },
   "model": "opus",
+  "fallbackModel": [
+    "claude-opus-5",
+    "claude-sonnet-5-5"
+  ],
   "enabledMcpjsonServers": [
     "obsidian"
   ],
@@ -166,7 +171,8 @@
     "gopls-lsp@claude-plugins-official": true,
     "image-view@claude-image-view": true,
     "effort-auto@hide10": true,
-    "cloudflare@cloudflare": true
+    "cloudflare@cloudflare": true,
+    "codex@openai-codex": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -198,9 +204,16 @@
         "source": "github",
         "repo": "cloudflare/skills"
       }
+    },
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
     }
   },
   "outputStyle": "Explanatory",
+  "language": "japanese",
   "modelSettings": {
     "claude-opus-5": {
       "effortLevel": "high"
@@ -209,13 +222,15 @@
       "effortLevel": "high"
     }
   },
-  "fallbackModel": ["claude-opus-5", "claude-sonnet-5-5"],
-  "showThinkingSummaries": true,
-  "cleanupPeriodDays": 365,
   "advisorModel": "fable",
   "awaySummaryEnabled": false,
   "showClearContextOnPlanAccept": true,
   "tui": "fullscreen",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "showThinkingSummaries": true,
   "skipWorkflowUsageWarning": true,
   "theme": "custom:dark-daltonized-cool",
   "agentPushNotifEnabled": true,
@@ -247,10 +262,5 @@
       "**Org-specific CLIs**: None configured — routine personal CLIs observed: ctx, codex, trash, brew, nvim, herdr, gdev, hunk (no org affiliation evidenced)",
       "**routine under ~/repos/imutaroh/ObsidianImus/ prefix**: Notes/, Private/Memos/, Studio/, and .claude/ file operations are routine for this vault (Private/People/ is excluded)"
     ]
-  },
-  "voice": {
-    "enabled": true,
-    "mode": "hold"
-  },
-  "language": "japanese"
+  }
 }
