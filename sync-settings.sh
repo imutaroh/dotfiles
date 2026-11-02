@@ -12,6 +12,9 @@ set -euo pipefail
 # 使い方:
 #   ./sync-settings.sh          実環境の内容を dotfiles に取り込む
 #   ./sync-settings.sh --check  差分の有無だけ調べる（差分あり = 終了コード 1）
+#
+# autoMode は取り込まない。非公開のリポジトリや個人データの置き場所を書くことがあり、
+# このリポジトリは公開しているため。実環境の autoMode はそのまま残る。
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 LIVE="$HOME/.claude/settings.json"
@@ -22,24 +25,28 @@ if [ ! -f "$LIVE" ]; then
     exit 1
 fi
 
-if cmp -s "$LIVE" "$REPO"; then
+FILTERED="$(mktemp)"
+trap 'command rm -f "$FILTERED"' EXIT
+jq 'del(.autoMode)' "$LIVE" > "$FILTERED"
+
+if cmp -s "$FILTERED" "$REPO"; then
     echo "settings.json: 差分なし"
     exit 0
 fi
 
 if [ "${1:-}" = "--check" ]; then
     echo "settings.json: 実環境と dotfiles に差分あり（./sync-settings.sh で取り込む）"
-    diff -u "$REPO" "$LIVE" || true
+    diff -u "$REPO" "$FILTERED" || true
     exit 1
 fi
 
 # 機密情報の混入チェック。settings.json は本来トークンを持たないが、
 # 気づかずコミットすると公開リポジトリに載るため取り込み前に止める。
-if grep -qiE '"(api[_-]?key|token|secret|password)"[[:space:]]*:|sk-[A-Za-z0-9]{16}|ghp_[A-Za-z0-9]{16}' "$LIVE"; then
+if grep -qiE '"(api[_-]?key|token|secret|password)"[[:space:]]*:|sk-[A-Za-z0-9]{16}|ghp_[A-Za-z0-9]{16}' "$FILTERED"; then
     echo "機密情報らしき値が含まれています。手動で確認してください: $LIVE" >&2
     exit 1
 fi
 
-cp "$LIVE" "$REPO"
+cat "$FILTERED" > "$REPO"
 echo "settings.json を取り込みました。差分を確認してコミットしてください:"
 git -C "$DOTFILES_DIR" --no-pager diff --stat -- .claude/settings.json

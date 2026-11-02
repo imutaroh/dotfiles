@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# iPhone のアプリを keep.txt（残すアプリのバンドルID一覧）で宣言的に管理する。
-#   ./apps.sh list   … インストール済みアプリを「bundle_id<TAB>name」で出力（keep.txt 作成の元ネタ）
+# iPhone のアプリを keep.txt（残すアプリのバンドルID一覧。私的なので gitignore 済み）で宣言的に管理する。
+#   ./apps.sh list  … インストール済みアプリを「bundle_id<TAB>name」で出力（keep.txt 作成の元ネタ）
 #   ./apps.sh plan   … keep.txt に無いアプリ（削除候補）を表示。何も消さない
 #   ./apps.sh apply  … plan の内容を確認後、ideviceinstaller uninstall で一括削除
 # 前提: brew install libimobiledevice ideviceinstaller / iPhone を USB 接続し「信頼」済み

@@ -29,6 +29,15 @@
       "note": "共通互換規約を介して元スキルを実行時参照する。"
     },
     {
+      "name": "gh-teach",
+      "source": ".claude/skills/gh-teach/SKILL.md",
+      "source_sha256": "ecb709f02c9989fca81dcddbd70e91539e6c606dcaac0ce4a3530cf1a725af07",
+      "description": "非公開の個人用スキル。",
+      "mode": "deferred",
+      "codex_skill": null,
+      "note": "このリポジトリでは追跡しない。Codex の入口は作らない。"
+    },
+    {
       "name": "grill-me",
       "source": ".claude/skills/grill-me/SKILL.md",
       "source_sha256": "caaf8b8de1684f96e26b28f3c29189db5c89cce4b73e1c93d86164f66ef88637",
@@ -67,7 +76,7 @@
     {
       "name": "output-style",
       "source": ".claude/skills/output-style/SKILL.md",
-      "source_sha256": "ac134a61115766fde3c48b58a216772fb4a70346ae070c1a78873120ee99cd09",
+      "source_sha256": "cc69809c0c7813bdefe1eaf55a5f2a452e61996778cf654ce512caaa02d0d7c3",
       "description": "Codex の出力スタイル（~/.codex/config.toml の developer_instructions）を自作スタイル（15sai 等）や default に切り替える。output-style や文体変更を依頼されたときに使う。Claude 側の settings.json は変更しない。",
       "mode": "adapted",
       "codex_skill": "output-style",
@@ -83,9 +92,18 @@
       "note": "既存の Codex スキルを利用し、同名ファイルを重複作成しない。"
     },
     {
+      "name": "terminal-browser",
+      "source": ".claude/skills/terminal-browser/SKILL.md",
+      "source_sha256": "e8152584b4b8a74610ad5b01e45e756f4336508966157503ab444f6105066c3c",
+      "description": "A real browser running inside the terminal.",
+      "mode": "existing",
+      "codex_skill": "terminal-browser",
+      "note": "terminal-browser のインストーラが ~/.agents/skills に置いた実体を直接読む。重複作成しない。"
+    },
+    {
       "name": "zukai",
       "source": ".claude/skills/zukai/SKILL.md",
-      "source_sha256": "898ab718038e2bb0a5a4e56a03be311c550699eb0bdc4e30d4bad1dd6408b656",
+      "source_sha256": "553c5aca339041b965325ecbc337e43b88e499bbf21ecdbf9cd37e03b434748b",
       "description": "トピックを 5歳・15歳・35歳向けの3段階で同時に図解する、タブ切り替え付き HTML アーティファクトを生成する。/zukai トピック のほか、「図解して」「絵で教えて」 「仕組みをわかりやすく」「初心者にもわかるように」など、図が主役の段階的な説明が 役立つ場面で使用する。技術トピックに限らず何にでも使える。",
       "mode": "adapted",
       "codex_skill": "zukai",

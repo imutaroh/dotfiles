@@ -43,6 +43,6 @@ argument-hint: "[トピック]"
 
 ## 出典
 
-- タブ式3段階の原案: 谷口さんの eli スキル
+- タブ式3段階の原案: tanuuuuuuu さんの eli スキル
   (https://github.com/tanuuuuuuu/dotfiles/blob/main/.claude/skills/eli/SKILL.md)
-  を zukai 流(図が主役)にアレンジしたもの(2026-08-31 社内 Slack より)
+  を zukai 流(図が主役)にアレンジしたもの

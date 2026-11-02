@@ -94,7 +94,7 @@ ln -sf "$DOTFILES_DIR/.config/uv/uv.toml" ~/.config/uv/uv.toml
 mkdir -p ~/.config/ghostty
 ln -sf "$DOTFILES_DIR/.config/ghostty/config" ~/.config/ghostty/config
 
-# herdr は config.toml と常駐ウォッチャスクリプトのみ管理
+# herdr は config.toml と自作スクリプトのみ管理
 # （同ディレクトリのソケット・ログ・セッション状態は対象外）
 mkdir -p ~/.config/herdr
 ln -sf "$DOTFILES_DIR/.config/herdr/config.toml" ~/.config/herdr/config.toml
@@ -102,9 +102,9 @@ ln -sf "$DOTFILES_DIR/.config/herdr/agent-taborder-watch.py" ~/.config/herdr/age
 ln -sf "$DOTFILES_DIR/.config/herdr/annotate-refresh.sh" ~/.config/herdr/annotate-refresh.sh
 ln -sf "$DOTFILES_DIR/.config/herdr/sidechat.sh" ~/.config/herdr/sidechat.sh
 
-# Herdr デスクトップアプリ（herdr-app）は keys.json と settings.json のみ管理。
+# Herdr デスクトップアプリ（herdr-app）は keys.json・settings.json・下記の自作レイアウトと mod のみ管理。
 # アプリはズーム変更などで settings.json を symlink 越しに書き込む（リンクは置き換えない。2026-10-31 実測）。
-# 同ディレクトリの AGENTS.md・*.d.ts・mods/・layouts/・view.json 等はアプリが起動時に生成するので対象外
+# 同ディレクトリの AGENTS.md・*.d.ts・付属の mods / layouts・view.json 等はアプリが起動時に生成するので対象外
 mkdir -p ~/.config/herdr-app
 ln -sf "$DOTFILES_DIR/.config/herdr-app/keys.json" ~/.config/herdr-app/keys.json
 ln -sf "$DOTFILES_DIR/.config/herdr-app/settings.json" ~/.config/herdr-app/settings.json

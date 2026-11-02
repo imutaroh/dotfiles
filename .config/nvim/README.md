@@ -1,6 +1,6 @@
 # [Neovim](https://neovim.io/)
 
-[AstroNvim](https://astronvim.com/) v5 をベースにした Neovim 設定。
+[AstroNvim](https://astronvim.com/) v5 をベースにした Neovim 設定。キー割り当ては [KEYMAPS.md](KEYMAPS.md) を参照。
 
 ## 概要
 
@@ -10,10 +10,12 @@ Vim 初心者がゼロから設定を構築するのは大変なため、オー�
 
 | 項目 | 要件 |
 |------|------|
-| Neovim | v0.9.0 以上 |
+| Neovim | v0.10.0 以上（AstroNvim の要件） |
 | フォント | Nerd Font 対応フォント（ファイルアイコン等の表示に必要。[Nerd Fonts](https://www.nerdfonts.com/) 参照） |
 | Git | プラグイン管理に必要 |
 | macism | IME 自動切替に必要（`brew install macism`） |
+| 自作プラグイン | [diffbase.nvim](https://github.com/imutaroh/diffbase.nvim) と [nudge.nvim](https://github.com/imutaroh/nudge.nvim) を `~/repos/imutaroh/` に clone する（開発用にローカルの複製を読む設定） |
+| Obsidian の vault | `lua/plugins/obsidian.lua` の `path` を自分の vault に書き換える |
 
 ### プラグイン管理
 
@@ -28,8 +30,11 @@ Vim 初心者がゼロから設定を構築するのは大変なため、オー�
 
 ```
 nvim/
+├── README.md
+├── KEYMAPS.md            # よく使うキー割り当ての一覧
 ├── init.lua              # エントリーポイント
 ├── lazy-lock.json        # プラグインバージョンのロックファイル
+├── after/ftplugin/       # ファイルタイプ別の設定（markdown.lua）
 ├── lua/
 │   ├── lazy_setup.lua    # lazy.nvim 設定
 │   ├── community.lua     # AstroCommunity プラグインパック（Lua / Go 有効化済み）
@@ -56,6 +61,7 @@ nvim/
 | `gitsigns.lua` | バッファ内 hunk 表示・blame（blame は既定 OFF） | `gh`/`gH` hunk 移動、`<leader>gB` blame |
 | `diffbase.lua` | 自作プラグイン diffbase.nvim（`~/repos/imutaroh/diffbase.nvim`）の読み込み。普段の画面のまま差分の基準を切り替える（main / 直前のコミット / 未push / コミットを選ぶ / OFF）。ツリーに +追加 -削除 の行数、コードに GitHub 風の緑・赤の行。コミットを選ぶとその時点に移動し、`<leader>gn` の「元のブランチに戻る」で戻る（Neovim を閉じたときは `git switch -`） | `<leader>gn` 基準を選ぶ、`gh`/`gH` 変更箇所へ移動 |
 | `octo.lua` | GitHub PR / Issue の閲覧・コメント・レビュー提出 | `<leader>Ob` 現ブランチPR、`<leader>Op`/`Oi` 一覧、`<leader>Or` レビュー |
+| `storyline.lua` | PR の差分を AI が章立てにして読む順序を決める [storyline.nvim](https://github.com/killinsun/storyline.nvim) | `<leader>gs` PR をレビュー、`<leader>gS` base ブランチを選ぶ |
 
 ### テーマ / 見た目
 
@@ -92,6 +98,7 @@ nvim/
 | `treesitter.lua` | シンタックスハイライト（言語パーサー設定） |
 | `neoconf.lua` | VSCode 設定の取り込みを無効化（LSP 二重起動対策） |
 | `markdown.lua` | Markdown プレビュー（`<leader>mb` でブラウザ表示。`<leader>mp` は Obsidian で開く） |
+| `obsidian.lua` | Obsidian の vault 内で `[[wikilink]]` のジャンプなどを使う（obsidian.nvim） |
 
 ### その他
 
