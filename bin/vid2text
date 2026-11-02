@@ -4,11 +4,8 @@
 #   vid2text <URL or file> [出力dir]
 # 環境変数:
 #   VID2TEXT_BROWSER=chrome   yt-dlp がブラウザのログインCookieを使う（"none" で無効）
-#   VID2TEXT_REFERER=https://fincs.jp/   直リンク(m3u8)取得時の Referer
+#   VID2TEXT_REFERER=<URL>    取得時に送る Referer
 #   VID2TEXT_QUALITY=480      画質上限（文字起こし目的なら480で十分）
-# Fincs の場合: DevTools/Network で *.m3u8 (b-cdn.net, master) の URL を拾い、
-#   VID2TEXT_BROWSER=none VID2TEXT_REFERER=https://fincs.jp/ vid2text '<m3u8 URL>'
-#   ※トークンは約24時間で失効するので取ったらすぐ実行
 #   VID2TEXT_MODEL=~/.cache/whisper-cpp/ggml-large-v3-turbo.bin
 #   VID2TEXT_LANG=ja
 set -euo pipefail

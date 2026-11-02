@@ -1,240 +1,113 @@
 # dotfiles
 
-macOS 用の個人設定ファイル管理リポジトリ。
+[imutaroh](https://github.com/imutaroh) の macOS 開発環境の設定一式。Claude Code と Codex を中心に、ターミナル・Neovim・キーボードまでを 1 つのリポジトリで管理している。
 
-![開発環境](assets/dev-environment.png)
-*Ghostty + herdr 上で Claude Code と hunk（差分ビューア）を使った開発環境*
+> [!NOTE]
+> 個人用の設定で、作者の環境を前提にしている。丸ごと動かすより、気になる部分を読んで持っていく使い方を勧める。
 
-シェル、エディタ、ターミナル等の設定をシンボリックリンクで管理する。`~/dotfiles/` に clone して使用。
+## 見どころ
 
-## 技術スタック
+- **Herdr デスクトップアプリの自作 mod**: Claude の返答に赤を入れて送り返す `redpen`、端末タイトルをタブ名に写す `tab-autoname` など 5 本（[一覧](.config/README.md#herdr-デスクトップアプリ)）
+- **Claude Code と Codex の同等化**: 指示書・ステータスライン・権限・フック・スキルを両方で揃え、崩れたら 1 コマンドで点検できる（[.codex/README.md](.codex/README.md)）
+- **Claude Code の設定**: 寒色で統一したテーマとステータスライン、確認音と完了音、手順ではなく「モデルが知り得ない事実」に絞ったスキル（[.claude/README.md](.claude/README.md)）
+- **Neovim**: AstroNvim をベースにした設定と、そこから切り出した自作プラグイン [diffbase.nvim](https://github.com/imutaroh/diffbase.nvim)（いつもの編集画面を GitHub の PR 差分にする）/ [nudge.nvim](https://github.com/imutaroh/nudge.nvim)（コードへのコメントを AI エージェントに送る）（[.config/nvim/README.md](.config/nvim/README.md)）
 
-| カテゴリ | ツール | 説明 |
+## 使っているツール
+
+| カテゴリ | ツール | 役割 |
 |----------|--------|------|
-| OS | macOS | Intel / Apple Silicon 両対応 |
-| パッケージ管理 | Homebrew | macOS 用パッケージマネージャ |
-| | mise | ランタイムバージョン管理（Python 等） |
-| | uv | 高速な Python パッケージマネージャ |
-| シェル | zsh | デフォルトシェル |
-| | Starship | カスタマイズ可能なプロンプト |
-| ターミナル | Ghostty | ターミナルエミュレータ |
-| | herdr | エージェントマルチプレクサ（tmux / 旧 Zellij の後継。設定は `.config/herdr/` で管理） |
-| | Herdr（デスクトップアプリ） | herdr の GUI 版（`herdr-app`。端末は herdr-core の `hc` が保持。設定は `.config/herdr-app/` で管理） |
-| 開発ツール | Neovim（AstroNvim ベース） | エディタ |
-| | Claude Code / Codex CLI | コーディングエージェント |
-| | hunk | レビュー特化の差分ビューア（`nh` コマンド・hunk-review スキルから使用） |
-| | yazi | ターミナルファイラー（`y` で起動し終了時にその場所へ cd。設定は `.config/yazi/` で管理） |
-| | gh-dash | GitHub の PR / Issue を俯瞰する TUI（`gh dash`。gh 拡張のため Brewfile 管理外・setup.sh が導入） |
-| ユーティリティ | Raycast | ランチャーアプリ |
-| | Karabiner-Elements | キー入力カスタマイズ（BT キーボード接続時に内蔵キーボードを無効化） |
+| エージェント | Claude Code / Codex CLI | コーディングエージェント |
+| ターミナル | [Herdr](https://herdr.dev) デスクトップアプリ | エージェント向けのターミナル環境。普段はこれだけを使う |
+| エディタ | Neovim（[AstroNvim](https://astronvim.com/) ベース） | エディタ |
+| シェル | zsh + [Starship](https://starship.rs/) | シェルとプロンプト |
+| 開発ツール | [hunk](https://hunk.dev/) | レビュー用の差分ビューア |
+| | [yazi](https://yazi-rs.github.io/) | ターミナルのファイラー |
+| | [gh-dash](https://github.com/dlvhdr/gh-dash) | GitHub の PR / Issue を一覧する TUI |
+| パッケージ管理 | Homebrew / [mise](https://mise.jdx.dev/) / [uv](https://docs.astral.sh/uv/) | アプリ / ランタイム / Python |
+| 入力 | [Raycast](https://www.raycast.com/) / [Karabiner-Elements](https://karabiner-elements.pqrs.org/) | ランチャー / キー入力のカスタマイズ |
+
+アプリの全量は [Brewfile](Brewfile) を参照。以前の環境である [Ghostty](https://ghostty.org/) と Herdr ターミナル版（`herdr`）の設定も残している。
 
 ## ディレクトリ構成
 
 ```
 .
-├── .zprofile              # ログインシェル設定
-├── .zshrc                 # インタラクティブシェル設定
-├── Brewfile               # Homebrew パッケージ
-├── setup.sh               # セットアップスクリプト
-├── setup-codex-skills.py  # Codex 個人スキルの単独検査・リンク設置
-├── macos.sh               # macOS 設定用スクリプト
-├── launchd/               # 常駐エージェント用 plist（~/Library/LaunchAgents/ にコピー）
-├── iphone/                # iPhone アプリの宣言的管理（keep.txt に残すアプリを列挙し apps.sh plan/apply で差分削除）
-│
-├── .config/               # ~/.config/ にリンク
-│   ├── gh-dash/           # GitHub ダッシュボード設定（gh 拡張）
-│   ├── ghostty/           # ターミナル設定
-│   ├── git/               # Git グローバル gitignore
-│   ├── herdr/             # エージェントマルチプレクサ設定
-│   │                       # （agent-taborder-watch.py: タブ名への位置番号の自動付与、
-│   │                       #  ログは ~/.config/herdr/agent-taborder.log。
-│   │                       #  annotate-refresh.sh: Cmd+U / Cmd+Shift+U の herdr-annotate 呼び出し口。
-│   │                       #  要 `herdr integration install claude`（setup.sh が実行））
-│   ├── herdr-app/         # Herdr デスクトップアプリ設定（keys.json・settings.json・layouts/mine.json・
-│   │                       #  mods/status-keys/・mods/changes-gh/・mods/files-img/・mods/redpen/・mods/tab-autoname/。Cmd キーを直接コマンドに割り当てる。Ghostty の Cmd→prefix 変換は通らない。
-│   │                       #  redpen は Cmd+U で Claude の最新の返答にコメントして送り返す。会話ログの場所は SessionStart フック
-│   │                       #  （.claude/scripts/hc-label-claude-session.sh）が端末のラベルに入れる。
-│   │                       #  .zprofile は Herdr の端末に漏れた Claude / 旧 herdr の環境変数を消す（漏れると会話ログが保存されない）。
-│   │                       #  status-keys は右パネル Files / Changes を Cmd+Shift+E / Cmd+Shift+G で開閉し、開いている間はターミナルを隠して全幅で見せる。
-│   │                       #  changes-gh は付属 changes の複製で、差分を GitHub 配色にし長い行を折り返す。
-│   │                       #  files-img は付属 files の複製で、画像ファイルを画像として表示する。
-│   │                       #  tab-autoname は Claude Code が端末タイトルに書く要約をタブ名に写す。手で付けた名前は上書きせず、空にすると自動に戻る。Cmd+Shift+M で表示中のタブ名の先頭に ⏳ を付け外しする）
-│   ├── karabiner/         # Karabiner-Elements 設定（karabiner.json のみ）
-│   ├── mise/              # ランタイム管理設定
-│   ├── nvim/              # Neovim 設定
-│   ├── raycast/           # Raycast スクリプト
-│   ├── starship.toml      # プロンプト設定
-│   ├── uv/                # Python パッケージ管理設定
-│   └── yazi/              # ターミナルファイラー設定（yazi.toml のみ）
-│
-├── .claude/               # ユーザーレベル設定（子の選択項目のみ ~/.claude/ へリンク）
-│   ├── CLAUDE.md          # カスタム指示
-│   ├── settings.json      # 実環境の実ファイルから sync-settings.sh で取り込む
-│   └── skills/            # カスタムスキル
-│
-└── .codex/                # Codex CLI のdotfiles管理対象
-    ├── themes/            # ~/.codex/themes/ にファイル単位でリンク
-    ├── skills/            # Claude 個人スキルを実行時参照する Codex 互換入口
-    ├── compatibility.md   # 共通の読み替え規約
-    ├── skill-bridge.json  # 個人42件の対応分類・正本ハッシュ
-    ├── scripts/           # Codex 生ログ抽出・config.toml 更新・output style 同期
-    ├── rules/             # execpolicy ルール（Claude Code の permissions 相当）
-    └── hook-fragments/    # claude-parity.json: 既存設定へ追加する3フック定義
+├── README.md
+├── CLAUDE.md               # このリポジトリでの作業ルール（エージェント向け）
+├── Brewfile                # Homebrew で入れるもの
+├── setup.sh                # セットアップ
+├── macos.sh                # macOS のシステム設定（手動実行）
+├── setup-codex-skills.py   # Codex 用スキル入口の検査とリンク設置
+├── sync-settings.sh        # Claude Code の settings.json を実環境から取り込む
+├── .zshrc / .zprofile      # シェル
+├── .gitconfig              # Git のグローバル設定
+├── .config/                # ~/.config/ の中身（説明は .config/README.md）
+├── .claude/                # Claude Code の設定（説明は .claude/README.md）
+├── .codex/                 # Codex CLI の設定（説明は .codex/README.md）
+├── bin/vid2text            # 動画の音声を文字起こしするスクリプト
+├── iphone/apps.sh          # 残す iPhone アプリの宣言的な管理（一覧は非公開）
+└── launchd/                # 常駐エージェントの plist
 ```
-
-詳細は各ディレクトリの README を参照。
 
 ## セットアップ
 
-### 前提条件
-
-- macOS（Intel / Apple Silicon 両対応）
-- zsh（macOS デフォルト）
-- Git
-- Xcode Command Line Tools
-
-### インストール
+前提は macOS、zsh、Git、Xcode Command Line Tools。Homebrew のパスは Apple Silicon と Intel の両方を判定する。
 
 ```bash
 git clone https://github.com/imutaroh/dotfiles.git ~/dotfiles
 ~/dotfiles/setup.sh
-source ~/.zshrc  # またはターミナル再起動
+source ~/.zshrc  # またはターミナルを再起動
 ```
 
 > [!WARNING]
-> - 既存の設定ファイル（.zshrc, .zprofile, .config/nvim 等）は上書きされる。必要に応じて事前にバックアップを取ること
-> - Homebrew のインストール時に sudo パスワードを求められる場合がある
+> 他人の環境で実行するなら、先に [setup.sh](setup.sh) を読むこと。特に次の点に注意する。
+>
+> - 既存の設定を置き換える。`~/.zshrc` などは上書きし、`~/.config/nvim`、`~/.claude/skills`、`~/.claude/themes`、`~/.config/raycast/script-commands` が実ディレクトリなら削除してリンクを張る
+> - `.gitconfig` の名前とメールアドレスは作者のもの。自分の値に書き換える
+> - `launchd/` の plist には `/Users/imutaakihiro` が直接書かれており、`ai-usage-dashboard` は公開していないリポジトリを指す。使わないなら実行前に消す
+> - Neovim の自作プラグインは `~/repos/imutaroh/` にあるローカルの複製を読む。[.config/nvim/README.md](.config/nvim/README.md) の前提条件を見ること
 
-### setup.sh の内容
+`setup.sh` がやること：
 
-1. Homebrew をインストール（未インストールの場合）
-2. Brewfile のパッケージをインストール
-3. mise で Python をインストール
-4. uv をインストール
-5. uv-tools.txt に記載されたツールをインストール
-6. Claude Code をインストール（未インストールの場合）
-7. Google Cloud SDK をインストール（未インストールの場合）
-8. シンボリックリンクを作成
-9. `launchd/*.plist` を `~/Library/LaunchAgents/` にコピーし、常駐エージェントとしてロード
+1. Homebrew と Brewfile のパッケージを入れる
+2. mise で Python と Node.js、uv で CLI ツールと Playwright の Chromium を入れる
+3. Claude Code、gh-dash、Google Cloud SDK を入れる（未導入の場合）
+4. 設定ファイルのシンボリックリンクを張る
+5. Herdr の Claude Code 連携を入れ、`~/.codex/config.toml` をキー単位で更新する
+6. `launchd/*.plist` を `~/Library/LaunchAgents/` にコピーしてロードする
 
-## Codex CLI カスタマイズ
+Codex 用スキルの入口は `setup.sh` とは別に入れる（[手順](.codex/README.md#導入と検査)）。
 
-`setup.sh` は `~/.codex/config.toml` 全体を置き換えず、`.codex/scripts/apply-codex-config.py --apply` がキー単位で冪等に追記・置換する（Codexアプリが管理するモデル・権限・Hooksなどの既存設定や `[tui]` の他キーは保持される）。
+### 管理の方針
 
-- テーマ: `Imutaro Cool`（Claude Codeと共通のシアン・ブルー・ティール・バイオレット・スレートを使用。既存値があれば変更しない）
-- ステータスライン（色付き・1行）: 左から モデルと推論レベル、Gitブランチ、変更ありマーカー、コンテキスト残量、5時間枠、週間枠、推定コスト、ディレクトリ（狭いペインでは右から欠けるので重要順）
-- herdr サイドバーのスレッド名表示用に `terminal_title` も設定する
-- 手動変更: Codex CLIの `/theme` と `/statusline`（TUI で変えた値は次の `setup.sh` で dotfiles 側の定数に戻るため、残したい変更は `apply-codex-config.py` に反映する）
-- 利用枠のリセット日時: `/status` で確認（ステータスラインは残量のみ）
-- 複数行 HUD: Claude Code と同じ5行構成（セッション名 / モデル·effort / ctx バー / 5h / 7d）を herdr の隣ペインに出す `codex-hud`（`.codex/scripts/codex-hud.sh`。Codex 本体の footer には自作出力を描けないため別プロセス）
-- 一括点検: `bash ~/dotfiles/.codex/scripts/check-parity.sh`（リンク・config キー・識別子の実在・フック trust・スキル・注入確認。運用の指針は [.codex/README.md](.codex/README.md) の「運用ベストプラクティス」）
-
-権限は `.codex/rules/claude-parity.rules`（execpolicy の prefix_rule。Claude Code の `.claude/settings.json` permissions 相当）を `setup.sh` がリンクする。output style は `.codex/scripts/sync-output-style.py` が `developer_instructions` として永続反映する。詳細な対応表とCLI例は [.codex/README.md](.codex/README.md) の「Claude Code との体験の対応」を参照。
-
-個人スキルの Codex 対応は `setup.sh` とは独立して導入する。全セットアップの再実行は不要。
-
-```bash
-python3 ~/dotfiles/setup-codex-skills.py --check
-python3 ~/dotfiles/setup-codex-skills.py --apply
-```
-
-`~/.agents/skills/` に38件のリンクを設置し、Claude 側の本文正本を実行時に参照する。既存スキル利用3件・未移植1件を含む対応範囲、更新検査、巻戻しは [.codex/README.md](.codex/README.md) を参照。フックは `.codex/hook-fragments/claude-parity.json`（共通3件）と `codex-hud.json`（Codex のタブ内に送信ごとのステータスを出す1件）を既存 `~/.codex/hooks.json` にイベント単位で統合し、Codex の `/hooks` で本人が定義を確認・trust して初めて実行される。既存ファイル全体を fragment で上書きしない。
+- 設定は基本的にシンボリックリンクで配置する。正本はこのリポジトリにある
+- アプリが書き換えるファイルはリンクにしない。Claude Code の `settings.json` は `./sync-settings.sh` で実環境から取り込み、Codex の `config.toml` はキー単位で更新する
 
 ## カスタムコマンド
 
-`.zshrc` で定義しているシェル関数。
+`.zshrc` で定義している。
 
 | コマンド | 説明 |
 |----------|------|
-| `desk [dir]` | herdr に開発用 Space を一発構築（タブ1「cchunk」: Claude Code + hunk diff --watch の50%分割、タブ2「nvim」） |
-| `nh [c\|p\|args]` | Hunk（差分ビューア）を自動リロード付きで起動。`nh` で main 分岐点から、`nh c` でコミット後の編集、`nh p` で push 後の差分 |
+| `y [dir]` | yazi を起動し、終了時にその場所へ `cd` する |
+| `nh [c\|p\|args]` | hunk を自動リロード付きで起動する。`nh` は main からの分岐点、`nh c` は前回のコミット、`nh p` は前回の push からの差分 |
+| `desk [dir]` | ターミナル版 herdr に開発用の Space を作る（タブ 1: Claude Code と hunk、タブ 2: Neovim） |
+| `codex-hud` | Codex の隣のペインに、Claude Code 風の複数行ステータスを出す |
 
-## macOS システム設定
+## macOS のシステム設定
 
-`defaults` コマンドで macOS の設定を適用する。setup.sh とは独立しており、必要に応じて手動実行する。
+`macos.sh` が `defaults` コマンドで次の設定を適用する。`setup.sh` とは独立しており、必要なときに手で実行する。フォルダ名の英語表示に sudo が要り、反映には再ログインか再起動を勧める。
 
-### 使い方
+- **Dock**: 右側に配置、自動で隠す
+- **Finder**: 隠しファイルと拡張子を表示、カラム表示、フォルダを先頭に
+- **キーボード・入力**: キーリピートを高速化、自動大文字やスペル修正を無効化
+- **トラックパッド**: タップでクリック、3 本指ドラッグ
+- **その他**: スクリーンショットの保存先を `~/Pictures/Screenshots` に、ネットワークや USB に `.DS_Store` を作らない
 
-```bash
-~/dotfiles/macos.sh
-```
+## 手動で入れるアプリ
 
-> [!WARNING]
-> - システムフォルダの英語表示に sudo パスワードが必要
-> - 設定反映のため、実行後に再ログインまたは再起動を推奨
-
-### macos.sh の内容
-
-- **Dock**: 右側配置、自動非表示、アイコンサイズ、アニメーション速度
-- **Finder**: 隠しファイル表示、拡張子表示、パスバー、ステータスバー、カラム表示、フォルダ優先
-- **キーボード**: キーリピート速度（超速）、長押しでキーリピート
-- **テキスト入力**: 自動大文字・スペル修正・スマート引用符などを無効化
-- **トラックパッド**: タップでクリック、3本指ドラッグ、ナチュラルスクロール
-- **マウス**: スクロール速度
-- **Hot Corners**: 左下でスクリーンセーバー
-- **メニューバー**: バッテリー%表示、Bluetooth表示
-- **スクリーンショット**: ~/Pictures/Screenshots に保存
-- **TextEdit**: デフォルトをプレーンテキストに
-- **その他**: .DS_Store をネットワーク/USB に作成しない、フォルダ名を英語表示
-
-## Vim 学習メモ
-
-### モード
-
-Vim には「モード」という概念がある。普通のエディタと違い、キー入力の意味がモードによって変わる。
-
-| モード | 役割 | 入り方 |
-|--------|------|--------|
-| **Normal** | 移動・操作 | `Esc` |
-| **Insert** | 文字を入力する | `i` |
-| **Visual** | 範囲選択 | `v` |
-
-Vim を開いた瞬間は **Normal モード**。文字を打つには `i` → Insert モードに入ってから入力。打ち終わったら `Esc` で Normal モードに戻る。
-
-### 基本移動
-
-Normal モードでの移動。ホームポジションから手を動かさなくていいのが強み。
-
-| キー | 動作 |
-|------|------|
-| `h` | 左 |
-| `j` | 下 |
-| `k` | 上 |
-| `l` | 右 |
-| `w` | 次の単語の先頭へ |
-| `b` | 前の単語の先頭へ |
-| `0` | 行の先頭へ |
-| `$` | 行の末尾へ |
-| `gg` | ファイルの先頭へ |
-| `G` | ファイルの末尾へ |
-
-### 編集操作
-
-編集コマンドは **動詞 + 名詞** の組み合わせ。
-
-| キー | 動作 |
-|------|------|
-| `x` | カーソルの文字を削除 |
-| `dd` | 行を丸ごと削除（切り取り） |
-| `yy` | 行を丸ごとコピー |
-| `p` | 貼り付け（カーソルの後） |
-| `u` | アンドゥ |
-| `Ctrl r` | リドゥ |
-
-動詞（`d` 削除 / `y` コピー / `c` 変更）と移動を組み合わせる：
-
-| キー | 動作 |
-|------|------|
-| `dw` | 次の単語を削除 |
-| `d$` | 行末まで削除 |
-| `cw` | 次の単語を変更（Insert モードへ） |
-
----
-
-## 手動インストールアプリ
-
-Homebrew で管理できないアプリ。
+Homebrew で管理できないもの。
 
 | アプリ | 入手先 | 説明 |
 |--------|--------|------|
-| RunCat | [App Store](https://apps.apple.com/jp/app/runcat/id1429033973) | メニューバーでCPU使用率を表示 |
+| RunCat | [App Store](https://apps.apple.com/jp/app/runcat/id1429033973) | メニューバーに CPU 使用率を表示 |

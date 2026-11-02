@@ -1,98 +1,111 @@
 # .config
 
-各種アプリケーションの設定ファイル。`~/.config/` にシンボリックリンクされる。
-
-セットアップ方法は [親ディレクトリの README](../README.md) を参照。
+各種アプリケーションの設定ファイル。`setup.sh` が `~/.config/` へシンボリックリンクを張る。セットアップ方法は[トップの README](../README.md) を参照。
 
 ## ディレクトリ構成
 
 ```
 .config/
-├── ghostty/           # ターミナルエミュレータ
-├── git/               # Git グローバル設定
-├── herdr/             # エージェントマルチプレクサ
-├── hunk/              # ターミナル diff ビューア
-├── mise/              # ランタイムバージョン管理
+├── herdr-app/         # Herdr デスクトップアプリ（普段の環境）
+├── herdr/             # Herdr ターミナル版（以前の環境）
+├── ghostty/           # ターミナルエミュレータ（以前の環境）
 ├── nvim/              # エディタ（詳細は nvim/README.md）
-├── raycast/           # ランチャー
 ├── starship.toml      # シェルプロンプト
+├── git/               # グローバル gitignore
+├── gh-dash/           # GitHub の PR / Issue ダッシュボード
+├── hunk/              # 差分ビューア
+├── plannotator-tui/   # Herdr ターミナル版のレビュー画面
+├── yazi/              # ターミナルのファイラー
+├── karabiner/         # キー入力のカスタマイズ
+├── raycast/           # ランチャーのスクリプト
+├── mise/              # ランタイムのバージョン管理
 └── uv/                # Python パッケージ管理
 ```
 
-## [herdr](https://herdr.dev)
+## [Herdr](https://herdr.dev)
 
-エージェントマルチプレクサ（tmux / 旧 Zellij の後継）。ターミナルの多重化とペイン管理に使用する。
+エージェント向けのターミナル環境。普段はデスクトップアプリだけを使う。
 
-### ファイル構成
+### Herdr デスクトップアプリ
+
+`herdr-app/` で管理する。Cmd キーは `keys.json` でコマンドに直接割り当てる。Ghostty の Cmd → プレフィックス変換は通らない。
 
 | ファイル | 説明 |
 |----------|------|
-| `config.toml` | 設定ファイル（キーバインド等。ランタイム生成ファイルは管理対象外） |
+| `keys.json` / `settings.json` | キー割り当てと設定 |
+| `layouts/mine.json` | 付属レイアウト `main` の複製。自作 mod を組み込む |
+
+自作 mod（`mods/` 以下）：
+
+| mod | 説明 |
+|-----|------|
+| `redpen` | Cmd+U で Claude の最新の返答にコメントして送り返す |
+| `tab-autoname` | Claude Code が端末タイトルに書く要約をタブ名に写す。手で付けた名前は上書きせず、空にすると自動に戻る。Cmd+Shift+M で表示中のタブ名の先頭に ⏳ を付け外しする |
+| `status-keys` | 右パネルの Files / Changes を Cmd+Shift+E / Cmd+Shift+G で開閉する。開いている間はターミナルを隠して全幅で見せる |
+| `changes-gh` | 付属 `changes` の複製。差分を GitHub の配色にして長い行を折り返す |
+| `files-img` | 付属 `files` の複製。画像ファイルを画像として表示する |
+
+`redpen` は会話ログの場所を端末のラベルから読む。ラベルは SessionStart フック（`.claude/scripts/hc-label-claude-session.sh`）が入れる。
+
+`.zprofile` は、Herdr の端末に漏れた Claude Code と旧 herdr の環境変数を消す。Claude Code の中から Herdr を起動すると変数が全端末に漏れ、その端末で動かす Claude Code が会話ログを保存しなくなるため。
+
+### Herdr ターミナル版
+
+以前の環境。`herdr/` に設定を残している。
+
+| ファイル | 説明 |
+|----------|------|
+| `config.toml` | キーバインドなどの設定 |
+| `agent-taborder-watch.py` | タブ名に位置番号を付ける常駐スクリプト（`launchd/` でロードする） |
+| `annotate-refresh.sh` | エージェントの最新の返答をレビュー画面（herdr-annotate）で開く。Cmd+U / Cmd+Shift+U の呼び出し口 |
+| `sidechat.sh` | 表示中の Claude の会話を fork してポップアップで開く（Cmd+;） |
+| `scripts/slot-machine.sh` | エージェントの作業が終わった瞬間にサイドバーへスロット風の演出を流す（`setup.sh` は配置しない。手で起動する） |
+
+レビュー画面は `herdr integration install claude`（`setup.sh` が実行する）で入るセッション情報を使って、対象の Claude を特定する。
 
 ## [Ghostty](https://ghostty.org/)
 
-GPU ベースの高速ターミナルエミュレータ。macOS / Linux 対応。
-
-### ファイル構成
-
-| ファイル | 説明 |
-|----------|------|
-| `config` | 設定ファイル |
-
-### 主な設定
+以前の環境で使っていたターミナルエミュレータ。`config` に設定を残している。
 
 | カテゴリ | 設定内容 |
 |----------|----------|
-| テーマ | GitHub Dark |
+| テーマ | GitHub Dark（文字色だけコントラストを上げている） |
 | フォント | Moralerspace Argon（14pt、行間 +2px） |
-| 背景 | 不透明度 0.9、ぼかし効果（半径 20px） |
-| ウィンドウ | パディング 16px、タイトルバー透明化 |
-| カーソル | ブロック型、点滅なし |
-| キーバインド | Cmd 系キーを herdr のプレフィックス（Ctrl+Q）＋キーに変換して送信（ペイン分割・移動、タブ、Space 操作など）。左 Option キーは Alt として使用 |
-
-## Git
-
-グローバル gitignore の設定。全リポジトリ共通で機密情報の誤コミット防止、OS/エディタの不要ファイル除外をガードレールとして提供する。
-
-### ファイル構成
-
-| ファイル | 説明 |
-|----------|------|
-| `ignore` | グローバル gitignore（`~/.config/git/ignore` に配置すると Git が自動認識） |
-
-### 除外対象
-
-| カテゴリ | パターン例 |
-|----------|------------|
-| 機密情報 | `.env`, `*.pem`, `*.key`, `credentials.json`, `service-account*.json` |
-| OS 生成ファイル | `.DS_Store`, `Thumbs.db` |
-| エディタ | `*.swp`, `*.swo`, `*~` |
-| 一時ファイル | `tmp/` |
-
-## [mise](https://mise.jdx.dev/)
-
-プログラミング言語のバージョン管理ツール。asdf の Rust 製代替で高速。グローバルにインストールする言語を管理する（プロジェクト単位の Python 管理は uv を使用）。
-
-### 設定内容
-
-| 項目 | 値 |
-|------|-----|
-| Python | 3.13 |
+| 背景 | 不透明度 0.9、ぼかし 30 |
+| ウィンドウ | パディング 16px、タイトルバー透明 |
+| キーバインド | Cmd 系のキーを Herdr ターミナル版のプレフィックス（Ctrl+Q）+ キーに変換して送る。左 Option は Alt として使う |
 
 ## [Neovim](https://neovim.io/)
 
-Vim ベースの高機能テキストエディタ。[AstroNvim](https://astronvim.com/) をベースにカスタマイズ。
+[AstroNvim](https://astronvim.com/) をベースにカスタマイズしている。詳細は [nvim/README.md](nvim/README.md)、キー割り当ては [nvim/KEYMAPS.md](nvim/KEYMAPS.md) を参照。
 
-詳細は [nvim/README.md](nvim/README.md) を参照。
+## [Starship](https://starship.rs/)
+
+シェルプロンプト。既定の設定をそのまま使っている。
+
+## Git
+
+`git/ignore` はグローバル gitignore で、Git が `~/.config/git/ignore` から自動で読む。機密情報（`.env`、`*.pem`、`*.key`、`credentials.json`、`service-account*.json`）の誤コミットを防ぎ、OS やエディタの生成ファイルを除外する。
+
+## [gh-dash](https://github.com/dlvhdr/gh-dash)
+
+GitHub の PR と Issue を一覧する TUI。`gh` の拡張機能で、Brewfile では管理できないので `setup.sh` が入れる。`gh dash` で起動する。
+
+## [hunk](https://hunk.dev/)
+
+ターミナルの差分ビューア。Claude Code とのペアレビューにも使う（エージェントが `hunk session` で表示位置の移動やコメント追加を行う）。`config.toml` で `wrap_lines = true` にして、長い行を折り返している。
+
+## [yazi](https://yazi-rs.github.io/)
+
+ターミナルのファイラー。`y` で起動し、終了時にその場所へ `cd` する（`.zshrc` で定義）。
+
+## [Karabiner-Elements](https://karabiner-elements.pqrs.org/)
+
+キー入力のカスタマイズ。Bluetooth キーボードの接続中は内蔵キーボードを無効にする。
 
 ## [Raycast](https://www.raycast.com/)
 
-macOS 用ランチャーアプリ。Spotlight の高機能版で、カスタムスクリプトやワークフローを実行できる。
-
-> [!NOTE]
-> このディレクトリには個人用のスクリプトコマンドのみ格納しており、他の人には不要な場合が多い。
-
-### スクリプトコマンド
+ランチャー。個人用のスクリプトコマンドを置いている。
 
 | ファイル | 説明 |
 |----------|------|
@@ -100,36 +113,10 @@ macOS 用ランチャーアプリ。Spotlight の高機能版で、カスタム�
 | `open-marimo.sh` | marimo（Python ノートブック）を起動 |
 | `zettel-id.sh` | Zettelkasten 用の ID を生成 |
 
-## [Starship](https://starship.rs/)
+## [mise](https://mise.jdx.dev/)
 
-シェルプロンプトのカスタマイズツール。Rust 製で高速。Git ブランチ、言語バージョンなどをプロンプトに表示できる。
-
-### 設定内容
-
-デフォルト設定を使用。カスタマイズする場合は [公式ドキュメント](https://starship.rs/config/) を参照。
+グローバルに入れるランタイムのバージョンを管理する。Python 3.13 と Node.js の LTS。プロジェクト単位の Python は uv で管理する。
 
 ## [uv](https://docs.astral.sh/uv/)
 
-高速な Python パッケージマネージャ。pip / venv の代替として使用。Rust 製で pip より 10〜100 倍速い。
-
-### 設定内容
-
-| 項目 | 値 | 説明 |
-|------|-----|------|
-| `python-preference` | `only-managed` | mise で管理された Python のみ使用 |
-
-## [hunk](https://hunk.dev/)
-
-ターミナルの diff ビューア。Claude Code とのペアレビューにも使う（エージェントが `hunk session` 経由で表示位置の移動やコメント追加を行う）。
-
-### ファイル構成
-
-| ファイル | 説明 |
-|----------|------|
-| `config.toml` | 設定ファイル（同ディレクトリの `state.json` は hunk 自身が生成するため管理対象外） |
-
-### 主な設定
-
-| 項目 | 値 | 説明 |
-|------|-----|------|
-| `wrap_lines` | `true` | 長い行を折り返す（デフォルトは切り捨て）。日本語ドキュメントや長い SQL が右端で切れるのを防ぐ |
+Python のパッケージマネージャ。`python-preference = "only-managed"` で、システムの Python を使わず uv が管理する Python だけを使う。グローバルに入れる CLI ツールは `uv/uv-tools.txt` に書く。

@@ -18,8 +18,10 @@ token.json
 .claude/tmp/
 .claude/worktrees/
 
-# 私的データ（タスク実体は公開しない）
+# 私的データ（公開しない）
 .claude/task-dashboard/
+.claude/skills/gh-teach/
+iphone/keep.txt
 
 # OS生成ファイル
 .DS_Store

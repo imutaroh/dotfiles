@@ -27,8 +27,8 @@ prSections:
   - title: レビュー待ち
     filters: is:open review-requested:@me sort:updated-desc
 
-  - title: 会社
-    filters: is:open org:<org> sort:updated-desc
+  - title: 他の org
+    filters: is:open involves:@me -org:imutaroh sort:updated-desc
 
   - title: 個人
     filters: is:open org:imutaroh sort:updated-desc
@@ -45,8 +45,8 @@ issuesSections:
   - title: 自分が作成
     filters: is:open author:@me sort:updated-desc
 
-  - title: 会社
-    filters: is:open org:<org> sort:updated-desc
+  - title: 他の org
+    filters: is:open involves:@me -org:imutaroh sort:updated-desc
 
   - title: dotfiles
     # 開発フローが Issue 起点（Issue → gh issue develop → ブランチ）なのでピン留め
@@ -55,13 +55,9 @@ issuesSections:
 # ─── リポジトリ名 → ローカルパスの対応 ───
 # checkout（C）やカスタムコマンドの {{.RepoPath}} がこれを使って解決される。
 # 完全一致はワイルドカードより優先されるため、dotfiles の例外配置を先に書ける。
-# ローカルの実配置は owner 別になりきっていないため、例外を完全一致で明示する（2026-08-28 実測）
 repoPaths:
   imutaroh/dotfiles: ~/dotfiles # dotfiles だけ ~/ 直下
-  <private-repo>: ~/repos/<project>/<private-repo> # owner ではなくプロジェクト名の下にある
-  imutaroh/imutaroh: ~/repos/imutaroh/imutaroh
-  <org>/*: ~/repos/<org>/*
-  imutaroh/*: ~/repos/imutaroh/*
+  :owner/:repo: ~/repos/:owner/:repo
 
 # ─── カスタムキーバインド ───
 # 既定キーは internal/tui/keys/*.go の WithKeys() が正（ドキュメントには L や V の記載が無い）。
@@ -116,7 +112,7 @@ defaults:
   layout:
     # カラム名は parser.go の PrsLayoutConfig / IssuesLayoutConfig が正（`repo` であって repoName ではない）
     prs:
-      # 公式サンプルは repo を隠すが、<org> と imutaroh を跨ぐのでリポジトリ名は表示する
+      # 公式サンプルは repo を隠すが、複数の org を跨ぐのでリポジトリ名は表示する
       repo:
         width: 20
       base:

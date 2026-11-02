@@ -1,93 +1,75 @@
 # .claude
 
-Claude Code のユーザーレベル設定。`~/.claude/` にシンボリックリンクされる（`settings.json` だけは例外。後述）。
+Claude Code のユーザーレベル設定。`setup.sh` が項目ごとに `~/.claude/` へシンボリックリンクを張る（`settings.json` だけは例外。後述）。
 
 ## ディレクトリ構成
 
 ```
 .claude/
-├── CLAUDE.md          # カスタム指示
-├── settings.json      # Claude Code 設定
-├── design.md          # 寒色トーン&マナー（statusline / テーマの配色リファレンス）
-├── statusline.sh      # ステータスライン表示スクリプト
-├── hooks/             # イベントフック
-│   └── play-sound.sh  # 確認要求時・完了時の効果音（PermissionRequest / Stop）
-├── scripts/           # ステータスライン等で使用するスクリプト
-│   └── fetch_usage.sh # API 使用量取得（キーチェーンから実行時にトークン取得）
-├── sounds/            # 通知音
-│   ├── complete.wav   # タスク完了時
-│   └── confirm.wav    # 確認要求時
-├── themes/            # カスタムテーマ
-└── skills/            # カスタムスキル
+├── CLAUDE.md               # カスタム指示（Claude Code と Codex で共通）
+├── settings.json           # Claude Code の設定
+├── statusline.sh           # ステータスライン
+├── statusline-preview.sh   # ステータスラインの実出力をブラウザで確認する
+├── design.md               # ステータスラインとテーマの配色リファレンス
+├── hooks/
+│   └── play-sound.sh       # 確認要求時・完了時の効果音
+├── scripts/
+│   ├── fetch_usage.sh      # API 使用量の取得（キーチェーンから実行時にトークンを読む）
+│   └── hc-label-claude-session.sh  # 会話ログの場所を Herdr の端末ラベルに入れる
+├── sounds/                 # 通知音（complete.wav / confirm.wav）
+├── themes/                 # カスタムテーマ
+├── output-styles/          # 自作の output style
+├── skills/                 # カスタムスキル
+└── mods/                   # 自作プラグインの試作（progress-panel / task-panel）
 ```
 
-## ファイル説明
+## settings.json
 
-### CLAUDE.md
+Claude Code の動作設定。主な項目は `permissions`（自動許可と拒否）、`hooks`、`statusLine`、`enabledPlugins`。
 
-Claude Code へのカスタム指示を記述するファイル。ユーザーの好みや作業ルールを定義する。
+**このファイルだけはシンボリックリンクで管理していない。** `claude doctor` などは一時ファイルと rename で書き戻すので、リンクがその時点で実ファイルに置き換わってしまう。
 
-### settings.json
-
-Claude Code の動作設定。主な項目：
-
-| 項目 | 説明 |
-|------|------|
-| `permissions.allow` | 自動許可するコマンド |
-| `permissions.deny` | 拒否するコマンド |
-| `hooks` | イベント発生時に実行するコマンド |
-| `statusLine` | ステータスライン表示の設定 |
-
-**このファイルだけは symlink で管理していない。** `claude doctor` などが一時ファイル + rename で書き戻すため、symlink はその時点で実ファイルに置き換わってしまう（2026-07-27 に実際に発生し、以降の変更が dotfiles に入らないまま乖離した）。
-
-- `setup.sh` は**初回のみ**コピーで配布する
-- `/config` や `claude doctor` で設定を変えたら、リポジトリ直下の `./sync-settings.sh` で実環境の内容を dotfiles に取り込んでコミットする
+- `setup.sh` は初回だけコピーで配る
+- 設定を変えたら、リポジトリ直下の `./sync-settings.sh` で実環境の内容を取り込んでコミットする
 - `./sync-settings.sh --check` は差分の有無だけを見る（差分があれば終了コード 1）
+- `autoMode` は個人の環境情報を書くので取り込まない。実環境にだけ残る
 
-### skills/
+## skills/
 
-カスタムスキル（`/スキル名` で呼び出せる拡張機能）。作成方法は[公式ドキュメント](https://code.claude.com/docs/en/skills)を参照。
-個々の説明は各ディレクトリの `SKILL.md` の frontmatter に書いてある。
+カスタムスキル（`/スキル名` で呼び出せる拡張機能）。作成方法は[公式ドキュメント](https://code.claude.com/docs/en/skills)を、個々の説明は各ディレクトリの `SKILL.md` を参照。
 
-2026-09-16 に棚卸しし、45本 → 10本に絞った。残す基準は「モデルが知り得ない事実（CLI・API・自作テンプレート）を持つか」で、手順だけのスキルは削除した（履歴は git に残る）。カテゴリの目安：
+残す基準は「モデルが知り得ない事実（CLI・API・自作テンプレート）を持つか」で、手順を書いただけのスキルは持たない。
 
 | カテゴリ | スキル |
 |----------|--------|
-| ツール操作（CLI / API の知識） | herdr-control / hunk-review / ctx-agent-history-search / dot-help |
-| 出力テンプレート | zukai |
-| Claude Code の設定 | output-style |
-| 思考の壁打ち | grilling（`grill-me` は転送エイリアス） |
-| メタ（スキル管理） | skill-creator / find-skills |
+| ツール操作（CLI / API の知識） | `herdr-control` / `hunk-review` / `ctx-agent-history-search` / `dot-help` |
+| 出力テンプレート | `zukai` |
+| Claude Code の設定 | `output-style` |
+| メタ（スキル管理） | `skill-creator` / `find-skills` |
 
-次の2つは**このリポジトリでは追跡していない**（`skills/` 配下にあるのは `~/.agents/skills/` への symlink）:
+`skill-creator` は [Anthropic 公式のスキル](https://github.com/anthropics/skills/tree/main/skills/skill-creator)に由来する。
 
-- `grill-me` / `grilling` — `npx skills add` で入れた外部スキル。新しいマシンでは `/find-skills` から再導入する
+次のものは追跡していない（gitignore 済み）。外部から入るものは、新しいマシンで入れ直す。
 
-Anthropic 公式由来: [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+| 名前 | 入手先 |
+|------|--------|
+| `grill-me` / `grilling` | `npx skills add`。実体は `~/.agents/skills/`。`/find-skills` から入れ直す |
+| `terminal-browser` | terminal-browser のインストーラ。実体は `~/.local/share/terminal-browser/` |
+| `synced/` | claude.ai が同期する |
+| `gh-teach` | 非公開の個人用スキル |
+
+## mods/
+
+Claude Code のプラグインとして書いた試作。`setup.sh` では配置せず、`settings.json` の `enabledPlugins` にも入れていない。
+
+| 名前 | 説明 |
+|------|------|
+| `progress-panel` | `/progress` でプロジェクトの `.claude/tmp/progress.md` を会話の横に表示する |
+| `task-panel` | `/task-panel` でセッションのタスク一覧を会話の横に表示する |
 
 ## カスタマイズ
 
-### 通知音の変更
-
-`sounds/` 内の `.wav` ファイルを差し替える。ファイル名は維持すること。
-
-### ステータスラインの変更
-
-`statusline.sh` を編集する。スクリプトは標準入力から JSON を受け取り、標準出力に表示内容を出力する。
-
-### コマンド許可の追加
-
-`settings.json` の `permissions.allow` に追加：
-
-```json
-"Bash(コマンド:*)"
-```
-
-### フックの追加
-
-`settings.json` の `hooks` にイベントとコマンドを追加。利用可能なイベント：
-
-- `Stop` - タスク完了時
-- `PermissionRequest` - 確認要求時
-- `UserPromptSubmit` - プロンプト送信時
-- `SessionStart` - セッション開始時
+- **通知音**: `sounds/` の `.wav` を差し替える。ファイル名は変えない
+- **ステータスライン**: `statusline.sh` を編集する。標準入力の JSON を読み、標準出力に表示内容を書くスクリプト
+- **コマンド許可**: `settings.json` の `permissions.allow` に `"Bash(コマンド:*)"` の形で足す
+- **フック**: `settings.json` の `hooks` にイベントとコマンドを足す（`Stop`、`PermissionRequest`、`UserPromptSubmit`、`SessionStart` など）
