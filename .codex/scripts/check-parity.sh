@@ -65,7 +65,13 @@ check_link() {  # args: link expected_target
         bad "$link が無い（setup.sh を実行）"
     fi
 }
-check_link "$CODEX_HOME/AGENTS.md" "$DOTFILES_DIR/.claude/CLAUDE.md"
+# .claude/CLAUDE.md は私的な内容を含むので追跡していない。無い環境では検査しない
+CLAUDE_MD="$DOTFILES_DIR/.claude/CLAUDE.md"
+if [ -f "$CLAUDE_MD" ]; then
+    check_link "$CODEX_HOME/AGENTS.md" "$CLAUDE_MD"
+else
+    warn ".claude/CLAUDE.md が無いため AGENTS.md の検査を省略"
+fi
 check_link "$CODEX_HOME/rules/claude-parity.rules" "$DOTFILES_DIR/.codex/rules/claude-parity.rules"
 check_link "$CODEX_HOME/themes/imutaro-cool.tmTheme" "$DOTFILES_DIR/.codex/themes/imutaro-cool.tmTheme"
 
@@ -144,18 +150,22 @@ fi
 head_ "[7] developer_instructions / CLAUDE.md がモデル入力に注入されているか"
 if [ "$QUICK" -eq 1 ]; then
     warn "--quick のため省略"
+elif [ ! -f "$CLAUDE_MD" ]; then
+    warn ".claude/CLAUDE.md が無いため省略"
 else
+    # 検出語は指示書の 1 行目から取る。文面を変えても古くならず、私的な文言をここに書かずに済む
+    probe=$(head -n 1 "$CLAUDE_MD")
     injected=$(cd "$DOTFILES_DIR" && perl -e 'alarm 120; exec @ARGV' codex debug prompt-input "ping" 2>/dev/null \
-        | python3 -c '
-import sys, json
+        | PROBE="$probe" python3 -c '
+import os, sys, json
 try:
     d = json.load(sys.stdin)
     s = json.dumps(d, ensure_ascii=False)
 except Exception:
     print("parse-error"); sys.exit()
 # style: developer ロールのメッセージが先頭にあるか（developer_instructions の注入）
-# claude: CLAUDE.md 固有の文言が含まれるか（AGENTS.md symlink 経由の注入）
-print("style=%s claude=%s" % (any(m.get("role") == "developer" for m in d if isinstance(m, dict)), "必ず日本語" in s))
+# claude: 指示書の 1 行目が含まれるか（AGENTS.md symlink 経由の注入）
+print("style=%s claude=%s" % (any(m.get("role") == "developer" for m in d if isinstance(m, dict)), os.environ["PROBE"] in s))
 ')
     case "$injected" in
         *"style=True claude=True"*) ok "developer_instructions と CLAUDE.md（AGENTS.md 経由）が注入されている" ;;
