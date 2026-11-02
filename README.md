@@ -51,8 +51,8 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   │                       #  annotate-refresh.sh: Cmd+U / Cmd+Shift+U の herdr-annotate 呼び出し口。
 │   │                       #  要 `herdr integration install claude`（setup.sh が実行））
 │   ├── herdr-app/         # Herdr デスクトップアプリ設定（keys.json・settings.json・layouts/mine.json・
-│   │                       #  mods/status-keys/・mods/changes-gh/・mods/files-img/・mods/reply-review/・mods/tab-autoname/。Cmd キーを直接コマンドに割り当てる。Ghostty の Cmd→prefix 変換は通らない。
-│   │                       #  reply-review は Cmd+U で Claude の最新の返答にコメントして送り返す。会話ログの場所は SessionStart フック
+│   │                       #  mods/status-keys/・mods/changes-gh/・mods/files-img/・mods/redpen/・mods/tab-autoname/。Cmd キーを直接コマンドに割り当てる。Ghostty の Cmd→prefix 変換は通らない。
+│   │                       #  redpen は Cmd+U で Claude の最新の返答にコメントして送り返す。会話ログの場所は SessionStart フック
 │   │                       #  （.claude/scripts/hc-label-claude-session.sh）が端末のラベルに入れる。
 │   │                       #  .zprofile は Herdr の端末に漏れた Claude / 旧 herdr の環境変数を消す（漏れると会話ログが保存されない）。
 │   │                       #  status-keys は右パネル Files / Changes を Cmd+Shift+E / Cmd+Shift+G で開閉し、開いている間はターミナルを隠して全幅で見せる。

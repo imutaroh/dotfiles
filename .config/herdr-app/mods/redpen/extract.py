@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Claude Code の会話ログ（JSONL）から、最新の返答の本文を取り出して JSON で出力する。
+"""Print the latest reply from a Claude Code transcript (JSONL) as JSON.
 
-「最新の返答」= text ブロックを持つ最後のアシスタントメッセージ（message.id が同じ行を連結）。
-サブエージェントの発言（isSidechain）と API エラーの疑似メッセージは除く。
-ログが無いときは終了コード 3。返答がまだ無いときは {"text": ""} を出力する。
+The latest reply is the last assistant message with a text block (lines sharing a message.id are joined).
+Subagent messages (isSidechain) and API error pseudo-messages are skipped.
+Exits with code 3 when the transcript does not exist. Prints {"text": ""} when there is no reply yet.
 """
 import json
 import sys
@@ -12,7 +12,7 @@ import sys
 def latest_reply(lines):
     message_id, texts, timestamp = None, [], None
     for line in lines:
-        if '"assistant"' not in line:  # 大きなログを速く読み飛ばす
+        if '"assistant"' not in line:  # Skip through large transcripts quickly
             continue
         try:
             entry = json.loads(line)
