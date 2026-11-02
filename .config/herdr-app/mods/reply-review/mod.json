@@ -1,0 +1,5 @@
+{
+  "place": "none",
+  "title": "Reply review",
+  "overlay": { "kind": "popup", "width": 1, "height": 1, "frame": "none" }
+}

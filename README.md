@@ -19,6 +19,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 | | Starship | カスタマイズ可能なプロンプト |
 | ターミナル | Ghostty | ターミナルエミュレータ |
 | | herdr | エージェントマルチプレクサ（tmux / 旧 Zellij の後継。設定は `.config/herdr/` で管理） |
+| | Herdr（デスクトップアプリ） | herdr の GUI 版（`herdr-app`。端末は herdr-core の `hc` が保持。設定は `.config/herdr-app/` で管理） |
 | 開発ツール | Neovim（AstroNvim ベース） | エディタ |
 | | Claude Code / Codex CLI | コーディングエージェント |
 | | hunk | レビュー特化の差分ビューア（`nh` コマンド・hunk-review スキルから使用） |
@@ -49,6 +50,15 @@ macOS 用の個人設定ファイル管理リポジトリ。
 │   │                       #  ログは ~/.config/herdr/agent-taborder.log。
 │   │                       #  annotate-refresh.sh: Cmd+U / Cmd+Shift+U の herdr-annotate 呼び出し口。
 │   │                       #  要 `herdr integration install claude`（setup.sh が実行））
+│   ├── herdr-app/         # Herdr デスクトップアプリ設定（keys.json・settings.json・layouts/mine.json・
+│   │                       #  mods/status-keys/・mods/changes-gh/・mods/files-img/・mods/reply-review/・mods/tab-autoname/。Cmd キーを直接コマンドに割り当てる。Ghostty の Cmd→prefix 変換は通らない。
+│   │                       #  reply-review は Cmd+U で Claude の最新の返答にコメントして送り返す。会話ログの場所は SessionStart フック
+│   │                       #  （.claude/scripts/hc-label-claude-session.sh）が端末のラベルに入れる。
+│   │                       #  .zprofile は Herdr の端末に漏れた Claude / 旧 herdr の環境変数を消す（漏れると会話ログが保存されない）。
+│   │                       #  status-keys は右パネル Files / Changes を Cmd+Shift+E / Cmd+Shift+G で開閉し、開いている間はターミナルを隠して全幅で見せる。
+│   │                       #  changes-gh は付属 changes の複製で、差分を GitHub 配色にし長い行を折り返す。
+│   │                       #  files-img は付属 files の複製で、画像ファイルを画像として表示する。
+│   │                       #  tab-autoname は Claude Code が端末タイトルに書く要約をタブ名に写す。手で付けた名前は上書きせず、空にすると自動に戻る。Cmd+Shift+M で表示中のタブ名の先頭に ⏳ を付け外しする）
 │   ├── karabiner/         # Karabiner-Elements 設定（karabiner.json のみ）
 │   ├── mise/              # ランタイム管理設定
 │   ├── nvim/              # Neovim 設定

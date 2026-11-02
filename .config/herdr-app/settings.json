@@ -1,0 +1,9 @@
+{
+  "zoom": 1.0,
+  "font": "Moralerspace Argon",
+  "font_size": 14,
+  "sounds": {
+    "enabled": false
+  },
+  "minimum_contrast": 1.0
+}

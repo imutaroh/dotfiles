@@ -154,6 +154,11 @@
             "type": "command",
             "command": "bash '/Users/imutaakihiro/.claude/hooks/herdr-agent-state.sh' session",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "sh ~/.claude/scripts/hc-label-claude-session.sh",
+            "timeout": 10
           }
         ]
       }

@@ -58,6 +58,7 @@ cask "font-moralerspace"
 cask "ghostty"
 cask "google-chrome"
 cask "handy"                  # ローカル音声入力（OSS・Whisper large-v3-turbo で日本語）
+cask "herdr-app"              # Herdr デスクトップアプリ（herdr-core の hc は公式 install.sh で ~/.local/bin に入れる。brew 無し）
 cask "karabiner-elements"    # BTキーボード接続時に内蔵キーボードを無効化
 cask "logi-options+"
 cask "nani"

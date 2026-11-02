@@ -102,6 +102,29 @@ ln -sf "$DOTFILES_DIR/.config/herdr/agent-taborder-watch.py" ~/.config/herdr/age
 ln -sf "$DOTFILES_DIR/.config/herdr/annotate-refresh.sh" ~/.config/herdr/annotate-refresh.sh
 ln -sf "$DOTFILES_DIR/.config/herdr/sidechat.sh" ~/.config/herdr/sidechat.sh
 
+# Herdr デスクトップアプリ（herdr-app）は keys.json と settings.json のみ管理。
+# アプリはズーム変更などで settings.json を symlink 越しに書き込む（リンクは置き換えない。2026-10-31 実測）。
+# 同ディレクトリの AGENTS.md・*.d.ts・mods/・layouts/・view.json 等はアプリが起動時に生成するので対象外
+mkdir -p ~/.config/herdr-app
+ln -sf "$DOTFILES_DIR/.config/herdr-app/keys.json" ~/.config/herdr-app/keys.json
+ln -sf "$DOTFILES_DIR/.config/herdr-app/settings.json" ~/.config/herdr-app/settings.json
+# 個人レイアウト mine（main の複製。下のステータスバーを status-keys に差し替え）と、
+# 右パネル（Files / Changes）を Cmd+Shift+E / Cmd+Shift+G で開閉する mod status-keys。
+# changes-gh は付属 changes の複製（差分を GitHub 配色にし、長い行を折り返す）。mine の Changes ブロックが参照する。
+# files-img は付属 files の複製（画像ファイルを画像として表示する）。mine の Files ブロックが参照する。
+# reply-review は Claude の最新の返答にコメントして送り返す mod（Cmd+U）。会話ログの場所は
+# SessionStart フック（.claude/scripts/hc-label-claude-session.sh）が端末のラベルに入れる。
+# tab-autoname は Claude Code が端末タイトルに書く要約をタブ名に写す mod。mine の 0px ブロックで動く。
+# mod は main.js と mod.json だけをリンクする（同フォルダの *.d.ts・jsconfig.json はアプリが生成）
+mkdir -p ~/.config/herdr-app/layouts
+ln -sf "$DOTFILES_DIR/.config/herdr-app/layouts/mine.json" ~/.config/herdr-app/layouts/mine.json
+for mod in status-keys changes-gh files-img reply-review tab-autoname; do
+  mkdir -p ~/.config/herdr-app/mods/$mod
+  ln -sf "$DOTFILES_DIR/.config/herdr-app/mods/$mod/main.js" ~/.config/herdr-app/mods/$mod/main.js
+  ln -sf "$DOTFILES_DIR/.config/herdr-app/mods/$mod/mod.json" ~/.config/herdr-app/mods/$mod/mod.json
+done
+ln -sf "$DOTFILES_DIR/.config/herdr-app/mods/reply-review/extract.py" ~/.config/herdr-app/mods/reply-review/extract.py
+
 # herdr の Claude integration: Claude Code の SessionStart hook でセッション ID を herdr に報告する。
 # herdr-annotate（Cmd+U）が「そのペインの Claude の返答」を特定するのに必要（無いと全体で最新の
 # transcript を拾って別セッションの返答が開く）。冪等。settings.json に hook を追記し、
