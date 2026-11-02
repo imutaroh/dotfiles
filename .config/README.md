@@ -93,7 +93,7 @@ GitHub の PR と Issue を一覧する TUI。`gh` の拡張機能で、Brewfile
 
 ## [hunk](https://hunk.dev/)
 
-ターミナルの差分ビューア。Claude Code とのペアレビューにも使う（エージェントが `hunk session` で表示位置の移動やコメント追加を行う）。`config.toml` で `wrap_lines = true` にして、長い行を折り返している。
+ターミナルの差分ビューア。Claude Code とのペアレビューにも使う（エージェントが `hunk session` で表示位置の移動やコメント追加を行う）。`config.toml` で `wrap_lines = true` にして、長い行を折り返している。`.zshrc` の `nh` で、自動リロード付きで起動する。
 
 ## [yazi](https://yazi-rs.github.io/)
 

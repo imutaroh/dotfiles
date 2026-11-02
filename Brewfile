@@ -43,6 +43,7 @@ brew "libimobiledevice"       # iPhone と USB 経由で通信（idevice_id / id
 brew "ideviceinstaller"       # iPhone のアプリ一覧取得・削除（iphone/ 参照）
 
 # === GUI アプリ ===
+# RunCat は App Store から手動インストール: https://apps.apple.com/jp/app/runcat/id1429033973
 cask "alt-tab"
 cask "antigravity-cli"        # Google Antigravity CLI（agy -p で Claude Code から Gemini を呼ぶ）
 cask "aqua-voice"
