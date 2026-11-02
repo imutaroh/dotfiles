@@ -57,7 +57,7 @@ check_link() {  # args: link expected_target
         if [ "$actual" = "$expected" ]; then
             ok "$link"
         else
-            bad "$link → $actual（期待: $expected）"
+            bad "$link → ${actual}（期待: ${expected}）"
         fi
     elif [ -e "$link" ]; then
         bad "$link はリンクではなく実ファイル（setup.sh を再実行する前に中身を確認）"
@@ -98,7 +98,7 @@ case "$real_bin" in
     *.js) real_bin=$(find "$(dirname "$real_bin")/../node_modules/@openai" -type f -perm +111 -name codex 2>/dev/null | head -1) ;;
 esac
 if [ -z "$real_bin" ] || [ ! -f "$real_bin" ]; then
-    warn "実バイナリを特定できず識別子チェックを省略（$codex_bin）"
+    warn "実バイナリを特定できず識別子チェックを省略（${codex_bin}）"
 else
     ids=$(python3 - "$CODEX_HOME/config.toml" <<'PY'
 import sys, tomllib
