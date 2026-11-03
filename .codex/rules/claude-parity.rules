@@ -9,6 +9,7 @@
 # allow に一致したコマンドは Codex のサンドボックス外で確認なしに実行される。
 # 引数次第で任意コマンド実行・任意ファイル書き込みになるもの（git rebase -x /
 # git push --receive-pack / git fetch|pull --upload-pack / git diff|log --output /
+# git reset（`-q --hard` は forbidden に一致しない）/ tree -o /
 # fd -x / mise exec|run / npm test）は allow に入れない。外したコマンドは
 # サンドボックス内で動くか、必要に応じて承認を求められる。
 
@@ -19,13 +20,8 @@ prefix_rule(pattern=["git", "push", "--force"], decision="forbidden", justificat
 prefix_rule(pattern=["git", "push", "-f"], decision="forbidden", justification="force push は履歴破壊。明示指示がない限り禁止")
 prefix_rule(pattern=["git", "push", "--force-with-lease"], decision="forbidden", justification="force push は履歴破壊。明示指示がない限り禁止")
 prefix_rule(pattern=["git", "reset", "--hard"], decision="forbidden", justification="作業ツリーを破壊的に巻き戻すため禁止")
-prefix_rule(pattern=["git", "clean", "-f"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
-prefix_rule(pattern=["git", "clean", "-fd"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
-prefix_rule(pattern=["git", "clean", "-fdx"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
-prefix_rule(pattern=["git", "clean", "-df"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
-prefix_rule(pattern=["git", "clean", "-dfx"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
-prefix_rule(pattern=["git", "clean", "-xdf"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
-prefix_rule(pattern=["git", "clean", "-ff"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
+# フラグの順序や組み合わせで漏れるので、git clean はフラグを問わず止める
+prefix_rule(pattern=["git", "clean"], decision="forbidden", justification="未追跡ファイルを復元不能に削除するため禁止")
 
 # ─── allow: brew（読み取り系のみ） ───
 prefix_rule(pattern=["brew", "--prefix"], decision="allow", justification="読み取り専用の情報照会")
@@ -46,7 +42,6 @@ prefix_rule(pattern=["date"], decision="allow", justification="日時取得は�
 prefix_rule(pattern=["echo"], decision="allow", justification="標準出力への表示は無害")
 prefix_rule(pattern=["ls"], decision="allow", justification="読み取り専用の一覧表示")
 prefix_rule(pattern=["pwd"], decision="allow", justification="読み取り専用のパス表示")
-prefix_rule(pattern=["tree"], decision="allow", justification="読み取り専用のディレクトリ表示")
 prefix_rule(pattern=["wc"], decision="allow", justification="読み取り専用の集計")
 prefix_rule(pattern=["which"], decision="allow", justification="読み取り専用のパス解決")
 prefix_rule(pattern=["trash"], decision="allow", justification="復元可能な削除手段として推奨しているため許可")
@@ -75,7 +70,6 @@ prefix_rule(pattern=["git", "commit"], decision="allow", justification="コミ�
 prefix_rule(pattern=["git", "stash"], decision="allow", justification="一時退避は可逆")
 prefix_rule(pattern=["git", "status"], decision="allow", justification="読み取り専用の状態確認")
 prefix_rule(pattern=["git", "switch"], decision="allow", justification="ブランチ切り替えは日常操作")
-prefix_rule(pattern=["git", "reset"], decision="allow", justification="通常resetは日常操作（--hardは上のforbiddenで個別禁止）")
 prefix_rule(pattern=["git", "merge"], decision="allow", justification="マージは日常操作")
 
 # ─── allow: 開発ツール ───

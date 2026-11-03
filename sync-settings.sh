@@ -13,8 +13,12 @@ set -euo pipefail
 #   ./sync-settings.sh          実環境の内容を dotfiles に取り込む
 #   ./sync-settings.sh --check  差分の有無だけ調べる（差分あり = 終了コード 1）
 #
-# autoMode は取り込まない。非公開のリポジトリや個人データの置き場所を書くことがあり、
-# このリポジトリは公開しているため。実環境の autoMode はそのまま残る。
+# このリポジトリは公開しているので、次のものは取り込まない。実環境の値はそのまま残る。
+#   autoMode: 非公開のリポジトリや個人データの置き場所を書くことがある
+#   defaultMode と skipAutoPermissionPrompt: 複製した人が確認なしで auto モードに入らないようにする
+#   enabledMcpjsonServers: 同名のサーバーを .mcp.json に置いたリポジトリで承認済みにならないようにする
+#   herdr-agent-state.sh のフック: `herdr integration install claude` が各マシンのパスで作る
+#   公式以外のプラグインとマーケットプレイス: 複製しただけで第三者のコードが有効にならないようにする
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 LIVE="$HOME/.claude/settings.json"
@@ -27,7 +31,22 @@ fi
 
 FILTERED="$(mktemp)"
 trap 'command rm -f "$FILTERED"' EXIT
-jq 'del(.autoMode)' "$LIVE" > "$FILTERED"
+jq '
+  def official: endswith("@claude-plugins-official");
+  del(.autoMode, .permissions.defaultMode, .skipAutoPermissionPrompt, .enabledMcpjsonServers)
+  | if .hooks then
+      .hooks |= with_entries(.value |= (
+        map(.hooks |= map(select((.command // "") | contains("herdr-agent-state.sh") | not)))
+        | map(select(.hooks | length > 0))
+      ))
+    else . end
+  | if .enabledPlugins then
+      .enabledPlugins |= with_entries(select(.key | official))
+    else . end
+  | if .extraKnownMarketplaces then
+      .extraKnownMarketplaces |= with_entries(select(.key == "claude-plugins-official"))
+    else . end
+' "$LIVE" > "$FILTERED"
 
 if cmp -s "$FILTERED" "$REPO"; then
     echo "settings.json: 差分なし"
@@ -42,7 +61,7 @@ fi
 
 # 機密情報の混入チェック。settings.json は本来トークンを持たないが、
 # 気づかずコミットすると公開リポジトリに載るため取り込み前に止める。
-if grep -qiE '"(api[_-]?key|token|secret|password)"[[:space:]]*:|sk-[A-Za-z0-9]{16}|ghp_[A-Za-z0-9]{16}' "$FILTERED"; then
+if grep -qiE '"[a-z0-9_-]*(api[_-]?key|token|secret|password)"[[:space:]]*:|sk-[A-Za-z0-9_-]{16}|github_pat_|gh[pousr]_[A-Za-z0-9]{16}|xox[abprs]-' "$FILTERED"; then
     echo "機密情報らしき値が含まれています。手動で確認してください: $LIVE" >&2
     exit 1
 fi
