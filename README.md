@@ -39,5 +39,4 @@ git clone https://github.com/imutaroh/dotfiles.git ~/dotfiles
 | `.claude/skills/find-skills/` | [vercel-labs/skills](https://github.com/vercel-labs/skills) |
 | `.claude/skills/hunk-review/` | [Hunk](https://github.com/modem-dev/hunk) |
 | `.claude/skills/ctx-agent-history-search/` | ctx CLI |
-| `.claude/sounds/` | macOS のシステムサウンド |
 | `.config/raycast/script-commands/` | tanuuuuuuu |

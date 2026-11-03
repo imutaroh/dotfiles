@@ -16,7 +16,7 @@ Claude Code のユーザーレベル設定。`setup.sh` が項目ごとに `~/.c
 ├── scripts/
 │   ├── fetch_usage.sh      # API 使用量の取得（キーチェーンから実行時にトークンを読む）
 │   └── hc-label-claude-session.sh  # 会話ログの場所を Herdr の端末ラベルに入れる
-├── sounds/                 # 通知音（complete.wav / confirm.wav）
+├── sounds/                 # 通知音（macOS のシステムサウンドへのリンク）
 ├── themes/                 # カスタムテーマ
 ├── output-styles/          # 自作の output style
 ├── skills/                 # カスタムスキル
@@ -69,7 +69,7 @@ Claude Code のプラグインとして書いた試作。`setup.sh` では配置
 
 ## カスタマイズ
 
-- **通知音**: `sounds/` の `.wav` を差し替える。ファイル名は変えない
+- **通知音**: `sounds/` のリンク先を変える。ファイル名は変えない
 - **ステータスライン**: `statusline.sh` を編集する。標準入力の JSON を読み、標準出力に表示内容を書くスクリプト
 - **コマンド許可**: `settings.json` の `permissions.allow` に `"Bash(コマンド:*)"` の形で足す
 - **フック**: `settings.json` の `hooks` にイベントとコマンドを足す（`Stop`、`PermissionRequest`、`UserPromptSubmit`、`SessionStart` など）
