@@ -13,7 +13,7 @@
 | `<leader>fh` | ヘルプを検索 |
 | `<leader>fk` | キーマップを検索 |
 | `<leader>fp` | プロジェクトを切り替え |
-| `<leader>ft` | TODO / FIXME などの一覧 |
+| `<leader>fT` | TODO / FIXME などの一覧 |
 | `<leader>e` | ファイルツリーを開閉（Neo-tree） |
 | `<leader>o` | ファイルツリーにフォーカス |
 

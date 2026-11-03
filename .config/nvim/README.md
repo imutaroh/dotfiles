@@ -10,12 +10,12 @@ Vim 初心者がゼロから設定を構築するのは大変なため、オー�
 
 | 項目 | 要件 |
 |------|------|
-| Neovim | v0.10.0 以上（AstroNvim の要件） |
+| Neovim | v0.11 以上（dropbar の要件） |
 | フォント | Nerd Font 対応フォント（ファイルアイコン等の表示に必要。[Nerd Fonts](https://www.nerdfonts.com/) 参照） |
 | Git | プラグイン管理に必要 |
-| macism | IME 自動切替に必要（`brew install macism`） |
-| 自作プラグイン | [diffbase.nvim](https://github.com/imutaroh/diffbase.nvim) と [nudge.nvim](https://github.com/imutaroh/nudge.nvim) を `~/repos/imutaroh/` に clone する（開発用にローカルの複製を読む設定） |
-| Obsidian の vault | `lua/plugins/obsidian.lua` の `path` を自分の vault に書き換える |
+| macism | IME 自動切替に必要（`brew install laishulu/homebrew/macism`） |
+| 自作プラグイン | [diffbase.nvim](https://github.com/imutaroh/diffbase.nvim) と [nudge.nvim](https://github.com/imutaroh/nudge.nvim) は GitHub から自動で入る。`~/repos/imutaroh/` に clone があればそちらを読む |
+| Obsidian の vault | 使うなら `lua/plugins/obsidian.lua` の `cond` と `path` を自分の vault に書き換える。vault が無ければ読み込まない |
 
 ### プラグイン管理
 
@@ -59,7 +59,7 @@ nvim/
 | ファイル | 役割 | 主なキー |
 |----------|------|----------|
 | `gitsigns.lua` | バッファ内 hunk 表示・blame（blame は既定 OFF） | `gh`/`gH` hunk 移動、`<leader>gB` blame |
-| `diffbase.lua` | 自作プラグイン diffbase.nvim（`~/repos/imutaroh/diffbase.nvim`）の読み込み。普段の画面のまま差分の基準を切り替える（main / 直前のコミット / 未push / コミットを選ぶ / OFF）。ツリーに +追加 -削除 の行数、コードに GitHub 風の緑・赤の行。コミットを選ぶとその時点に移動し、`<leader>gn` の「元のブランチに戻る」で戻る（Neovim を閉じたときは `git switch -`） | `<leader>gn` 基準を選ぶ、`gh`/`gH` 変更箇所へ移動 |
+| `diffbase.lua` | 自作プラグイン diffbase.nvim の読み込み。普段の画面のまま差分の基準を切り替える（main / 直前のコミット / 未push / コミットを選ぶ / OFF）。ツリーに +追加 -削除 の行数、コードに GitHub 風の緑・赤の行。コミットを選ぶとその時点に移動し、`<leader>gn` の「元のブランチに戻る」で戻る（Neovim を閉じたときは `git switch -`） | `<leader>gn` 基準を選ぶ、`gh`/`gH` 変更箇所へ移動 |
 | `octo.lua` | GitHub PR / Issue の閲覧・コメント・レビュー提出 | `<leader>Ob` 現ブランチPR、`<leader>Op`/`Oi` 一覧、`<leader>Or` レビュー |
 | `storyline.lua` | PR の差分を AI が章立てにして読む順序を決める [storyline.nvim](https://github.com/killinsun/storyline.nvim) | `<leader>gs` PR をレビュー、`<leader>gS` base ブランチを選ぶ |
 
@@ -83,9 +83,9 @@ nvim/
 |----------|------|----------|
 | `flash.lua` | 画面内ジャンプ（f/F/t/T 拡張） | 検索ラベルジャンプ |
 | `surround.lua` | 囲み文字の追加・変更・削除 | `ys`/`cs`/`ds` |
-| `neo-tree.lua` | ファイルツリー（隠しファイル表示、起動時フォーカス） | — |
+| `neo-tree.lua` | ファイルツリー（隠しファイル表示） | — |
 | `trouble.lua` | 診断・エラーの一覧表示 | `<leader>xx`/`xX`/`xq`/`xl` |
-| `todo-comments.lua` | TODO/FIXME 等のハイライト | `<leader>ft` 一覧 |
+| `todo-comments.lua` | TODO/FIXME 等のハイライト | `<leader>fT` 一覧 |
 | `aerial.lua` | aerial のバージョン固定解除（Neovim 0.12 互換対応） | — |
 
 ### LSP / 言語
@@ -96,7 +96,7 @@ nvim/
 | `mason.lua` | LSP サーバー・ツールの自動インストール |
 | `conform.lua` | 保存時の自動フォーマット |
 | `treesitter.lua` | シンタックスハイライト（言語パーサー設定） |
-| `neoconf.lua` | VSCode 設定の取り込みを無効化（LSP 二重起動対策） |
+| `neoconf.lua` | neoconf を無効化（LSP の二重起動を防ぎ、リポジトリの設定を LSP に混ぜない） |
 | `markdown.lua` | Markdown プレビュー（`<leader>mb` でブラウザ表示。`<leader>mp` は Obsidian で開く） |
 | `obsidian.lua` | Obsidian の vault 内で `[[wikilink]]` のジャンプなどを使う（obsidian.nvim） |
 
@@ -107,7 +107,7 @@ nvim/
 | `astrocore.lua` | コア設定（折り返し、カーソルライン、autocmd） |
 | `im-select.lua` | Insert モードを抜けたら IME を英語に自動切替 |
 | `keymaps-ja.lua` | which-key の説明文を日本語化 |
-| `nudge.lua` | 自作プラグイン nudge.nvim（`~/repos/imutaroh/nudge.nvim`）の読み込み。行・範囲に Claude へのコメントを溜め、同じ herdr タブの Claude ペインへまとめて貼り付ける（Enter は押さない）。`<leader>aa` 追加、`<leader>as` 送信 |
+| `nudge.lua` | 自作プラグイン nudge.nvim の読み込み。行・範囲に Claude へのコメントを溜め、同じ herdr タブの Claude ペインへまとめて貼り付ける（Enter は押さない）。`<leader>aa` 追加、`<leader>as` 送信 |
 
 ## 基本設定
 

@@ -25,8 +25,6 @@ return {
         -- Tab でバッファを移動（ブラウザのタブ操作と同じ感覚）
         ["<Tab>"] = { "<cmd>bnext<cr>", desc = "次のバッファへ" },
         ["<S-Tab>"] = { "<cmd>bprevious<cr>", desc = "前のバッファへ" },
-        -- プロジェクト切替
-        ["<leader>fp"] = { "<cmd>Telescope projects<cr>", desc = "プロジェクトを検索" },
       },
       x = {
         -- ビジュアルモードで p を押した際、置き換えたテキストをレジスタに残さない
@@ -46,7 +44,8 @@ return {
         },
         {
           event = "FileChangedShell",
-          callback = function() vim.v.fcs_choice = "reload" end,
+          -- 未保存の編集があるバッファは黙って置き換えず、確認する
+          callback = function() vim.v.fcs_choice = vim.bo.modified and "ask" or "reload" end,
         },
       },
       -- ファイルを開いた時に空の [No Name] バッファを削除

@@ -1,9 +1,9 @@
 -- コードの行や範囲に Claude へのコメントを溜めて、同じ herdr タブの Claude ペインにまとめて送る。
--- 本体は自作プラグイン nudge.nvim（~/repos/imutaroh/nudge.nvim）。公開後は "imutaroh/nudge.nvim" に置き換える
+-- 本体は自作プラグイン nudge.nvim。~/repos/imutaroh/ に clone があればそれを使い、無ければ GitHub から入れる
 return {
   {
-    dir = "~/repos/imutaroh/nudge.nvim",
-    name = "nudge.nvim",
+    "imutaroh/nudge.nvim",
+    dev = true,
     cmd = "Nudge",
     keys = {
       { "<leader>aa", function() require("nudge").add() end, mode = { "n", "x" }, desc = "この行/選択範囲にコメント" },

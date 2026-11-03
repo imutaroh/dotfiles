@@ -19,6 +19,8 @@
 return {
   "obsidian-nvim/obsidian.nvim",
   version = "*",
+  -- vault が無いマシンでは setup が失敗するので読み込まない
+  cond = function() return vim.fn.isdirectory(vim.fn.expand("~/repos/imutaroh/ObsidianImus")) == 1 end,
   ft = "markdown",
   cmd = "Obsidian", -- markdown バッファを開く前でも :Obsidian new_from_template 等を使えるように
   init = function()
