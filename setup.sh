@@ -173,7 +173,10 @@ ln -sfn "$DOTFILES_DIR/.config/nvim" ~/.config/nvim
 
 # Claude Code設定（ファイル単位でリンク、他のファイルは残す）
 mkdir -p ~/.claude/sounds
-ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" ~/.claude/CLAUDE.md
+# .claude/CLAUDE.md は私的な内容を含むので追跡していない。無い環境では切れたリンクを作らない
+if [ -f "$DOTFILES_DIR/.claude/CLAUDE.md" ]; then
+    ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" ~/.claude/CLAUDE.md
+fi
 ln -sf "$DOTFILES_DIR/.claude/statusline.sh" ~/.claude/statusline.sh
 ln -sf "$DOTFILES_DIR/.claude/statusline-preview.sh" ~/.claude/statusline-preview.sh
 ln -sfn "$DOTFILES_DIR/.claude/scripts" ~/.claude/scripts
@@ -198,7 +201,9 @@ ln -sfn "$DOTFILES_DIR/.claude/skills" ~/.claude/skills
 # Codex は Claude Code と同じカスタム指示を読む。
 # Codex 固有のモデル・権限・Hooks は ~/.codex/config.toml で別管理する。
 mkdir -p ~/.codex
-ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" ~/.codex/AGENTS.md
+if [ -f "$DOTFILES_DIR/.claude/CLAUDE.md" ]; then
+    ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" ~/.codex/AGENTS.md
+fi
 
 # Codex のカスタムテーマはファイル単位でリンクし、他のテーマを残す。
 mkdir -p ~/.codex/themes

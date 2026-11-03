@@ -6,7 +6,7 @@ Claude Code のユーザーレベル設定。`setup.sh` が項目ごとに `~/.c
 
 ```
 .claude/
-├── CLAUDE.md               # カスタム指示（Claude Code と Codex で共通）
+├── CLAUDE.md               # カスタム指示（Claude Code と Codex で共通。私的な内容を含むので非公開）
 ├── settings.json           # Claude Code の設定
 ├── statusline.sh           # ステータスライン
 ├── statusline-preview.sh   # ステータスラインの実出力をブラウザで確認する

@@ -19,6 +19,7 @@ token.json
 .claude/worktrees/
 
 # 私的データ（公開しない）
+.claude/CLAUDE.md
 .claude/task-dashboard/
 .claude/skills/gh-teach/
 iphone/keep.txt

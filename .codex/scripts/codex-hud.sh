@@ -175,7 +175,7 @@ render() {
     local row
     row=$(pick_thread)
     if [ -z "$row" ]; then
-        printf '%s\n' "${ICE}codex-hud: セッションが見つからない（$STATE_DB）${RESET}"
+        printf '%s\n' "${ICE}codex-hud: セッションが見つからない（${STATE_DB}）${RESET}"
         return
     fi
     local id rollout name model effort created cwd tokens_used

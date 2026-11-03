@@ -8,6 +8,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - `setup.sh` でシンボリックリンクを作成して各設定ファイルを適用する
 - `.config/` 以下はミラーリング方式（実際の配置場所と同じ構造）で管理
 - `~/.claude/` 自体は実ディレクトリで、`CLAUDE.md` / `skills` / `scripts` / `statusline.sh` / `statusline-preview.sh` / `themes` / `hooks/play-sound.sh` / `sounds/*.wav` が `setup.sh` の張る dotfiles へのシンボリックリンク（`task-dashboard` も dotfiles へのリンクだが、私的データで gitignore 対象のため `setup.sh` の対象外）
+- `.claude/CLAUDE.md`（ユーザーレベルの指示書）は私的な内容を含むので gitignore 対象で、このマシンにしかない。`setup.sh` はファイルがあるときだけリンクを張る
 - `settings.json` は symlink 不可（`claude doctor` 等が実ファイルに置き換えるため）。`./sync-settings.sh` で実環境 → dotfiles へ明示的に取り込む
 - `~/.codex/config.toml` は Codex アプリも更新するため symlink 不可。`.codex/scripts/apply-codex-config.py` がキー単位で冪等に追記・置換する（`setup.sh` から自動実行）
 - Codex のカスタムテーマは `.codex/themes/` で管理し、`~/.codex/themes/` へファイル単位でリンクする
@@ -22,6 +23,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - シンボリックリンクで管理されるファイルは直接編集しない
 - ディレクトリ構造を変更した場合は CLAUDE.md と README.md の整合性を確認・更新する
 - コミット前に機密情報（APIキー、トークン等）が含まれていないか確認する
+- gitignore した私的ファイル（`.claude/CLAUDE.md` / `.claude/skills/gh-teach/` / `iphone/keep.txt`）は、それらを追跡していた古いコミットやブランチへ `git switch` すると上書きされ、戻るときに消える。古い内容を見るときは `git show` か `git worktree` を使う。`git clean -x` でも消える
 
 ## スキル管理ルール
 
