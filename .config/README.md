@@ -55,7 +55,7 @@
 | ファイル | 説明 |
 |----------|------|
 | `config.toml` | キーバインドなどの設定 |
-| `agent-taborder-watch.py` | タブ名に位置番号を付ける常駐スクリプト（`launchd/` でロードする） |
+| `agent-taborder-watch.py` | タブ名に位置番号を付ける常駐スクリプト（`setup.sh` は登録しない。使うときは `launchd/optional/` の plist の `__HOME__` を置き換えて登録する） |
 | `annotate-refresh.sh` | エージェントの最新の返答をレビュー画面（herdr-annotate）で開く。Cmd+U / Cmd+Shift+U の呼び出し口 |
 | `sidechat.sh` | 表示中の Claude の会話を fork してポップアップで開く（Cmd+;） |
 | `scripts/slot-machine.sh` | エージェントの作業が終わった瞬間にサイドバーへスロット風の演出を流す（`setup.sh` は配置しない。手で起動する） |

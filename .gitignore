@@ -23,6 +23,11 @@ token.json
 .claude/task-dashboard/
 .claude/skills/gh-teach/
 iphone/keep.txt
+launchd/com.imutaro.ai-usage-dashboard.plist
+
+# Herdr が mod のフォルダに生成する型定義（herdr-app check など）
+.config/herdr-app/mods/*/gpui-kit.d.ts
+.config/herdr-app/mods/*/jsconfig.json
 
 # OS生成ファイル
 .DS_Store

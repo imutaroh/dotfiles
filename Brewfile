@@ -21,15 +21,16 @@ brew "chafa"                  # ターミナルで画像表示（kitty graphics�
 
 # === 開発ツール ===
 brew "gh"                     # GitHub CLI
+brew "jq"                     # JSON 処理（statusline・codex-hud・sync-settings・desk で使用）
 brew "mise"                   # ランタイムバージョン管理（Node / Python 等）
 brew "hunk"                   # レビュー特化の差分ビューア（hunk-review スキルで AI と往復レビュー）
 brew "node"                   # Node.js / npm（Mason LSP: typescript-language-server, pyright 等）
 brew "bun"                    # JavaScript ランタイム / パッケージマネージャ
 brew "go"                     # Go 言語（Mason LSP: gopls）
 brew "gopls"                  # Go 言語サーバー（Claude Code の gopls-lsp プラグインが PATH から呼ぶ）
-brew "hugo"                   # 静的サイト生成（notes.imutaro.com の内製 Publish・_Meta/Site）
+brew "hugo"                   # 静的サイト生成
 brew "xcodegen"               # Xcode プロジェクトを yml から生成
-brew "shellcheck"             # シェルスクリプトの静的検査（pomo の docs/install.sh で使用）
+brew "shellcheck"             # シェルスクリプトの静的検査
 brew "postgresql@17"          # PostgreSQL（ローカル開発用 DB）
 
 # === macOS ユーティリティ ===

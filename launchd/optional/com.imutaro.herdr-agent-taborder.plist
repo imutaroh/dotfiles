@@ -7,15 +7,15 @@
   <key>ProgramArguments</key>
   <array>
     <string>/usr/bin/python3</string>
-    <string>/Users/imutaakihiro/.config/herdr/agent-taborder-watch.py</string>
+    <string>__HOME__/.config/herdr/agent-taborder-watch.py</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
   <key>KeepAlive</key>
   <true/>
   <key>StandardOutPath</key>
-  <string>/Users/imutaakihiro/.config/herdr/agent-taborder-launchd.log</string>
+  <string>__HOME__/.config/herdr/agent-taborder-launchd.log</string>
   <key>StandardErrorPath</key>
-  <string>/Users/imutaakihiro/.config/herdr/agent-taborder-launchd.log</string>
+  <string>__HOME__/.config/herdr/agent-taborder-launchd.log</string>
 </dict>
 </plist>

@@ -27,7 +27,7 @@ git clone https://github.com/imutaroh/dotfiles.git ~/dotfiles
 ```
 
 > [!WARNING]
-> 作者の環境が前提で、既存の設定を上書き・削除する。実行する前に `setup.sh` を読み、`.gitconfig` と `launchd/` にある作者の値を書き換えること。
+> 作者の環境が前提で、多くのアプリを入れて既存の設定を置き換える。実行する前に `setup.sh` を読むこと。置き換えた設定は `~/.dotfiles-backup/` に退避する。Git の名前とメールは `~/.gitconfig.local` に書く。
 
 ## ライセンス
 

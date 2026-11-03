@@ -27,6 +27,7 @@ import sys
 import threading
 import time
 import uuid
+from logging.handlers import RotatingFileHandler
 
 SOCKET_PATH = os.environ.get(
     "HERDR_SOCKET_PATH", os.path.expanduser("~/.config/herdr/herdr.sock")
@@ -59,13 +60,9 @@ _debounce_timer: threading.Timer | None = None
 def setup_logging() -> None:
     log_dir = os.path.dirname(LOG_PATH)
     os.makedirs(log_dir, exist_ok=True)
-    try:
-        if os.path.exists(LOG_PATH) and os.path.getsize(LOG_PATH) > LOG_MAX_BYTES:
-            open(LOG_PATH, "w").close()
-    except OSError:
-        pass
+    # 常駐するので起動時だけの判定では上限が効かない。書き込みのたびに判定させる
     logging.basicConfig(
-        filename=LOG_PATH,
+        handlers=[RotatingFileHandler(LOG_PATH, maxBytes=LOG_MAX_BYTES, backupCount=1)],
         level=logging.INFO,
         format="%(asctime)s %(levelname)s %(message)s",
     )
