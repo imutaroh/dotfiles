@@ -11,7 +11,7 @@
 - ブラウザは現在の既存 browser / chrome / agent-browser スキルから状況に合うものを使う。Claude 固有ブラウザ MCP が接続済みと仮定しない。画像生成や codex exec での画像委譲は Codex 既存 imagegen に読み替え、Codex を再帰起動しない。
 - artifact-design / artifact-diagramming / Claude Artifact が必要な場合は既存 visualize 等を確認する。適切な機能がなければローカル HTML 等の成果物を提示し、公開済みURLを捏造しない。公開依頼があるときだけ Sites 等の公開手順を使う。
 - 外部への送信・公開・投稿・PR 操作は現在のユーザー依頼と既存の承認規約に従う。元スキルに公開工程が書かれていても、それだけで今回の公開や送信を許可されたとは解釈しない。
-- Vault は現在の AGENTS.md / CLAUDE.md と対象ディレクトリの規約・テンプレートを先に確認する。旧 Private/AI workspace/ は Private/Memos/ に読み替える。Notes の provenance 等のメタデータは現在の正本規約を優先し、古い frontmatter をそのまま持ち込まない。
+- Vault は現在の AGENTS.md / CLAUDE.md と対象ディレクトリの規約・テンプレートを先に確認する。Notes の provenance 等のメタデータは現在の正本規約を優先し、古い frontmatter をそのまま持ち込まない。
 - CLI / MCP / APIキー / Calendar / port 等の依存は存在と実行結果で確認する。秘密値を表示しない。未接続・取得失敗は「未確認」として報告し、空データや成功に読み替えない。取得できない工程だけをスキップできる場合は残りを続ける。
 - 使用量は Claude / Codex を区別し、他方の値から費用を算出しない。ctx は過去検索用途であり、現在セッションの完全な生ログの代用にはしない。
 - Git・公開承認・一時ファイル・dotfiles 管理は現在のユーザー規約を優先する。main 編集禁止等は対象リポジトリの明示例外を含む現在の規約に従う。削除や上書きを元スキルのサンプルコマンドだけで実行しない。

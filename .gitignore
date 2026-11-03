@@ -47,6 +47,9 @@ __pycache__/
 .claude/skills/grill-me
 .claude/skills/grilling
 
+# ctx が導入するスキル（ctx integrations で入れ直す）。配布条件を確認できないので追跡しない
+.claude/skills/ctx-agent-history-search/
+
 # claude.ai が同期するスキル（Anthropic 提供・アカウント側で管理され自動で書き換わる）
 .claude/skills/synced/
 # terminal-browser のインストーラが張る symlink（実体は ~/.local/share/terminal-browser/）

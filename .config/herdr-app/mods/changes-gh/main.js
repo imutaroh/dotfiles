@@ -1,3 +1,4 @@
+// Herdr 付属の changes を複製して改変したもの（Apache-2.0。LICENSES/Herdr-Apache-2.0.txt を参照）。
 import { View, div, list } from "gpui-kit";
 import { v_flex, h_flex, InputState, Input, Scrollbar } from "gpui-base";
 

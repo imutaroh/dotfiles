@@ -3,7 +3,7 @@
 # 使い方:
 #   vid2text <URL or file> [出力dir]
 # 環境変数:
-#   VID2TEXT_BROWSER=chrome   yt-dlp がブラウザのログインCookieを使う（"none" で無効）
+#   VID2TEXT_BROWSER=chrome   yt-dlp がブラウザのログインCookieを使う（"none" で無効。Chrome が無ければ既定で無効）
 #   VID2TEXT_REFERER=<URL>    取得時に送る Referer
 #   VID2TEXT_QUALITY=480      画質上限（文字起こし目的なら480で十分）
 #   VID2TEXT_MODEL=~/.cache/whisper-cpp/ggml-large-v3-turbo.bin
@@ -13,12 +13,16 @@ exec </dev/null   # ffmpeg/yt-dlp が親ループの stdin を食わないよう
 
 SRC="${1:?URL かファイルパスを指定}"
 OUT="${2:-$HOME/Downloads/vid2text}"
-BROWSER="${VID2TEXT_BROWSER:-chrome}"
+# Chrome が無い環境で cookie を読もうとすると yt-dlp が止まるので、その場合は既定で使わない
+if [[ -d "/Applications/Google Chrome.app" ]]; then DEFAULT_BROWSER=chrome; else DEFAULT_BROWSER=none; fi
+BROWSER="${VID2TEXT_BROWSER:-$DEFAULT_BROWSER}"
 MODEL="${VID2TEXT_MODEL:-$HOME/.cache/whisper-cpp/ggml-large-v3-turbo.bin}"
 LANG_="${VID2TEXT_LANG:-ja}"
 REFERER="${VID2TEXT_REFERER:-}"
 Q="${VID2TEXT_QUALITY:-720}"
 TITLE="${VID2TEXT_TITLE:-%(title).80s}"
+# 取得のあとで失敗しないよう、モデルの有無を先に確かめる
+[[ -f "$MODEL" ]] || { echo "whisper のモデルがありません: ${MODEL}" >&2; exit 1; }
 mkdir -p "$OUT"
 
 # 1. 取得（URLなら yt-dlp、ファイルならそのまま）

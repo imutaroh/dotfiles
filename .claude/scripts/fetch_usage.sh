@@ -17,11 +17,10 @@ if [ -z "$TOKEN" ]; then
     exit 1
 fi
 
-# API 呼び出し
-RESPONSE=$(curl -s --max-time 5 "https://api.anthropic.com/api/oauth/usage" \
-    -H "Authorization: Bearer $TOKEN" \
+# API 呼び出し。トークンは ps で見えるコマンドライン引数に載せず、標準入力の curl 設定で渡す
+RESPONSE=$(curl -s --max-time 5 -K - "https://api.anthropic.com/api/oauth/usage" \
     -H "anthropic-beta: oauth-2025-04-20" \
-    -H "Accept: application/json")
+    -H "Accept: application/json" <<<"header = \"Authorization: Bearer $TOKEN\"")
 
 # レスポンス検証
 if ! echo "$RESPONSE" | jq -e '.five_hour' > /dev/null 2>&1; then

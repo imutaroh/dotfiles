@@ -20,10 +20,10 @@ CHECK OK でも「未設置」があればまだ導入前です。SOURCE_DRIFT �
 
 - 4件: dot-help / find-skills / herdr-control / hunk-review は共通規約を介して元スキルを参照。
 - 2件: output-style / zukai は実行方法を Codex 向けに補正。
-- 5件: skill-creator は Codex 標準、ctx-agent-history-search は既存 ctx、grill-me / grilling / terminal-browser は外部インストーラが `~/.agents/skills/` に置いた実体をそのまま使用。重複配置しません。
+- 5件: skill-creator は Codex 標準、ctx-agent-history-search は ctx が導入、grill-me / grilling / terminal-browser は外部インストーラが `~/.agents/skills/` に置いた実体をそのまま使用。重複配置しません。
 - 1件: gh-teach は非公開の個人用スキルで、Codex の入口を作りません。
 
-grill-me / grilling / terminal-browser / gh-teach の正本はこのリポジトリで追跡していません。これらが無い環境では `--check` が正本欠落を報告します。外部スキルは更新されると SOURCE_DRIFT も出ます。
+ctx-agent-history-search / grill-me / grilling / terminal-browser / gh-teach の正本はこのリポジトリで追跡していません。これらが無い環境では `--check` と `--apply` は「未導入」と表示して続行します。導入済みの外部スキルは更新されると SOURCE_DRIFT が出ます。
 
 スキルの入口があることと、MCP 接続・APIキー・実サービス操作が成功することは別です。Calendar 等は未接続なら未確認と報告します。既存スキルの導入状態と各業務フローの実運用はこのスクリプトだけでは検証しません。画像は既存 imagegen、図解は既存 visualize 等を優先します。Codex から codex exec を再帰起動しません。output-style は `~/.codex/config.toml` の `developer_instructions` として永続反映されます（Claude の output style と異なり会話限定ではない。詳細は次節）。元スキルや `~/.agents/skills/` の実体が移動すると参照が壊れます。
 
@@ -61,7 +61,7 @@ codex execpolicy check --pretty --rules ~/dotfiles/.codex/rules/claude-parity.ru
 
 # 複数行 HUD（Codex の隣のペインで動かす。--once は動作確認用）
 bash ~/dotfiles/.codex/scripts/codex-hud.sh --once
-bash ~/dotfiles/.codex/scripts/codex-hud.sh --cwd ~/repos/imutaroh/ObsidianImus   # 別ディレクトリのセッションを見る
+bash ~/dotfiles/.codex/scripts/codex-hud.sh --cwd ~/repos/my-project   # 別ディレクトリのセッションを見る
 
 # 同等体験がまるごと効いているかの一括点検（読み取り専用。NG があれば exit 1）
 bash ~/dotfiles/.codex/scripts/check-parity.sh          # 7項目すべて（末尾の注入確認に数十秒かかる）

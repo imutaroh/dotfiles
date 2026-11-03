@@ -1,5 +1,7 @@
 # Ghostty × herdr の2層キーバインド構造
 
+以前の環境（ターミナル版 herdr）の話。普段の環境である Herdr デスクトップアプリの Cmd キーは `~/dotfiles/.config/herdr-app/keys.json` に直接割り当ててあり、この変換を通らない。
+
 ターミナルのキーバインドは2層になっている。質問がどちらの層の話かを最初に見極める。
 
 ```
@@ -10,7 +12,7 @@ Ghostty（ターミナルエミュレータ）
 ```
 
 - **Ghostty 層**: `~/dotfiles/.config/ghostty/config` の `keybind =` 行。`text:\x11◯` 形式は herdr への転送、それ以外（`toggle_quick_terminal` 等）は Ghostty 自身の機能
-- **herdr 層**: `~/.config/herdr/config.toml` の `[keys]` セクション（**dotfiles 未ミラーの例外**）。`prefix+◯` が実際のアクション定義
+- **herdr 層**: `~/dotfiles/.config/herdr/config.toml` の `[keys]` セクション。`prefix+◯` が実際のアクション定義
 - Cmd+◯ の意味を答えるには: Ghostty 側で `\x11` の後の文字を特定 → herdr 側でその `prefix+文字` が何かを引く、の2段照合が必要
 
 ## herdr の構造モデル

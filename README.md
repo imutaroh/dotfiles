@@ -31,11 +31,11 @@ git clone https://github.com/imutaroh/dotfiles.git ~/dotfiles
 
 ## ライセンス
 
-[MIT](LICENSE)。ただし、次の外部由来のファイルは対象外で、それぞれの作者の条件に従う。
+[MIT](LICENSE)。ただし、次の外部由来のファイルは対象外で、それぞれの条件に従う。
 
-| 場所 | 由来 |
-|------|------|
-| `.claude/skills/skill-creator/` | Anthropic（同梱の `LICENSE.txt`） |
-| `.claude/skills/find-skills/` | [vercel-labs/skills](https://github.com/vercel-labs/skills) |
-| `.claude/skills/hunk-review/` | [Hunk](https://github.com/modem-dev/hunk) |
-| `.claude/skills/ctx-agent-history-search/` | ctx CLI |
+| 場所 | 由来 | ライセンス |
+|------|------|------------|
+| `.claude/skills/skill-creator/` | Anthropic | Apache-2.0（同梱の `LICENSE.txt`） |
+| `.claude/skills/find-skills/` | [vercel-labs/skills](https://github.com/vercel-labs/skills)。改変あり | [MIT](LICENSES/vercel-labs-skills-MIT.txt) |
+| `.claude/skills/hunk-review/` | [Hunk](https://github.com/modem-dev/hunk) | [MIT](LICENSES/hunk-MIT.txt) |
+| `.config/herdr-app/mods/changes-gh/`、`files-img/`、`status-keys/`、`.config/herdr-app/layouts/mine.json` | [Herdr](https://herdr.dev) 付属の mod とレイアウトを複製して改変 | [Apache-2.0](LICENSES/Herdr-Apache-2.0.txt) |

@@ -42,7 +42,7 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 
 | カテゴリ | スキル |
 |----------|--------|
-| ツール操作（CLI / API の知識） | `herdr-control` / `hunk-review` / `ctx-agent-history-search` / `dot-help` |
+| ツール操作（CLI / API の知識） | `herdr-control` / `hunk-review` / `dot-help` |
 | 出力テンプレート | `zukai` |
 | Claude Code の設定 | `output-style` |
 | メタ（スキル管理） | `skill-creator` / `find-skills` |
@@ -55,6 +55,7 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 |------|--------|
 | `grill-me` / `grilling` | `npx skills add`。実体は `~/.agents/skills/`。`/find-skills` から入れ直す |
 | `terminal-browser` | terminal-browser のインストーラ。実体は `~/.local/share/terminal-browser/` |
+| `ctx-agent-history-search` | `ctx integrations` |
 | `synced/` | claude.ai が同期する |
 | `gh-teach` | 非公開の個人用スキル |
 
