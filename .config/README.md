@@ -17,7 +17,6 @@
 ├── plannotator-tui/   # Herdr ターミナル版のレビュー画面
 ├── yazi/              # ターミナルのファイラー
 ├── karabiner/         # キー入力のカスタマイズ
-├── raycast/           # ランチャーのスクリプト
 ├── mise/              # ランタイムのバージョン管理
 └── uv/                # Python パッケージ管理
 ```
@@ -102,16 +101,6 @@ GitHub の PR と Issue を一覧する TUI。`gh` の拡張機能で、Brewfile
 ## [Karabiner-Elements](https://karabiner-elements.pqrs.org/)
 
 キー入力のカスタマイズ。Bluetooth キーボードの接続中は内蔵キーボードを無効にする。
-
-## [Raycast](https://www.raycast.com/)
-
-ランチャー。個人用のスクリプトコマンドを置いている。
-
-| ファイル | 説明 |
-|----------|------|
-| `delete-screenshot.sh` | スクリーンショットを削除 |
-| `open-marimo.sh` | marimo（Python ノートブック）を起動 |
-| `zettel-id.sh` | Zettelkasten 用の ID を生成 |
 
 ## [mise](https://mise.jdx.dev/)
 

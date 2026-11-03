@@ -158,13 +158,6 @@ ln -sf "$DOTFILES_DIR/.config/starship.toml" ~/.config/starship.toml
 mkdir -p ~/.config/git
 ln -sf "$DOTFILES_DIR/.config/git/ignore" ~/.config/git/ignore
 
-# raycast script-commandsはディレクトリ全体をシンボリックリンク
-if [ -d ~/.config/raycast/script-commands ] && [ ! -L ~/.config/raycast/script-commands ]; then
-    rm -rf ~/.config/raycast/script-commands
-fi
-mkdir -p ~/.config/raycast
-ln -sfn "$DOTFILES_DIR/.config/raycast/script-commands" ~/.config/raycast/script-commands
-
 # nvimはディレクトリ全体をシンボリックリンク
 if [ -d ~/.config/nvim ] && [ ! -L ~/.config/nvim ]; then
     rm -rf ~/.config/nvim
