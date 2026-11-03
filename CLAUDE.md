@@ -7,7 +7,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 
 - `setup.sh` でシンボリックリンクを作成して各設定ファイルを適用する
 - `.config/` 以下はミラーリング方式（実際の配置場所と同じ構造）で管理
-- `~/.claude/` 自体は実ディレクトリで、`CLAUDE.md` / `skills` / `scripts` / `statusline.sh` / `statusline-preview.sh` / `themes` / `hooks/play-sound.sh` / `sounds/*.wav` が `setup.sh` の張る dotfiles へのシンボリックリンク（`task-dashboard` も dotfiles へのリンクだが、私的データで gitignore 対象のため `setup.sh` の対象外）
+- `~/.claude/` 自体は実ディレクトリで、`CLAUDE.md` / `skills` / `scripts` / `statusline.sh` / `statusline-preview.sh` / `themes` / `hooks/play-sound.sh` / `sounds/*.wav` / `output-styles/15sai.md` が `setup.sh` の張る dotfiles へのシンボリックリンク（`task-dashboard` も dotfiles へのリンクだが、私的データで gitignore 対象のため `setup.sh` の対象外）
 - `.claude/CLAUDE.md`（ユーザーレベルの指示書）は私的な内容を含むので gitignore 対象で、このマシンにしかない。`setup.sh` はファイルがあるときだけリンクを張る
 - `settings.json` は symlink 不可（`claude doctor` 等が実ファイルに置き換えるため）。`./sync-settings.sh` で実環境 → dotfiles へ明示的に取り込む。公開用に一部を除いて取り込むので、追跡版は実環境と一致しない（除く項目はスクリプトの先頭に書いてある）。`.claude/settings.json` を直接編集しない
 - `~/.codex/config.toml` は Codex アプリも更新するため symlink 不可。`.codex/scripts/apply-codex-config.py` がキー単位で冪等に追記・置換する（`setup.sh` から自動実行）
