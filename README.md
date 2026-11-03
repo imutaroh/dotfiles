@@ -28,3 +28,14 @@ git clone https://github.com/imutaroh/dotfiles.git ~/dotfiles
 
 > [!WARNING]
 > 作者の環境が前提で、既存の設定を上書き・削除する。実行する前に `setup.sh` を読み、`.gitconfig` と `launchd/` にある作者の値を書き換えること。
+
+## ライセンス
+
+[MIT](LICENSE)。ただし、次の外部由来のファイルは対象外で、それぞれの作者の条件に従う。
+
+| 場所 | 由来 |
+|------|------|
+| `.claude/skills/skill-creator/` | Anthropic（同梱の `LICENSE.txt`） |
+| `.claude/skills/find-skills/` | [vercel-labs/skills](https://github.com/vercel-labs/skills) |
+| `.claude/skills/hunk-review/` | [Hunk](https://github.com/modem-dev/hunk) |
+| `.claude/skills/ctx-agent-history-search/` | ctx CLI |
