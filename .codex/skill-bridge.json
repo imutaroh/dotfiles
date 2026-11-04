@@ -13,7 +13,7 @@
     {
       "name": "dot-help",
       "source": ".claude/skills/dot-help/SKILL.md",
-      "source_sha256": "42b7014679634424fc53915dace150ed21a04163da1449aed9f561f63257ab41",
+      "source_sha256": "4b4e334aef79bc6f4a6a1800f62ec093a60dbe6bd035fa43dc082fc39c8a2a6f",
       "description": "ユーザーの dotfiles 全体（Neovim / Ghostty / herdr / karabiner / zellij / zsh / starship 等）について「〜するにはどのキー？」「このショートカット何？」「Cmd+◯ って何が起きる？」「この設定どこにある？」といった操作方法・キーバインド・設定の質問に、~/dotfiles と ~/.config の実際の設定を参照して回答する。nvim・ターミナル・シェルのキーバインドや設定に関する質問全般で使用（旧 nvim-help の後継）。どのディレクトリからでも使用可能。調査はサブエージェントに委譲してメインのコンテキストを節約する。",
       "mode": "wrapper",
       "codex_skill": "dot-help",
@@ -22,7 +22,7 @@
     {
       "name": "find-skills",
       "source": ".claude/skills/find-skills/SKILL.md",
-      "source_sha256": "5c07f1351822c2433aceb3e6859e86354650d714d50daa5678bfa96cc8abdd23",
+      "source_sha256": "f57224fa280849e7974400474abca9b4248c6b3b141cda0d76a46962dbf97b9f",
       "description": "Helps users discover and install agent skills. Use this skill when the user asks \"Is there a skill for X?\", \"Find a skill that can...\", \"How do I do X with a skill?\", or wants to extend the agent's capabilities. Also invoked via /find-skills command. 日本語では「〜のSkillある？」「Skillを探して」「Skillをインストールして」でも使う。",
       "mode": "wrapper",
       "codex_skill": "find-skills",
@@ -58,7 +58,7 @@
     {
       "name": "herdr-control",
       "source": ".claude/skills/herdr-control/SKILL.md",
-      "source_sha256": "30b7fd12e7757b3cbb0767baab58b01d9cfca1901800b3edc66042382cee935f",
+      "source_sha256": "5e76b321b3006933fa068cb0a7b558cfaf28e438ff657b9db4996fe43c9cb24a",
       "description": "herdr（ターミナルワークスペースマネージャ、socket API 付き CLI）のタブ・ペインを Claude が操作するスキル。「新しいタブで開いて」「ペインを分割して実行して」「横のペインでログ見せて」「herdr でタブ/ペイン作成」「ターミナルに TUI（hunk/yazi 等）を開いて」で使用。herdr セッション内のタブ/ペインの話であり、zellij や Ghostty 自体のタブとは別物。バックグラウンドジョブ（シェルがターミナル外）からでも socket API 経由で操作できるのが価値。",
       "mode": "wrapper",
       "codex_skill": "herdr-control",

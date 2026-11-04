@@ -1,5 +1,6 @@
 // A lazy file browser for the focused pane's folder, with bounded read-only previews.
-// files の複製: 画像ファイルはテキストではなく画像として表示する（このマシン上のフォルダのみ）。
+// Herdr 付属の files を複製して改変したもの（Apache-2.0。LICENSES/Herdr-Apache-2.0.txt を参照）。
+// 画像ファイルはテキストではなく画像として表示する（このマシン上のフォルダのみ）。
 // アイコンは付属 files のものを参照する（dotfiles は main.js と mod.json だけを管理するため）。
 import { View, div, svg, image } from "gpui-kit";
 import { v_flex, h_flex, Editor, EditorState } from "gpui-base";

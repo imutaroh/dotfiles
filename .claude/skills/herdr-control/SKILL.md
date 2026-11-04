@@ -97,7 +97,7 @@ herdr pane
 「hunk でレビューしたい、新しいタブで開いて」への対応フロー:
 
 ```bash
-herdr workspace list  # <project> の workspace_id (w48) を特定
+herdr workspace list  # 対象 workspace の workspace_id (w48) を特定
 herdr tab create --workspace w48 --cwd <repo> --label hunk-review --focus
 # 結果の root_pane.pane_id を控える
 herdr pane run <pane_id> "hunk diff --wrap origin/main...HEAD"

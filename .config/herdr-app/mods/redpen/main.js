@@ -169,10 +169,15 @@ export default class Redpen extends View {
     this.terminal = (shared(LAST) ?? {})[props()?.tab] ?? this.terminal;
     this.loading = true;
     cx.spawn(async (cx) => {
-      const reply = await this.fetchReply();
+      try {
+        const reply = await this.fetchReply();
+        this.error = reply.error ?? null;
+        if (!reply.error) this.apply(reply);
+      } catch (err) {
+        // 失敗しても loading を残さない。残すと Reload も効かなくなる
+        this.error = String(err);
+      }
       this.loading = false;
-      this.error = reply.error ?? null;
-      if (!reply.error) this.apply(reply);
       cx.notify();
     });
   }
@@ -406,7 +411,8 @@ export default class Redpen extends View {
         .when(editing || current, (el) => el.bg(t.selected))
         .hover((s) => s.bg(t.hover))
         .on_click((_e, cx) => { this.edit(i); cx.notify(); })
-        .child(TextView.markdown(`redpen-md-${this.replyId}-${i}`, block).selectable(false)))
+        // 返答の中のリモート画像は読み込まない。表示しただけで外部へ通信する経路を作らないため
+        .child(TextView.markdown(`redpen-md-${this.replyId}-${i}`, block.replace(/!\[([^\]]*)\]\(\s*<?https?:[^)]*\)/gi, "[画像: $1]")).selectable(false)))
       .when(editing, (el) => el.child(v_flex().pl(12).pr(2).pb(6).gap(6)
         .child(this.textarea(t, this.comment, this.commentFocused))
         .child(h_flex().gap(6).justify_end().items_center()

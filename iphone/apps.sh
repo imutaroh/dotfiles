@@ -17,6 +17,11 @@ require_device() {
   fi
 }
 
+# keep.txt は追跡していない。無いまま進むと全アプリが削除候補になるので必ず止める
+require_keep() {
+  [[ -f $KEEP ]] || { echo "$KEEP がありません。'./apps.sh list' の出力を元に作成してください" >&2; exit 1; }
+}
+
 # ideviceinstaller list の出力: 1 行目ヘッダ、以降 bundle_id, "version", "name"
 installed() {
   ideviceinstaller list | sed -n 's/^\([^,]*\), "[^"]*", "\(.*\)"$/\1\t\2/p' | sort
@@ -37,13 +42,14 @@ case "${1:-}" in
     ;;
   plan)
     require_device
-    [[ -f $KEEP ]] || { echo "$KEEP がありません。'./apps.sh list' の出力を元に作成してください" >&2; exit 1; }
+    require_keep
     p=$(plan)
     if [[ -z "$p" ]]; then echo "削除候補なし（keep.txt と一致）"; else
       echo "削除候補 $(wc -l <<<"$p" | tr -d ' ') 件:"; echo "$p"; fi
     ;;
   apply)
     require_device
+    require_keep
     p=$(plan)
     [[ -n "$p" ]] || { echo "削除候補なし"; exit 0; }
     echo "以下を削除します:"; echo "$p"; echo

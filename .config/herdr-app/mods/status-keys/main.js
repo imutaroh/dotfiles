@@ -2,7 +2,8 @@ import { View, div, svg } from "gpui-kit";
 import { h_flex } from "gpui-base";
 import { spaces, agents, theme, run, window, layout, nextCommand } from "herdr";
 
-// workspace-status の複製。表示は元のまま、キーの受け口を足しただけ。
+// Herdr 付属の workspace-status を複製して改変したもの（Apache-2.0。LICENSES/Herdr-Apache-2.0.txt を参照）。
+// 表示は元のまま、キーの受け口を足しただけ。
 // keys.json の "status-keys.cycle"（閉→Files→Changes→閉）/ "status-keys.files" / "status-keys.changes" で右パネルを操作する。
 // 動きはタブバー右端の Files / Changes ボタンと同じ（表示中なら閉じる、それ以外なら切り替えて開く）。
 const PANELS = ["files", "changes"];

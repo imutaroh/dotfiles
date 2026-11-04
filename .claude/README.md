@@ -32,7 +32,7 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 - `setup.sh` は初回だけコピーで配る
 - 設定を変えたら、リポジトリ直下の `./sync-settings.sh` で実環境の内容を取り込んでコミットする
 - `./sync-settings.sh --check` は差分の有無だけを見る（差分があれば終了コード 1）
-- `autoMode` は個人の環境情報を書くので取り込まない。実環境にだけ残る
+- 公開しているので、一部は取り込まず実環境にだけ残す（`autoMode`、auto モードの既定、公式以外のプラグインなど。一覧は `sync-settings.sh` の先頭）。公式以外のプラグインは新しいマシンで入れ直す
 
 ## skills/
 
@@ -42,7 +42,7 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 
 | カテゴリ | スキル |
 |----------|--------|
-| ツール操作（CLI / API の知識） | `herdr-control` / `hunk-review` / `ctx-agent-history-search` / `dot-help` |
+| ツール操作（CLI / API の知識） | `herdr-control` / `hunk-review` / `dot-help` |
 | 出力テンプレート | `zukai` |
 | Claude Code の設定 | `output-style` |
 | メタ（スキル管理） | `skill-creator` / `find-skills` |
@@ -55,6 +55,7 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 |------|--------|
 | `grill-me` / `grilling` | `npx skills add`。実体は `~/.agents/skills/`。`/find-skills` から入れ直す |
 | `terminal-browser` | terminal-browser のインストーラ。実体は `~/.local/share/terminal-browser/` |
+| `ctx-agent-history-search` | `ctx integrations` |
 | `synced/` | claude.ai が同期する |
 | `gh-teach` | 非公開の個人用スキル |
 

@@ -1,6 +1,10 @@
+# 名前とメールは追跡しない。~/.gitconfig.local の [user] に書く
+[include]
+	path = ~/.gitconfig.local
+
+# 未設定のままコミットしたときに、ホスト名などから身元を推測させない
 [user]
-	name = imutaakihiro
-	email = 204652643+imutaroh@users.noreply.github.com
+	useConfigOnly = true
 
 [core]
 	editor = nvim

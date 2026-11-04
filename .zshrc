@@ -1,7 +1,7 @@
 # ==================================================
 # mise（ランタイムバージョン管理）
 # ==================================================
-eval "$(mise activate zsh)"
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
 
 # ==================================================
 # Google Cloud SDK（補完）
@@ -13,30 +13,37 @@ fi
 # ==================================================
 # プラグイン
 # ==================================================
-# コマンド入力時に履歴から補完候補を表示
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# ファジーファインダー（Ctrl+R で履歴検索・Ctrl+T でファイル検索）
-source $(brew --prefix)/opt/fzf/shell/completion.zsh
-source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh
+if (( $+commands[brew] )); then
+  _brew_prefix="$(brew --prefix)"
+  # zsh-autosuggestions: コマンド入力時に履歴から補完候補を表示
+  # fzf: ファジーファインダー（Ctrl+R で履歴検索・Ctrl+T でファイル検索）
+  for _plugin in \
+    share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+    opt/fzf/shell/completion.zsh \
+    opt/fzf/shell/key-bindings.zsh; do
+    [[ -r "$_brew_prefix/$_plugin" ]] && source "$_brew_prefix/$_plugin"
+  done
+  unset _brew_prefix _plugin
+fi
 # ターミナル起動時に入力メソッドを英数に切り替え
-macism com.apple.keylayout.ABC
+(( $+commands[macism] )) && macism com.apple.keylayout.ABC
 
 # ==================================================
 # プロンプト（Starship）
 # ==================================================
-eval "$(starship init zsh)"
+(( $+commands[starship] )) && eval "$(starship init zsh)"
 
 # ==================================================
 # direnv（ディレクトリごとの環境変数管理）
 # NOTE: 他のシェル拡張（starship 等）の後に置くこと
 #       https://direnv.net/docs/hook.html
 # ==================================================
-eval "$(direnv hook zsh)"
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
 # ==================================================
 # zoxide（cd の代替・frecency でディレクトリ移動）
 # ==================================================
-eval "$(zoxide init zsh)"
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 
 # ==================================================
 # 履歴設定

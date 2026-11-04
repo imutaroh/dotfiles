@@ -7,15 +7,9 @@
 -- 実例: /opt/homebrew/.vscode/settings.json（Ruby/Sorbet/shellcheck 設定）が
 -- 過去のセッションで読み込まれ、gopls (id: 2) が hover を二重に返していた。
 --
--- 対処: VSCode 互換取り込みは Neovim では不要なので OFF。
--- 必要になったら個別プロジェクトに .neoconf.json を置く運用に切り替える。
+-- 対処: プラグインごと無効にする。VSCode 互換の取り込みだけでなく、リポジトリの .neoconf.json も
+-- 確認なしで LSP の設定に混ざるので、他人のリポジトリを開いたときに設定を差し込まれないようにする。
 return {
   "folke/neoconf.nvim",
-  opts = {
-    import = {
-      vscode = false, -- .vscode/settings.json を読まない（今回の二重 gopls の根治）
-      coc = false,    -- coc-settings.json も無視
-      nlsp = false,   -- nlsp-settings.json も無視
-    },
-  },
+  enabled = false,
 }

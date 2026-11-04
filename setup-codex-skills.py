@@ -10,7 +10,7 @@ import sys
 
 
 def inspect(root, target):
-    errors, pending, ready = [], [], []
+    errors, pending, ready, absent = [], [], [], []
     data = json.loads((root / '.codex/skill-bridge.json').read_text())
     if data.get('schema_version') != 1:
         raise ValueError('未対応の manifest schema_version')
@@ -33,11 +33,15 @@ def inspect(root, target):
             errors.append(f'正本のパスが不正: {name}')
             continue
         source = root / source_rel
+        mode = entry['mode']
         if not source.is_file():
+            # existing / deferred は追跡していない外部・私的スキルで、clone 直後には無いのが正常
+            if mode in ('existing', 'deferred'):
+                absent.append(name)
+                continue
             errors.append(f'正本欠落または壊れリンク: {source}')
         elif hashlib.sha256(source.read_bytes()).hexdigest() != entry['source_sha256']:
             errors.append(f'SOURCE_DRIFT {name}: 本文は実行時参照。metadata/互換性を再監査して manifest hash を更新してください')
-        mode = entry['mode']
         if mode in ('existing', 'deferred'):
             continue
         if mode not in ('wrapper', 'adapted'):
@@ -74,9 +78,10 @@ def inspect(root, target):
         else:
             pending.append((dest, wrapper.resolve()))
     actual = {p.name for p in (root / '.claude/skills').iterdir() if (p / 'SKILL.md').is_file()}
-    if actual != seen:
-        errors.append(f'manifest と正本一覧が不一致: 未分類={sorted(actual-seen)}, 欠落={sorted(seen-actual)}')
-    return errors, pending, ready
+    expected = seen - set(absent)
+    if actual != expected:
+        errors.append(f'manifest と正本一覧が不一致: 未分類={sorted(actual-expected)}, 欠落={sorted(expected-actual)}')
+    return errors, pending, ready, absent
 
 
 def main():
@@ -89,12 +94,14 @@ def main():
     root = Path(__file__).resolve().parent
     target = args.target_dir.expanduser().absolute()
     try:
-        errors, pending, ready = inspect(root, target)
+        errors, pending, ready, absent = inspect(root, target)
         if errors:
             for error in errors:
                 print(f'ERROR {error}', file=sys.stderr)
             print('適用なし: 全件事前検査で停止しました', file=sys.stderr)
             return 1
+        if absent:
+            print(f'未導入（任意）: {", ".join(absent)}')
         if not args.apply:
             print(f'CHECK OK: 設置済み={len(ready)}, 未設置={len(pending)}（書込みなし）')
             for dest, _ in pending:

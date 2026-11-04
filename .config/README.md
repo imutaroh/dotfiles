@@ -34,17 +34,19 @@
 | `keys.json` / `settings.json` | キー割り当てと設定 |
 | `layouts/mine.json` | 付属レイアウト `main` の複製。自作 mod を組み込む |
 
+**`setup.sh` のあと、Cmd+Shift+L でレイアウトを `mine` に切り替える。** 既定の `main` のままだと、`status-keys`、`changes-gh`、`files-img`、`tab-autoname` は動かない。
+
 自作 mod（`mods/` 以下）：
 
 | mod | 説明 |
 |-----|------|
 | `redpen` | Cmd+U で Claude の最新の返答にコメントして送り返す |
 | `tab-autoname` | Claude Code が端末タイトルに書く要約をタブ名に写す。手で付けた名前は上書きせず、空にすると自動に戻る。Cmd+Shift+M で表示中のタブ名の先頭に ⏳ を付け外しする |
-| `status-keys` | 右パネルの Files / Changes を Cmd+Shift+E / Cmd+Shift+G で開閉する。開いている間はターミナルを隠して全幅で見せる |
+| `status-keys` | 付属 `workspace-status` の複製。右パネルの Files / Changes を Cmd+Shift+E / Cmd+Shift+G で開閉する。開いている間はターミナルを隠して全幅で見せる |
 | `changes-gh` | 付属 `changes` の複製。差分を GitHub の配色にして長い行を折り返す |
 | `files-img` | 付属 `files` の複製。画像ファイルを画像として表示する |
 
-`redpen` は会話ログの場所を端末のラベルから読む。ラベルは SessionStart フック（`.claude/scripts/hc-label-claude-session.sh`）が入れる。
+`redpen` は会話ログの場所を端末のラベルから読む。ラベルは SessionStart フック（`.claude/scripts/hc-label-claude-session.sh`）が入れる。`setup.sh` は `~/.claude/settings.json` が既にあるとコピーしないので、そのときはこのフックを手で登録する。`jq` と `python3` も要る。
 
 `.zprofile` は、Herdr の端末に漏れた Claude Code と旧 herdr の環境変数を消す。Claude Code の中から Herdr を起動すると変数が全端末に漏れ、その端末で動かす Claude Code が会話ログを保存しなくなるため。
 
@@ -55,7 +57,7 @@
 | ファイル | 説明 |
 |----------|------|
 | `config.toml` | キーバインドなどの設定 |
-| `agent-taborder-watch.py` | タブ名に位置番号を付ける常駐スクリプト（`launchd/` でロードする） |
+| `agent-taborder-watch.py` | タブ名に位置番号を付ける常駐スクリプト（`setup.sh` は登録しない。使うときは `launchd/optional/` の plist の `__HOME__` を置き換えて登録する） |
 | `annotate-refresh.sh` | エージェントの最新の返答をレビュー画面（herdr-annotate）で開く。Cmd+U / Cmd+Shift+U の呼び出し口 |
 | `sidechat.sh` | 表示中の Claude の会話を fork してポップアップで開く（Cmd+;） |
 | `scripts/slot-machine.sh` | エージェントの作業が終わった瞬間にサイドバーへスロット風の演出を流す（`setup.sh` は配置しない。手で起動する） |
@@ -100,7 +102,7 @@ GitHub の PR と Issue を一覧する TUI。`gh` の拡張機能で、Brewfile
 
 ## [Karabiner-Elements](https://karabiner-elements.pqrs.org/)
 
-キー入力のカスタマイズ。Bluetooth キーボードの接続中は内蔵キーボードを無効にする。
+キー入力のカスタマイズ。Bluetooth キーボードの接続中は内蔵キーボードを無効にする。`karabiner.json` には Cmd 単体で英数とかなを切り替えるルールも入れている。
 
 ## [mise](https://mise.jdx.dev/)
 
