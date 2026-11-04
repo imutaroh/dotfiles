@@ -85,7 +85,11 @@ if safe_git rev-parse --git-dir > /dev/null 2>&1; then
     BRANCH=$(safe_git branch --show-current 2>/dev/null)
     if [ -n "$BRANCH" ]; then
         DIRTY=""
-        [ -n "$(safe_git status --porcelain 2>/dev/null)" ] && DIRTY="${VIOLET}*${RESET}"
+        # filter.<name>.clean は -c で無効にできず status が実行するので、リポジトリ側に定義があれば判定を省く
+        if ! safe_git config --show-scope --get-regexp '^filter\.' 2>/dev/null | grep -qE '^(local|worktree)[[:space:]]' \
+            && [ -n "$(safe_git status --porcelain 2>/dev/null)" ]; then
+            DIRTY="${VIOLET}*${RESET}"
+        fi
         GIT_SEG=" ${ICE}|${RESET} ${TEAL}${BRANCH}${RESET}${DIRTY}"
     fi
 fi

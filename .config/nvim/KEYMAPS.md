@@ -59,7 +59,7 @@
 |------|------|
 | `<leader>xx` / `<leader>xX` | バッファ / プロジェクト全体のエラー一覧 |
 | `<leader>xq` / `<leader>xl` | Quickfix / Location リスト |
-| `]x` / `[x` | 次 / 前の項目へ |
+| `]x` / `[x` | 次 / 前の項目へ（Trouble の一覧を開いているときだけ動く） |
 
 ## Claude へのコメント（nudge.nvim）
 

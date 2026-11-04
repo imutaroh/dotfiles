@@ -6,7 +6,7 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
-  -- Go: gopls 補助・neotest-go（テストランナー）・dap-go（delve デバッグ）・gotests 等を同梱
+  -- Go: gopls 補助・dap-go（delve デバッグ）・gotests 等を同梱
   { import = "astrocommunity.pack.go" },
   -- import/override with your plugins folder
 }

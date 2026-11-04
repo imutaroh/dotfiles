@@ -1,6 +1,5 @@
 -- Treesitter: 構文解析エンジン
 -- コードの構文ハイライト・インデント・テキストオブジェクトを大幅に強化する
--- render-markdown.nvim など多くのプラグインも依存している
 
 -- NOTE: markdown 系は treesitter ハイライトを切っている。
 -- nvim-treesitter master ブランチは 2025-05-18 に archived。

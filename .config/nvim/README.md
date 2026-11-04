@@ -94,7 +94,7 @@ nvim/
 |----------|------|
 | `astrolsp.lua` | LSP 設定（gopls / ts_ls / pyright 等） |
 | `mason.lua` | LSP サーバー・ツールの自動インストール |
-| `conform.lua` | 保存時の自動フォーマット |
+| `conform.lua` | 保存時の自動フォーマット。prettierd は開いたリポジトリの prettier 設定（`.prettierrc.js` など）を読むので、信頼できないリポジトリを編集するときは注意する |
 | `treesitter.lua` | シンタックスハイライト（言語パーサー設定） |
 | `neoconf.lua` | neoconf を無効化（LSP の二重起動を防ぎ、リポジトリの設定を LSP に混ぜない） |
 | `markdown.lua` | Markdown プレビュー（`<leader>mb` でブラウザ表示。`<leader>mp` は Obsidian で開く） |

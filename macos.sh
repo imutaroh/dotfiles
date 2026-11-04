@@ -242,9 +242,9 @@ rm -f ~/Public/.localized
 rm -f ~/Library/.localized
 rm -f ~/Applications/.localized
 
-# システムフォルダの英語表示（sudo 必要）
-sudo rm -f /Applications/.localized
-sudo rm -f /Library/.localized
+# システムフォルダの英語表示（sudo 必要）。見た目だけの設定なので、失敗しても後の処理を止めない
+sudo rm -f /Applications/.localized || true
+sudo rm -f /Library/.localized || true
 
 # 設定を反映するためにプロセスを再起動
 killall Dock

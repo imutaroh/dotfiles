@@ -3,6 +3,12 @@
 # スロットマシン風の演出をペインのメタデータ行（$slot トークン）に流し込む常駐スクリプト。
 set -u
 
+# 連想配列を使うので bash 4 以上が要る（macOS 標準の bash は 3.2）
+if (( BASH_VERSINFO[0] < 4 )); then
+    echo "slot-machine.sh には bash 4 以上が必要です（brew install bash）" >&2
+    exit 1
+fi
+
 SYMBOLS=("7" "♦" "★" "☘" "◇")
 COOLDOWN_SEC=30      # 同一 pane への連続演出を抑制する間隔
 POLL_INTERVAL=1      # herdr agent list のポーリング間隔（秒）

@@ -30,6 +30,8 @@ ONCE=0
 TARGET_CWD="$PWD"
 SESSION_ID=""
 STATE_DB="${CODEX_HOME:-$HOME/.codex}/state_5.sqlite"
+# read は IFS がタブだと連続する区切りを 1 つに詰め、空の列で後ろがずれる。空白でない文字を区切りにする
+FIELD_SEP=$'\x1f'
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -149,22 +151,22 @@ latest_rate_limits() {
 pick_thread() {
     local where
     if [ -n "$SESSION_ID" ]; then
-        where="id = '$SESSION_ID'"
+        where="id = '${SESSION_ID//\'/\'\'}'"
     else
         where="archived = 0 AND cwd = '${TARGET_CWD//\'/\'\'}'"
     fi
     local row
-    row=$(sqlite3 -readonly -separator $'\t' "$STATE_DB" \
+    row=$(sqlite3 -readonly -separator "$FIELD_SEP" "$STATE_DB" \
         "SELECT id, rollout_path, COALESCE(NULLIF(name,''), title), COALESCE(model,''), COALESCE(reasoning_effort,''), created_at, cwd, tokens_used
          FROM threads WHERE $where ORDER BY updated_at DESC LIMIT 1" 2>/dev/null)
     # --session で指定した ID がまだ sqlite に無い（セッション直後）場合は cwd 一致の最新へ倒す
     if [ -z "$row" ] && [ -n "$SESSION_ID" ]; then
-        row=$(sqlite3 -readonly -separator $'\t' "$STATE_DB" \
+        row=$(sqlite3 -readonly -separator "$FIELD_SEP" "$STATE_DB" \
             "SELECT id, rollout_path, COALESCE(NULLIF(name,''), title), COALESCE(model,''), COALESCE(reasoning_effort,''), created_at, cwd, tokens_used
              FROM threads WHERE archived = 0 AND cwd = '${TARGET_CWD//\'/\'\'}' ORDER BY updated_at DESC LIMIT 1" 2>/dev/null)
     fi
     if [ -z "$row" ]; then
-        row=$(sqlite3 -readonly -separator $'\t' "$STATE_DB" \
+        row=$(sqlite3 -readonly -separator "$FIELD_SEP" "$STATE_DB" \
             "SELECT id, rollout_path, COALESCE(NULLIF(name,''), title), COALESCE(model,''), COALESCE(reasoning_effort,''), created_at, cwd, tokens_used
              FROM threads WHERE archived = 0 ORDER BY updated_at DESC LIMIT 1" 2>/dev/null)
     fi
@@ -179,7 +181,7 @@ render() {
         return
     fi
     local id rollout name model effort created cwd tokens_used
-    IFS=$'\t' read -r id rollout name model effort created cwd tokens_used <<< "$row"
+    IFS="$FIELD_SEP" read -r id rollout name model effort created cwd tokens_used <<< "$row"
 
     # rollout 末尾から最新の token_count を拾う（ファイルは数 MB になるので末尾だけ読む）
     local tc=""
@@ -215,11 +217,21 @@ render() {
     local display_dir
     display_dir=$(printf '%s' "$cwd" | sed "s|^$HOME|~|")
     local git_seg=""
-    if git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
+    # cwd はクローンした他人のリポジトリの中にもなり得る。statusline.sh の safe_git と同じ考え方で、
+    # そのリポジトリの設定に書かれたコマンドを実行させない
+    safe_git() {
+        git -c core.fsmonitor=false -c core.hooksPath=/dev/null -c safe.bareRepository=explicit \
+            --no-optional-locks -C "$cwd" "$@"
+    }
+    if safe_git rev-parse --git-dir >/dev/null 2>&1; then
         local branch dirty=""
-        branch=$(git -C "$cwd" branch --show-current 2>/dev/null)
+        branch=$(safe_git branch --show-current 2>/dev/null)
         if [ -n "$branch" ]; then
-            [ -n "$(git -C "$cwd" status --porcelain 2>/dev/null)" ] && dirty="${VIOLET}*${RESET}"
+            # filter.<name>.clean は -c で無効にできず status が実行するので、リポジトリ側に定義があれば判定を省く
+            if ! safe_git config --show-scope --get-regexp '^filter\.' 2>/dev/null | grep -qE '^(local|worktree)[[:space:]]' \
+                && [ -n "$(safe_git status --porcelain 2>/dev/null)" ]; then
+                dirty="${VIOLET}*${RESET}"
+            fi
             git_seg=" ${ICE}|${RESET} ${TEAL}${branch}${RESET}${dirty}"
         fi
     fi

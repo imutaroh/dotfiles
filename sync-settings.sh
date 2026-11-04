@@ -19,6 +19,7 @@ set -euo pipefail
 #   enabledMcpjsonServers: 同名のサーバーを .mcp.json に置いたリポジトリで承認済みにならないようにする
 #   herdr-agent-state.sh のフック: `herdr integration install claude` が各マシンのパスで作る
 #   公式以外のプラグインとマーケットプレイス: 複製しただけで第三者のコードが有効にならないようにする
+#   WebFetch の無条件許可: Read も無条件なので、Web ページの指示に騙されると読んだ内容を URL に載せて送れる
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 LIVE="$HOME/.claude/settings.json"
@@ -34,6 +35,9 @@ trap 'command rm -f "$FILTERED"' EXIT
 jq '
   def official: endswith("@claude-plugins-official");
   del(.autoMode, .permissions.defaultMode, .skipAutoPermissionPrompt, .enabledMcpjsonServers)
+  | if .permissions.allow then
+      .permissions.allow |= map(select(. != "WebFetch"))
+    else . end
   | if .hooks then
       .hooks |= with_entries(.value |= (
         map(.hooks |= map(select((.command // "") | contains("herdr-agent-state.sh") | not)))

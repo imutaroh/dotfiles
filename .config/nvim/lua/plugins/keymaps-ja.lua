@@ -109,7 +109,7 @@ return {
       { "<Leader>fw", desc = "単語を検索（grep）" },
       { "<Leader>fo", desc = "最近開いたファイル" },
       { "<Leader>fb", desc = "バッファを検索" },
-      { "<Leader>fc", desc = "現在ファイル内を検索" },
+      { "<Leader>fc", desc = "カーソル下の単語を検索" },
       { "<Leader>fC", desc = "コマンドを検索" },
       { "<Leader>fg", desc = "git 管理ファイルを検索" },
       { "<Leader>fh", desc = "ヘルプを検索" },
@@ -182,7 +182,7 @@ return {
       ----------------------------------------------------------------------
       { "<Leader>ua", desc = "autopairs 切替" },
       { "<Leader>uA", desc = "rooter autochdir 切替" },
-      { "<Leader>ub", desc = "背景（light/dark）切替" },
+      { "<Leader>ub", desc = "テーマ切替" },
       { "<Leader>ud", desc = "診断表示切替" },
       { "<Leader>uD", desc = "通知を消す" },
       { "<Leader>uf", desc = "保存時自動整形を切替（バッファ）" },

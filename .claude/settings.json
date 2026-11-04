@@ -52,7 +52,6 @@
       "Bash(wc:*)",
       "Bash(which:*)",
       "Read",
-      "WebFetch",
       "WebSearch",
       "Bash(git reset *)",
       "Bash(git merge *)",
