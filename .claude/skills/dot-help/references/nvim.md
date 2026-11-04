@@ -30,7 +30,7 @@
 | `plugins/astrocore.lua` | 一般マッピング（Tab バッファ移動等）・vim オプション・autocmd |
 | `plugins/astrolsp.lua` | LSP 系: `gd` 定義 / `gD` 宣言 / `gI` 実装 / `gr` 参照 / `gy` 型定義 / `gK` シグネチャ / `gl` 診断。LSP サーバー一覧と format_on_save 設定もここ |
 | `plugins/*.lua` の `keys = {}` | プラグイン固有キー（下のトピック別ルーティング参照） |
-| `community.lua` | AstroCommunity パック（lua, go — neotest-go / dap-go 等を同梱） |
+| `community.lua` | AstroCommunity パック（lua, go — dap-go 等を同梱） |
 | `lazy_setup.lua`, `polish.lua` | lazy.nvim セットアップ・最終調整 |
 
 ### 質問トピック別ルーティング

@@ -1,5 +1,5 @@
 -- ループ切替用の 4 つのダークテーマ
--- <leader>ub で順番に切り替わる（実装は astrocore.lua）
+-- <leader>ub で順番に切り替わる（実装は theme-cycle.lua）
 --
 -- すべて透過背景設定で、Ghostty の壁紙が透けるようにしてある。
 return {

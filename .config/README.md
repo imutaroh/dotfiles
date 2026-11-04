@@ -60,7 +60,7 @@
 | `agent-taborder-watch.py` | タブ名に位置番号を付ける常駐スクリプト（`setup.sh` は登録しない。使うときは `launchd/optional/` の plist の `__HOME__` を置き換えて登録する） |
 | `annotate-refresh.sh` | エージェントの最新の返答をレビュー画面（herdr-annotate）で開く。Cmd+U / Cmd+Shift+U の呼び出し口 |
 | `sidechat.sh` | 表示中の Claude の会話を fork してポップアップで開く（Cmd+;） |
-| `scripts/slot-machine.sh` | エージェントの作業が終わった瞬間にサイドバーへスロット風の演出を流す（`setup.sh` は配置しない。手で起動する） |
+| `scripts/slot-machine.sh` | エージェントの作業が終わった瞬間にサイドバーへスロット風の演出を流す。`setup.sh` は配置しないので手で起動する。bash 4 以上が必要で、表示するには `config.toml` のサイドバー定義に `$slot` トークンを足す（標準の設定には入っていない） |
 
 レビュー画面は `herdr integration install claude`（`setup.sh` が実行する）で入るセッション情報を使って、対象の Claude を特定する。
 

@@ -85,7 +85,8 @@ alias c='claude'
 alias icat='chafa -f kitty'
 # codex-hud: Codex の隣ペインに Claude Code 風の複数行ステータス（ctx / 5h / 7d バー）を出す
 #   herdr で Codex のペインを prefix+minus で上下分割 → 下で codex-hud
-alias codex-hud='bash ~/dotfiles/.codex/scripts/codex-hud.sh'
+#   パスは ~/.zshrc のリンク先から求める（dotfiles を別の場所に置いても動く）
+alias codex-hud="bash ${${(%):-%x}:A:h}/.codex/scripts/codex-hud.sh"
 # nh: Hunk を自動リロード付きで起動
 #   nh        → 全差分（main 分岐点から手元の未コミット編集まで）。分岐点が取れなければ nh c と同じ
 #   nh c      → 前回 commit してからの手元の編集だけ
@@ -184,5 +185,7 @@ _ghostty_set_title
 # >>> grok installer >>>
 export PATH="$HOME/.grok/bin:$PATH"
 fpath=(~/.grok/completions/zsh $fpath)
-autoload -Uz compinit && compinit -C
 # <<< grok installer <<<
+
+# 補完の初期化。fpath を足す処理より後に置く
+autoload -Uz compinit && compinit -C
