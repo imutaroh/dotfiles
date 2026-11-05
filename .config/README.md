@@ -34,7 +34,13 @@
 | `keys.json` / `settings.json` | キー割り当てと設定 |
 | `layouts/mine.json` | 付属レイアウト `main` の複製。自作 mod を組み込む |
 
-**`setup.sh` のあと、Cmd+Shift+L でレイアウトを `mine` に切り替える。** 既定の `main` のままだと、`status-keys`、`changes-gh`、`files-img`、`tab-autoname`、`tab-groups`、`agents-groups`、`pane-progress`、`progress-panel` は動かない。
+**`setup.sh` のあと、Cmd+Shift+L でレイアウトを `mine` に切り替える。** 既定の `main` のままだと、`status-keys`、`changes-gh`、`files-img`、`tab-groups`、`agents-groups`、`pane-progress`、`progress-panel` は動かない。
+
+`tab-autoname` は `mine` なら自動で動く。`main` でも動かすには、`main` を表示した状態で次を 1 回だけ実行する（もう一度実行すると止まる）。記録先の `windows.json` は追跡しないので、Mac ごとに必要になる。
+
+```sh
+herdr-app do mod.open '{"name":"tab-autoname"}'
+```
 
 自作 mod（`mods/` 以下）：
 
