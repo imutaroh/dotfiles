@@ -1,0 +1,9 @@
+{
+  "place": "none",
+  "title": "Tabs",
+  "overlay": { "kind": "popup", "at": "top", "offset": 40, "width": 340 },
+  "cloned_from": {
+    "name": "tabs",
+    "version": "0.1.12"
+  }
+}

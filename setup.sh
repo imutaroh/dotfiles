@@ -134,10 +134,12 @@ link "$DOTFILES_DIR/.config/herdr-app/settings.json" ~/.config/herdr-app/setting
 # redpen は Claude の最新の返答にコメントして送り返す mod（Cmd+U）。会話ログの場所は
 # SessionStart フック（.claude/scripts/hc-label-claude-session.sh）が端末のラベルに入れる。
 # tab-autoname は Claude Code が端末タイトルに書く要約をタブ名に写す mod。mine の 0px ブロックで動く。
+# tab-groups は付属 tabs の複製（タブをグループにまとめて畳む）。mine のタブバーが参照する。
+# agents-groups は付属 agents の複製（一覧を tab-groups のグループで区切る）。mine のサイドバーが参照する。
 # mod は main.js と mod.json だけをリンクする（同フォルダの *.d.ts・jsconfig.json はアプリが生成）
 mkdir -p ~/.config/herdr-app/layouts
 link "$DOTFILES_DIR/.config/herdr-app/layouts/mine.json" ~/.config/herdr-app/layouts/mine.json
-for mod in status-keys changes-gh files-img redpen tab-autoname; do
+for mod in status-keys changes-gh files-img redpen tab-autoname tab-groups agents-groups; do
   mkdir -p ~/.config/herdr-app/mods/$mod
   link "$DOTFILES_DIR/.config/herdr-app/mods/$mod/main.js" ~/.config/herdr-app/mods/$mod/main.js
   link "$DOTFILES_DIR/.config/herdr-app/mods/$mod/mod.json" ~/.config/herdr-app/mods/$mod/mod.json

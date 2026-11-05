@@ -4,7 +4,7 @@ macOS の開発環境の設定一式。Claude Code と Codex を中心に、Herd
 
 ## 見どころ
 
-- **Herdr の自作 mod**: Claude の返答に赤を入れて送り返す `redpen` など 5 本（[一覧](.config/README.md#herdr-デスクトップアプリ)）
+- **Herdr の自作 mod**: Claude の返答に赤を入れて送り返す `redpen` など 7 本（[一覧](.config/README.md#herdr-デスクトップアプリ)）
 - **Claude Code と Codex の同等化**: 指示書・権限・フック・スキルを揃え、1 コマンドで点検できる（[.codex](.codex/README.md)）
 - **自作 Neovim プラグイン**: [diffbase.nvim](https://github.com/imutaroh/diffbase.nvim)（編集画面を PR 差分にする）と [nudge.nvim](https://github.com/imutaroh/nudge.nvim)（コードへのコメントを AI エージェントに送る）
 
@@ -38,4 +38,4 @@ git clone https://github.com/imutaroh/dotfiles.git ~/dotfiles
 | `.claude/skills/skill-creator/` | Anthropic | Apache-2.0（同梱の `LICENSE.txt`） |
 | `.claude/skills/find-skills/` | [vercel-labs/skills](https://github.com/vercel-labs/skills)。改変あり | [MIT](LICENSES/vercel-labs-skills-MIT.txt) |
 | `.claude/skills/hunk-review/` | [Hunk](https://github.com/modem-dev/hunk) | [MIT](LICENSES/hunk-MIT.txt) |
-| `.config/herdr-app/mods/changes-gh/`、`files-img/`、`status-keys/`、`.config/herdr-app/layouts/mine.json` | [Herdr](https://herdr.dev) 付属の mod とレイアウトを複製して改変 | [Apache-2.0](LICENSES/Herdr-Apache-2.0.txt) |
+| `.config/herdr-app/mods/changes-gh/`、`files-img/`、`status-keys/`、`tab-groups/`、`agents-groups/`、`.config/herdr-app/layouts/mine.json` | [Herdr](https://herdr.dev) 付属の mod とレイアウトを複製して改変 | [Apache-2.0](LICENSES/Herdr-Apache-2.0.txt) |

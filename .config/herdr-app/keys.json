@@ -70,6 +70,9 @@
     "cmd-u": "mod.open:redpen",
     "cmd-shift-m": "tab-autoname.wait"
   },
+  "layout:mine": {
+    "cmd-o": "mod.open:tab-groups"
+  },
   "terminal": {
     "cmd-c": "terminal.copy",
     "cmd-v": "terminal.paste",
