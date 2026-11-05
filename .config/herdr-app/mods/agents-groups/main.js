@@ -38,10 +38,12 @@ function toggleSidebar() {
 const clean = (s) => (s ?? "").replace(/^[^\p{L}\p{N}]+/u, "").trim();
 
 // What the agent's own terminal title says about its session, or null when it only
-// names the program, a folder or a host.
+// names the program, a folder or a host. A folder is looked for in the raw title,
+// because `clean` takes a leading "~/" or "/" off along with the spinner.
 function sessionTitle(a) {
   const live = clean(a.title);
-  const telling = live && live !== a.program?.name && !/^[~/]|^[A-Za-z]:\\/.test(live) && !live.includes("@") && live.toLowerCase() !== a.program?.key;
+  const folder = /^[^\p{L}\p{N}~/]*[~/]/u.test(a.title ?? "") || /^[A-Za-z]:\\/.test(live);
+  const telling = live && !folder && live !== a.program?.name && !live.includes("@") && live.toLowerCase() !== a.program?.key;
   return telling ? live : null;
 }
 const RANK = { blocked: 4, done: 3, working: 2, idle: 1 };
