@@ -2,7 +2,8 @@
 // A viewed done agent stays in Done until left.
 //
 // Changed from the `agents` mod shipped with Herdr (https://github.com/herdrdev/herdr-app, Apache-2.0):
-// added a view that splits the list by tab group, and a right-click menu on the rows.
+// added a view that splits the list by tab group, a right-click menu on the rows, and rows
+// named after each agent's session instead of its tab.
 //
 // The groups belong to the tab-groups mod and live in its shared state; nothing is stored here.
 //   Header click      folds the group, the same as its chip in the tab bar; tab-groups' sync does the settling
@@ -11,7 +12,7 @@
 
 import { View, div, image, svg } from "gpui-kit";
 import { v_flex, h_flex } from "gpui-base";
-import { agents, terminals, panes, focused, spaces, run, theme, shared, setShared, setAgentOrder, openOverlay, closeOverlay, props, window, layout } from "herdr";
+import { agents, terminals, focused, spaces, run, theme, shared, setShared, setAgentOrder, openOverlay, closeOverlay, props, window, layout } from "herdr";
 
 function find(node, id) {
   if (node?.id === id) return node;
@@ -36,16 +37,12 @@ function toggleSidebar() {
 
 const clean = (s) => (s ?? "").replace(/^[^\p{L}\p{N}]+/u, "").trim();
 
-function lead(tab, all = panes()) {
-  const mine = all.filter(p => p.tab === tab.id && p.terminal);
-  return mine.find(p => p.program?.agent) ?? mine.find(p => p.focused) ?? mine[0];
-}
-
-function title(tab, l) {
-  const prog = l?.program?.name;
-  const live = clean(l?.title);
-  const telling = live && live !== prog && !/^[~/]|^[A-Za-z]:\\/.test(live) && !live.includes("@") && live.toLowerCase() !== l?.program?.key;
-  return tab.name === prog && telling ? live : tab.name;
+// What the agent's own terminal title says about its session, or null when it only
+// names the program, a folder or a host.
+function sessionTitle(a) {
+  const live = clean(a.title);
+  const telling = live && live !== a.program?.name && !/^[~/]|^[A-Za-z]:\\/.test(live) && !live.includes("@") && live.toLowerCase() !== a.program?.key;
+  return telling ? live : null;
 }
 const RANK = { blocked: 4, done: 3, working: 2, idle: 1 };
 // A sub-agent without a pane isn't in agents(): its raw word, error counting as
@@ -298,13 +295,10 @@ export default class Agents extends View {
         .when(!open, (el) => el.child(String(subs.length)));
     };
 
-    // A row reads "space \u00b7 detail": the detail is a tab someone named or the
-    // agent's own title, never an automatic tab number unless two rows would
-    // otherwise read the same.
-    const label = (a) => {
-      const tab = tabs.find(tab => tab.id === a.tab);
-      return tab ? title(tab, lead(tab)) : a.title || a.program?.name || "";
-    };
+    // A row reads "space \u00b7 detail": the detail is the agent's own session title,
+    // since a tab can hold several agents; before it has one, the tab's name. Never an
+    // automatic tab number unless two rows would otherwise read the same.
+    const label = (a) => sessionTitle(a) ?? a.tab_name ?? a.program?.name ?? "";
     const detail = new Map(list.map(a => [a.address, /^\d+$/.test(label(a)) ? null : label(a)]));
     const seen = {};
     for (const a of list) { const k = `${a.space_name}\u0000${detail.get(a.address) ?? ""}`; seen[k] = (seen[k] ?? 0) + 1; }
