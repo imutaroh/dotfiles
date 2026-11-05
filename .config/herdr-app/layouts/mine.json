@@ -32,9 +32,20 @@
                 "mod": "spaces"
               },
               "size": {
-                "weight": 1
+                "px": 90
               },
               "min": 90
+            },
+            {
+              "id": "progress",
+              "type": "block",
+              "content": {
+                "mod": "progress-panel"
+              },
+              "size": {
+                "weight": 1
+              },
+              "min": 120
             },
             {
               "id": "agents",
@@ -98,7 +109,7 @@
                 "pane": {
                   "header": {
                     "content": {
-                      "mod": "pane"
+                      "mod": "pane-progress"
                     },
                     "reveal": "always",
                     "height": 30,

@@ -139,7 +139,7 @@ link "$DOTFILES_DIR/.config/herdr-app/settings.json" ~/.config/herdr-app/setting
 # mod は main.js と mod.json だけをリンクする（同フォルダの *.d.ts・jsconfig.json はアプリが生成）
 mkdir -p ~/.config/herdr-app/layouts
 link "$DOTFILES_DIR/.config/herdr-app/layouts/mine.json" ~/.config/herdr-app/layouts/mine.json
-for mod in status-keys changes-gh files-img redpen tab-autoname tab-groups agents-groups; do
+for mod in status-keys changes-gh files-img redpen tab-autoname tab-groups agents-groups pane-progress progress-panel; do
   mkdir -p ~/.config/herdr-app/mods/$mod
   link "$DOTFILES_DIR/.config/herdr-app/mods/$mod/main.js" ~/.config/herdr-app/mods/$mod/main.js
   link "$DOTFILES_DIR/.config/herdr-app/mods/$mod/mod.json" ~/.config/herdr-app/mods/$mod/mod.json
