@@ -47,7 +47,7 @@ herdr-app do mod.open '{"name":"tab-autoname"}'
 | mod | 説明 |
 |-----|------|
 | `redpen` | Cmd+U で Claude の最新の返答にコメントして送り返す |
-| `tab-autoname` | Claude Code が端末タイトルに書く要約をタブ名に写す。手で付けた名前は上書きせず、空にすると自動に戻る。Cmd+Shift+M で表示中のタブ名の先頭に ⏳ を付け外しする |
+| `tab-autoname` | Claude Code が端末タイトルに書く要約をタブ名に写す。手で付けた名前は上書きせず、空にすると自動に戻る |
 | `tab-groups` | 付属 `tabs` の複製。Chrome のタブグループのようにタブをまとめて畳む。チップのクリックで畳み、右クリックで名前と色を変える。Cmd+O で表示中のタブを移す。畳むと `Cmd+数字` と `tab.next` から外れる |
 | `agents-groups` | 付属 `agents` の複製。サイドバーの Agents 一覧を `tab-groups` のグループで区切る。見出しのクリックはタブバーのチップと同じく畳む。行の右クリックで別のグループへ移す。並びは右上のボタンで付属の Priority などへ戻せる |
 | `pane-progress` | 付属 `pane` の複製。ペインの見出しに、エージェントのセッションのタイトルと、Claude Code のタスクの流れ（完了数、今の作業、残りの作業）を 1 行で出す。タスクが無いときは今の動作を出す |
