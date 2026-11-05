@@ -38,4 +38,5 @@ git clone https://github.com/imutaroh/dotfiles.git ~/dotfiles
 | `.claude/skills/skill-creator/` | Anthropic | Apache-2.0（同梱の `LICENSE.txt`） |
 | `.claude/skills/find-skills/` | [vercel-labs/skills](https://github.com/vercel-labs/skills)。改変あり | [MIT](LICENSES/vercel-labs-skills-MIT.txt) |
 | `.claude/skills/hunk-review/` | [Hunk](https://github.com/modem-dev/hunk) | [MIT](LICENSES/hunk-MIT.txt) |
+| `.claude/mods/image-view-bytes/` | [claude-image-view](https://github.com/jarrodwatts/claude-image-view)。改変あり | [MIT](LICENSES/claude-image-view-MIT.txt) |
 | `.config/herdr-app/mods/changes-gh/`、`files-img/`、`status-keys/`、`tab-groups/`、`agents-groups/`、`.config/herdr-app/layouts/mine.json` | [Herdr](https://herdr.dev) 付属の mod とレイアウトを複製して改変 | [Apache-2.0](LICENSES/Herdr-Apache-2.0.txt) |

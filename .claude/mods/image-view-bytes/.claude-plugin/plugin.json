@@ -1,0 +1,11 @@
+{
+  "name": "image-view-bytes",
+  "version": "0.1.0",
+  "description": "Thumbnails of pasted images above the prompt, sent as bytes so they also draw in terminals that do not read image files (based on jarrodwatts/claude-image-view)",
+  "author": {
+    "name": "imutaroh",
+    "url": "https://github.com/imutaroh"
+  },
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}
