@@ -67,8 +67,7 @@
     "cmd-g": "mod.open:picker",
     "cmd-shift-e": "status-keys.cycle",
     "cmd-shift-g": "status-keys.changes",
-    "cmd-u": "mod.open:redpen",
-    "cmd-shift-m": "tab-autoname.wait"
+    "cmd-u": "mod.open:redpen"
   },
   "layout:mine": {
     "cmd-o": "mod.open:tab-groups"
