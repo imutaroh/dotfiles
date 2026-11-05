@@ -20,7 +20,7 @@ Claude Code のユーザーレベル設定。`setup.sh` が項目ごとに `~/.c
 ├── themes/                 # カスタムテーマ
 ├── output-styles/          # 自作の output style
 ├── skills/                 # カスタムスキル
-└── mods/                   # 自作プラグインの試作（progress-panel / task-panel）
+└── mods/                   # 自作プラグイン（image-view-bytes は常用、ほかは試作）
 ```
 
 ## settings.json
@@ -61,12 +61,13 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 
 ## mods/
 
-Claude Code のプラグインとして書いた試作。`setup.sh` では配置せず、`settings.json` の `enabledPlugins` にも入れていない。
+Claude Code のプラグインとして書いたもの。`setup.sh` では配置せず、`settings.json` の `enabledPlugins` にも入れていない。
 
-| 名前 | 説明 |
-|------|------|
-| `progress-panel` | `/progress` でプロジェクトの `.claude/tmp/progress.md` を会話の横に表示する |
-| `task-panel` | `/task-panel` でセッションのタスク一覧を会話の横に表示する |
+| 名前 | 使い方 | 説明 |
+|------|--------|------|
+| `image-view-bytes` | 常用。`settings.json` の `env` にある `CLAUDE_CODE_PLUGIN_DIRS` で読み込む | 貼った画像のサムネイルを入力欄の上に出す。[claude-image-view](https://github.com/jarrodwatts/claude-image-view) を改変し、ファイルのパスではなく画像の中身を端末へ送る。Herdr デスクトップ版のように画像ファイルを読まない端末でも映る |
+| `progress-panel` | 試作。読み込まない | `/progress` でプロジェクトの `.claude/tmp/progress.md` を会話の横に表示する |
+| `task-panel` | 試作。読み込まない | `/task-panel` でセッションのタスク一覧を会話の横に表示する |
 
 ## カスタマイズ
 
