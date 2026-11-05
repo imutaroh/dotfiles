@@ -8,7 +8,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - `setup.sh` でシンボリックリンクを作成して各設定ファイルを適用する
 - `.config/` 以下はミラーリング方式（実際の配置場所と同じ構造）で管理
 - `~/.claude/` 自体は実ディレクトリで、`CLAUDE.md` / `skills` / `scripts` / `statusline.sh` / `statusline-preview.sh` / `themes` / `hooks/play-sound.sh` / `sounds/*.wav` / `output-styles/15sai.md` が `setup.sh` の張る dotfiles へのシンボリックリンク（`task-dashboard` も dotfiles へのリンクだが、私的データで gitignore 対象のため `setup.sh` の対象外）
-- `.claude/CLAUDE.md`（ユーザーレベルの指示書）は私的な内容を含むので gitignore 対象で、このマシンにしかない。`setup.sh` はファイルがあるときだけリンクを張る
+- `.claude/CLAUDE.md`（ユーザーレベルの指示書）は私的な内容を含むので gitignore 対象。実体は remote の無いローカル Git リポジトリ `~/dotfiles-private` にあり、ここからシンボリックリンクで参照する。編集はリンク先に対して行い、ブランチもそのリポジトリで切る。`setup.sh` はこのリンクを作らず、実体があるときだけ `~/.claude/CLAUDE.md` と `~/.codex/AGENTS.md` を張る
 - `settings.json` は symlink 不可（`claude doctor` 等が実ファイルに置き換えるため）。`./sync-settings.sh` で実環境 → dotfiles へ明示的に取り込む。公開用に一部を除いて取り込むので、追跡版は実環境と一致しない（除く項目はスクリプトの先頭に書いてある）。`.claude/settings.json` を直接編集しない
 - `.claude/mods/image-view-bytes/` は `~/.claude/settings.json` の `env` にある `CLAUDE_CODE_PLUGIN_DIRS` で読み込む（symlink にしない）。起動中のセッションには効かず、次に起動したセッションから効く。元の `image-view@claude-image-view` は無効にして併用しない
 - `~/.codex/config.toml` は Codex アプリも更新するため symlink 不可。`.codex/scripts/apply-codex-config.py` がキー単位で冪等に追記・置換する（`setup.sh` から自動実行）
@@ -26,7 +26,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - シンボリックリンクで管理されるファイルは直接編集しない
 - ディレクトリ構造を変更した場合は CLAUDE.md と README.md の整合性を確認・更新する
 - コミット前に機密情報（APIキー、トークン等）が含まれていないか確認する
-- gitignore した私的ファイル（`.claude/CLAUDE.md` / `.claude/skills/gh-teach/` / `iphone/keep.txt`）は、それらを追跡していた古いコミットやブランチへ `git switch` すると上書きされ、戻るときに消える。古い内容を見るときは `git show` か `git worktree` を使う。`git clean -x` でも消える
+- 私的ファイル（`.claude/CLAUDE.md` / `.claude/skills/gh-teach/` / `iphone/keep.txt`）はどれも Git の追跡から除外していて、このリポジトリの履歴には無い。`~/dotfiles-private` へのシンボリックリンクなので、`git clean -x` で消えたら張り直す。実体はリンク先のリポジトリで追跡している
 
 ## スキル管理ルール
 
