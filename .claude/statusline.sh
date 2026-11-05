@@ -73,7 +73,7 @@ NOW=$(date +%s)
 LINE0=""
 [ -n "$SESSION_NAME" ] && LINE0="${VIOLET}${SESSION_NAME}${RESET}"
 
-# ── 1行目: モデル·effort + ディレクトリ + git ブランチ + output style ──
+# ── 1行目: モデル·effort（effort-auto が有効なら省略）+ ディレクトリ + git ブランチ + output style ──
 GIT_SEG=""
 # CURRENT_DIR はクローンした他人のリポジトリの中にもなり得る。そのリポジトリの config に
 # 書かれた core.fsmonitor 等をコマンドとして実行させないよう、実行系の設定を無効化して呼ぶ
@@ -93,8 +93,20 @@ if safe_git rev-parse --git-dir > /dev/null 2>&1; then
         GIT_SEG=" ${ICE}|${RESET} ${TEAL}${BRANCH}${RESET}${DIRTY}"
     fi
 fi
+# effort-auto プラグインは依頼ごとに深さを判定し、送信の直前に差し替える。
+# .effort.level は差し替える前の基準値で実際の深さとずれるので、有効なときは出さない（実際の深さはプラグインが表示する）
+# 有効かどうかは Claude Code と同じ user < project < local の後勝ちで読む。読めないときは無効扱いで、基準値を出す
+effort_auto_enabled() {
+    local project_dir file files=()
+    project_dir=$(echo "$input" | jq -r '.workspace.project_dir // .workspace.current_dir')
+    for file in "$HOME/.claude/settings.json" "$project_dir/.claude/settings.json" "$project_dir/.claude/settings.local.json"; do
+        [ -f "$file" ] && files+=("$file")
+    done
+    [ "${#files[@]}" -gt 0 ] || return 1
+    [ "$(jq -s '[.[].enabledPlugins["effort-auto@hide10"]? | select(. != null)] | last | . != null and . != false' "${files[@]}" 2>/dev/null)" = "true" ]
+}
 MODEL_LABEL="$MODEL"
-[ -n "$EFFORT" ] && MODEL_LABEL="${MODEL}·${EFFORT}"
+[ -n "$EFFORT" ] && ! effort_auto_enabled && MODEL_LABEL="${MODEL}·${EFFORT}"
 STYLE_SEG=""
 [ -n "$OUTPUT_STYLE" ] && STYLE_SEG=" ${ICE}|${RESET} ${ICE}${OUTPUT_STYLE}${RESET}"
 LINE1="${CYAN}[${MODEL_LABEL}]${RESET} ${BLUE}${DISPLAY_DIR}${RESET}${GIT_SEG}${STYLE_SEG}"
@@ -149,7 +161,7 @@ LINE4=""
 
 # ── 出力: 縦に並べる (空の行はスキップ) ───────────────────
 #   0行目: セッション名（/rename 名 or AI 生成タイトル、未生成なら行ごと省略）
-#   1行目: モデル·effort + ディレクトリ + git ブランチ + output style（非default時のみ）
+#   1行目: モデル·effort（effort-auto が有効なら省略）+ ディレクトリ + git ブランチ + output style（非default時のみ）
 #   2行目: ctx バー + コスト + セッション経過時間
 #   3行目: 5h レート制限バー + リセット残り
 #   4行目: 7d レート制限バー + リセット残り
