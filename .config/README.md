@@ -34,7 +34,7 @@
 | `keys.json` / `settings.json` | キー割り当てと設定 |
 | `layouts/mine.json` | 付属レイアウト `main` の複製。自作 mod を組み込む |
 
-**`setup.sh` のあと、Cmd+Shift+L でレイアウトを `mine` に切り替える。** 既定の `main` のままだと、`status-keys`、`changes-gh`、`files-img`、`tab-autoname` は動かない。
+**`setup.sh` のあと、Cmd+Shift+L でレイアウトを `mine` に切り替える。** 既定の `main` のままだと、`status-keys`、`changes-gh`、`files-img`、`tab-autoname`、`tab-groups`、`agents-groups` は動かない。
 
 自作 mod（`mods/` 以下）：
 
@@ -42,6 +42,8 @@
 |-----|------|
 | `redpen` | Cmd+U で Claude の最新の返答にコメントして送り返す |
 | `tab-autoname` | Claude Code が端末タイトルに書く要約をタブ名に写す。手で付けた名前は上書きせず、空にすると自動に戻る。Cmd+Shift+M で表示中のタブ名の先頭に ⏳ を付け外しする |
+| `tab-groups` | 付属 `tabs` の複製。Chrome のタブグループのようにタブをまとめて畳む。チップのクリックで畳み、右クリックで名前と色を変える。Cmd+O で表示中のタブを移す。畳むと `Cmd+数字` と `tab.next` から外れる |
+| `agents-groups` | 付属 `agents` の複製。サイドバーの Agents 一覧を `tab-groups` のグループで区切る。見出しのクリックはタブバーのチップと同じく畳む。行の右クリックで別のグループへ移す。並びは右上のボタンで付属の Priority などへ戻せる |
 | `status-keys` | 付属 `workspace-status` の複製。右パネルの Files / Changes を Cmd+Shift+E / Cmd+Shift+G で開閉する。開いている間はターミナルを隠して全幅で見せる |
 | `changes-gh` | 付属 `changes` の複製。差分を GitHub の配色にして長い行を折り返す |
 | `files-img` | 付属 `files` の複製。画像ファイルを画像として表示する |
