@@ -6,6 +6,7 @@ import { spaces, panes, run, openOverlay, closeOverlay, theme, window, shared, s
 //
 // Changed from the `tabs` mod shipped with Herdr (https://github.com/herdrdev/herdr-app, Apache-2.0):
 // added the groups and their chips, the picker, the group editor, and the group items in the tab menu.
+// Tabs have one width, and a line under each name shows its panes (see paneLine).
 //
 // One folder, four views, chosen by props:
 //   Tab bar   click a chip to fold or unfold it, right-click it to edit; drag tabs and chips to move them
@@ -29,6 +30,8 @@ const FIRST_RUN = {
   ],
   tabs: {},
 };
+// Every tab has the same width, and its bottom line is cut into one piece per pane, colored by that pane's status.
+const TAB_WIDTH = 180;
 const PICKER = { kind: "popup", at: "top", offset: 40, width: 340 };
 const EDITOR = { kind: "popup", width: 250 };
 
@@ -160,6 +163,16 @@ function moveGroup(gid, to, space) {
   applyOrder(space, rest);
 }
 
+// One piece per pane, in the order panes() gives. The focused pane of the shown tab is drawn at full strength.
+function paneLine(t, tab, tabPanes) {
+  const color = (p) => t[p.status] ?? (p.status ? t.unknown : t.idle) ?? t.dim;
+  // Fades a #rrggbb color. Other forms are left as they are.
+  const faded = (c) => (/^#[0-9a-f]{6}$/i.test(c) ? `${c}99` : c);
+  return h_flex().h(3).mx(2).mb(2).gap(3).flex_none()
+    .children(tabPanes.map((p) => div().flex_1().h_full().rounded(2)
+      .bg(tab.active && p.focused ? color(p) : faded(color(p)))));
+}
+
 const dot = (color) => h_flex().w(14).flex_none().justify_center().child(div().size(10).rounded(5).bg(color));
 const icon = (t, name) => svg(`mods/workspace-chrome/${name}.svg`).size(14).flex_none().text_color(t.muted);
 const shortcut = (name) => keys().find((b) => b.section === "global" && b.action === name)?.keys ?? "";
@@ -251,10 +264,17 @@ class Bar {
     const button = (id, label, action) => div().id(id).size(26).flex_none().flex().items_center().justify_center().rounded(6).text_color(t.dim).hover((s) => s.bg(t.hover).text_color(t.foreground))
       .on_mouse_down("left", stop).on_click(action).child(label);
     const item = (c, inGroup) => {
-      const program = panes().find((p) => p.tab === c.id && p.program?.agent)?.program ?? panes().find((p) => p.tab === c.id)?.program;
+      const tabPanes = panes().filter((p) => p.tab === c.id);
+      const program = tabPanes.find((p) => p.program?.agent)?.program ?? tabPanes[0]?.program;
       const name = /^tb\d+$/.test(c.name) ? program?.name ?? "Terminal" : c.name;
       const idle = inGroup ? "#00000000" : t.chrome;
-      return h_flex().id(`tab-${c.id}`).h(29).px(10).gap(7).rounded(7).items_center().flex_none().text_size(12.8)
+      const row = h_flex().flex_1().min_h(0).px(10).gap(7).items_center()
+        .when(Boolean(program?.icon), (el) => el.child(program.tint ? svg(program.icon).size(14).flex_none().text_color(t.muted) : image(program.icon).size(14).flex_none()))
+        .child(div().flex_1().min_w(0).truncate().child(c.zoomed ? `${name} Z` : name))
+        .when(c.status === "working", (el) => el.child(svg("mods/workspace-chrome/spinner.svg").size(12).flex_none().text_color(t.working).spin(900)))
+        .when(c.status === "blocked" || c.status === "done", (el) => el.child(div().size(6).flex_none().rounded(3).bg(t[c.status])))
+        .when(c.active, (el) => el.child(div().id(`close-${c.id}`).flex_none().text_color(t.dim).on_mouse_down("left", stop).on_click((_e, cx) => { cx.stop_propagation(); run("tab.close", { id: c.id }); }).child(svg("mods/pane/close.svg").size(12))));
+      return v_flex().id(`tab-${c.id}`).h(29).w(TAB_WIDTH).rounded(7).flex_none().text_size(12.8)
         .border(1).border_color(c.active ? t.border : idle).bg(c.active ? t.raised : idle).text_color(c.active ? t.foreground : t.muted)
         .hover((s) => s.bg(t.hover))
         .on_mouse_down("left", (e, cx) => { cx.stop_propagation(); this.pressed = { tab: c.id }; if (e.click_count === 2) run("tab.rename", { id: c.id }); })
@@ -264,11 +284,8 @@ class Bar {
           else run("tab.select", { id: c.id });
         })
         .on_mouse_down("right", (_e, cx) => { cx.stop_propagation(); openOverlay({ mod: KEY, kind: "popup", width: 240, props: { target: { id: c.id, space: space.id } } }); })
-        .when(Boolean(program?.icon), (el) => el.child(program.tint ? svg(program.icon).size(14).text_color(t.muted) : image(program.icon).size(14)))
-        .child(div().max_w(170).truncate().child(c.zoomed ? `${name} Z` : name))
-        .when(c.status === "working", (el) => el.child(svg("mods/workspace-chrome/spinner.svg").size(12).flex_none().text_color(t.working).spin(900)))
-        .when(c.status === "blocked" || c.status === "done", (el) => el.child(div().size(6).rounded(3).bg(t[c.status])))
-        .when(c.active, (el) => el.child(div().id(`close-${c.id}`).text_color(t.dim).on_mouse_down("left", stop).on_click((_e, cx) => { cx.stop_propagation(); run("tab.close", { id: c.id }); }).child(svg("mods/pane/close.svg").size(12))));
+        .child(row)
+        .child(paneLine(t, c, tabPanes));
     };
     const block = (g, members) => {
       const color = COLORS[g.color] ?? t.accent;
