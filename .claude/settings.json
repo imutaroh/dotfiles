@@ -3,7 +3,8 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_ENABLE_TODO_TOOLS": "1",
-    "CLAUDE_CODE_FORCE_TERMINAL_IMAGES": "1"
+    "CLAUDE_CODE_FORCE_TERMINAL_IMAGES": "1",
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/.claude/mods/image-view-bytes"
   },
   "permissions": {
     "allow": [
@@ -101,6 +102,7 @@
       "Bash(gh pr merge*)",
       "Bash(gh pr close*)",
       "Bash(gh pr ready*)",
+      "Bash(gh api *)",
       "mcp__claude_ai_Slack__slack_send_message",
       "mcp__claude_ai_Slack__slack_schedule_message",
       "mcp__claude_ai_Gmail__send_message",
