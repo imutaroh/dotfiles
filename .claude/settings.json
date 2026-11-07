@@ -38,7 +38,6 @@
       "Bash(gh workflow view:*)",
       "Bash(git add:*)",
       "Bash(git branch:*)",
-      "Bash(git checkout:*)",
       "Bash(git commit:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
@@ -54,12 +53,8 @@
       "Bash(which:*)",
       "Read",
       "WebSearch",
-      "Bash(git reset *)",
       "Bash(git merge *)",
       "Bash(go version *)",
-      "Bash(go mod *)",
-      "Bash(git fetch:*)",
-      "Bash(git pull:*)",
       "Bash(mise ls:*)",
       "Bash(mise current:*)",
       "Bash(mise which:*)",
@@ -110,7 +105,6 @@
       "mcp__claude_ai_Gmail__forward"
     ]
   },
-  "model": "opus",
   "fallbackModel": [
     "claude-opus-5",
     "claude-sonnet-5-5"
@@ -185,6 +179,12 @@
         "repo": "anthropics/claude-plugins-official"
       }
     }
+  },
+  "skillOverrides": {
+    "skill-creator": "user-invocable-only",
+    "output-style": "name-only",
+    "find-skills": "name-only",
+    "grilling": "name-only"
   },
   "outputStyle": "Explanatory",
   "language": "japanese",

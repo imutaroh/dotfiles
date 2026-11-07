@@ -20,6 +20,9 @@ set -euo pipefail
 #   herdr-agent-state.sh のフック: `herdr integration install claude` が各マシンのパスで作る
 #   公式以外のプラグインとマーケットプレイス: 複製しただけで第三者のコードが有効にならないようにする
 #   WebFetch の無条件許可: Read も無条件なので、Web ページの指示に騙されると読んだ内容を URL に載せて送れる
+#   skillOverrides のうち claude.ai が同期するスキル（anthropic-skills:*）の行: アカウントごとの私的なスキル名が出る
+#   model: /model を使うたびに書き換わる状態で、取り込むたびに差分になる。
+#     追跡版はこのリポジトリのプロジェクト設定としても読まれるので、残すと dotfiles での作業だけ別のモデルに固定される
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 LIVE="$HOME/.claude/settings.json"
@@ -34,7 +37,10 @@ FILTERED="$(mktemp)"
 trap 'command rm -f "$FILTERED"' EXIT
 jq '
   def official: endswith("@claude-plugins-official");
-  del(.autoMode, .permissions.defaultMode, .skipAutoPermissionPrompt, .enabledMcpjsonServers)
+  del(.autoMode, .permissions.defaultMode, .skipAutoPermissionPrompt, .enabledMcpjsonServers, .model)
+  | if .skillOverrides then
+      .skillOverrides |= with_entries(select(.key | startswith("anthropic-skills:") | not))
+    else . end
   | if .permissions.allow then
       .permissions.allow |= map(select(. != "WebFetch"))
     else . end
