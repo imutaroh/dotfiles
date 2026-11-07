@@ -14,11 +14,11 @@ Claude Code のユーザーレベル設定。`setup.sh` が項目ごとに `~/.c
 ├── hooks/
 │   └── play-sound.sh       # 確認要求時・完了時の効果音
 ├── scripts/
-│   ├── fetch_usage.sh      # API 使用量の取得（キーチェーンから実行時にトークンを読む）
 │   └── hc-label-claude-session.sh  # 会話ログの場所を Herdr の端末ラベルに入れる
 ├── sounds/                 # 通知音（macOS のシステムサウンドへのリンク）
 ├── themes/                 # カスタムテーマ
 ├── output-styles/          # 自作の output style
+├── rules/                  # このリポジトリ用の局所ルール（paths に合うファイルを触るときだけ読まれる）
 ├── skills/                 # カスタムスキル
 └── mods/                   # 自作プラグイン（image-view-bytes は常用、ほかは試作）
 ```
@@ -47,7 +47,9 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 | Claude Code の設定 | `output-style` |
 | メタ（スキル管理） | `skill-creator` / `find-skills` |
 
-`skill-creator` は [Anthropic 公式のスキル](https://github.com/anthropics/skills/tree/main/skills/skill-creator)に由来する。
+`skill-creator` は [Anthropic 公式のスキル](https://github.com/anthropics/skills/tree/main/skills/skill-creator)に由来する。claude.ai が同期する新しい版（`anthropic-skills:skill-creator`）と二重にならないよう、`settings.json` の `skillOverrides` で Claude の一覧から外している（`/skill-creator` では呼べる）。
+
+`skillOverrides` では、ほかに起動の少ないスキルを `name-only`（説明文を読み込まず名前だけ載せる）にしている。
 
 次のものは追跡していない（gitignore 済み）。外部から入るものは、新しいマシンで入れ直す。
 
@@ -57,7 +59,7 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 | `terminal-browser` | terminal-browser のインストーラ。実体は `~/.local/share/terminal-browser/` |
 | `ctx-agent-history-search` | `ctx integrations` |
 | `synced/` | claude.ai が同期する |
-| `gh-teach` | 非公開の個人用スキル |
+| `gh-teach` / `agile-data-modeling` | 非公開の個人用スキル |
 
 ## mods/
 

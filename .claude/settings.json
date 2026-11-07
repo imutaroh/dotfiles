@@ -3,7 +3,8 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_ENABLE_TODO_TOOLS": "1",
-    "CLAUDE_CODE_FORCE_TERMINAL_IMAGES": "1"
+    "CLAUDE_CODE_FORCE_TERMINAL_IMAGES": "1",
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/.claude/mods/image-view-bytes"
   },
   "permissions": {
     "allow": [
@@ -37,7 +38,6 @@
       "Bash(gh workflow view:*)",
       "Bash(git add:*)",
       "Bash(git branch:*)",
-      "Bash(git checkout:*)",
       "Bash(git commit:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
@@ -53,12 +53,8 @@
       "Bash(which:*)",
       "Read",
       "WebSearch",
-      "Bash(git reset *)",
       "Bash(git merge *)",
       "Bash(go version *)",
-      "Bash(go mod *)",
-      "Bash(git fetch:*)",
-      "Bash(git pull:*)",
       "Bash(mise ls:*)",
       "Bash(mise current:*)",
       "Bash(mise which:*)",
@@ -101,6 +97,7 @@
       "Bash(gh pr merge*)",
       "Bash(gh pr close*)",
       "Bash(gh pr ready*)",
+      "Bash(gh api *)",
       "mcp__claude_ai_Slack__slack_send_message",
       "mcp__claude_ai_Slack__slack_schedule_message",
       "mcp__claude_ai_Gmail__send_message",
@@ -108,7 +105,6 @@
       "mcp__claude_ai_Gmail__forward"
     ]
   },
-  "model": "opus",
   "fallbackModel": [
     "claude-opus-5",
     "claude-sonnet-5-5"
@@ -183,6 +179,12 @@
         "repo": "anthropics/claude-plugins-official"
       }
     }
+  },
+  "skillOverrides": {
+    "skill-creator": "user-invocable-only",
+    "output-style": "name-only",
+    "find-skills": "name-only",
+    "grilling": "name-only"
   },
   "outputStyle": "Explanatory",
   "language": "japanese",
