@@ -40,6 +40,7 @@ jq '
   del(.autoMode, .permissions.defaultMode, .skipAutoPermissionPrompt, .enabledMcpjsonServers, .model)
   | if .skillOverrides then
       .skillOverrides |= with_entries(select(.key | startswith("anthropic-skills:") | not))
+      | if .skillOverrides == {} then del(.skillOverrides) else . end
     else . end
   | if .permissions.allow then
       .permissions.allow |= map(select(. != "WebFetch"))

@@ -180,13 +180,7 @@
       }
     }
   },
-  "skillOverrides": {
-    "skill-creator": "user-invocable-only",
-    "output-style": "name-only",
-    "find-skills": "name-only",
-    "grilling": "name-only"
-  },
-  "outputStyle": "Explanatory",
+  "outputStyle": "default",
   "language": "japanese",
   "modelSettings": {
     "claude-opus-5": {

@@ -23,7 +23,7 @@ brew "chafa"                  # ターミナルで画像表示（kitty graphics�
 brew "gh"                     # GitHub CLI
 brew "jq"                     # JSON 処理（statusline・codex-hud・sync-settings・desk で使用）
 brew "mise"                   # ランタイムバージョン管理（Node / Python 等）
-brew "hunk"                   # レビュー特化の差分ビューア（hunk-review スキルで AI と往復レビュー）
+brew "hunk"                   # レビュー特化の差分ビューア（AI 向けスキルは `hunk skill path` で同梱版を取り出せる）
 brew "node"                   # Node.js / npm（Mason LSP: typescript-language-server, pyright 等）
 brew "bun"                    # JavaScript ランタイム / パッケージマネージャ
 brew "go"                     # Go 言語（Mason LSP: gopls）
