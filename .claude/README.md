@@ -42,24 +42,17 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 
 | カテゴリ | スキル |
 |----------|--------|
-| ツール操作（CLI / API の知識） | `herdr-control` / `hunk-review` / `dot-help` |
-| 出力テンプレート | `zukai` |
-| Claude Code の設定 | `output-style` |
-| メタ（スキル管理） | `skill-creator` / `find-skills` |
+| ツール操作（CLI / API の知識） | `herdr-control` |
 
-`skill-creator` は [Anthropic 公式のスキル](https://github.com/anthropics/skills/tree/main/skills/skill-creator)に由来する。claude.ai が同期する新しい版（`anthropic-skills:skill-creator`）と二重にならないよう、`settings.json` の `skillOverrides` で Claude の一覧から外している（`/skill-creator` では呼べる）。
-
-`skillOverrides` では、ほかに起動の少ないスキルを `name-only`（説明文を読み込まず名前だけ載せる）にしている。
+公式や配布元から入れ直せるスキルは、ここに複製しない。`skill-creator` は claude.ai が同期する版（`anthropic-skills:skill-creator`）か公式プラグインを使い、Codex は標準で持っている。Hunk のスキルは `hunk skill path` で同梱版を取り出せる。
 
 次のものは追跡していない（gitignore 済み）。外部から入るものは、新しいマシンで入れ直す。
 
 | 名前 | 入手先 |
 |------|--------|
-| `grill-me` / `grilling` | `npx skills add`。実体は `~/.agents/skills/`。`/find-skills` から入れ直す |
-| `terminal-browser` | terminal-browser のインストーラ。実体は `~/.local/share/terminal-browser/` |
 | `ctx-agent-history-search` | `ctx integrations` |
-| `synced/` | claude.ai が同期する |
-| `gh-teach` / `agile-data-modeling` | 非公開の個人用スキル |
+| `synced/` | claude.ai が同期する。手で消しても次の同期で戻る |
+| `agile-data-modeling` | 非公開の個人用スキル |
 
 ## mods/
 
