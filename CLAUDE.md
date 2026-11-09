@@ -11,6 +11,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - `.claude/CLAUDE.md`（ユーザーレベルの指示書）は私的な内容を含むので gitignore 対象。実体は remote の無いローカル Git リポジトリ `~/dotfiles-private` にあり、ここからシンボリックリンクで参照する。編集はリンク先に対して行い、ブランチもそのリポジトリで切る。`setup.sh` はこのリンクを作らず、実体があるときだけ `~/.claude/CLAUDE.md` と `~/.codex/AGENTS.md` を張る
 - `settings.json` は symlink 不可（`claude doctor` 等が実ファイルに置き換えるため）。`./sync-settings.sh` で実環境 → dotfiles へ明示的に取り込む。公開用に一部を除いて取り込むので、追跡版は実環境と一致しない（除く項目はスクリプトの先頭に書いてある）。`.claude/settings.json` を直接編集しない
 - `.claude/mods/image-view-bytes/` は `~/.claude/settings.json` の `env` にある `CLAUDE_CODE_PLUGIN_DIRS` で読み込む（symlink にしない）。起動中のセッションには効かず、次に起動したセッションから効く。元の `image-view@claude-image-view` は無効にして併用しない
+- 右パネルの Issues と Projects は、fork `imutaroh/herdr-github-panels`（実体は `~/repos/imutaroh/herdr-github-panels`）の mod。`setup.sh` が checkout の `mods/issues` と `mods/projects` をフォルダごとリンクする（checkout が無ければ張らない）。`mine.json` の `panel-body`、`status-keys` の `PANELS`、`tab-groups` の `PANEL_BUTTONS` が参照する
 - Codex 側（`.codex/` と `setup-codex-skills.py`）の管理方式は `.claude/rules/codex.md` に分けてある。該当ファイルを触るときに読み込まれる
 - `.claude/settings.local.json` はこのリポジトリ固有の設定として使える（gitignore 対象でコミットされない・設定の優先順位は user < project < local）
 - `launchd/*.plist` は常駐エージェント定義。`setup.sh` が `__HOME__` を置き換えて `~/Library/LaunchAgents/` へコピーし `launchctl bootstrap` でロードする（symlink ではなくコピー）。実行するファイルが無いジョブは登録しない。`launchd/optional/` は対象外で、使うときに手で登録する
