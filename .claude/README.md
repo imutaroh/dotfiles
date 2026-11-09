@@ -57,10 +57,12 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 
 引用符の外の `;` `&` `|` 改行で命令を切り、`gh api` を含む命令の中だけで判定する。引用符が閉じていないときや、引用符の中に `gh api` と書いてあるときは、確認を出す側に倒れる。
 
-使うとき:
+追跡している `settings.json` では、このフックを `hooks.PreToolUse` に登録し、`permissions.ask` から `Bash(gh api *)` を外してある。手で入れるときは次の 2 つを行う:
 
 1. `settings.json` の `hooks.PreToolUse` に `{"matcher": "Bash", "hooks": [{"type": "command", "command": "bash ~/.claude/hooks/ask-gh-api-writes.sh", "timeout": 10}]}` を登録する
 2. `permissions.ask` から `Bash(gh api *)` を外す。`ask` ルールは `allow` ルールやフックの許可では外せないので、残すと読み取りも毎回確認になる
+
+auto モードでも、書き込みの疑いのある `gh api` は確認になり（`Hook PreToolUse:Bash requires confirmation …`）、読み取りは確認なしで通ることを、実機で確かめてある（2026-11-09）。`Bash(gh api *)` の allow を足しても、フックの確認が勝つ。
 
 判定を変えたら `bash .claude/hooks/ask-gh-api-writes.test.sh` を実行する。書き込みの取りこぼしは、確認なしで書き込みが通る事故になるので、先にケースを足してから直す。
 
