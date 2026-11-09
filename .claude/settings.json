@@ -93,11 +93,9 @@
       "Skill(anthropic-skills:obsidian-daily)"
     ],
     "ask": [
-      "Bash(gh pr create*)",
       "Bash(gh pr merge*)",
       "Bash(gh pr close*)",
       "Bash(gh pr ready*)",
-      "Bash(gh api *)",
       "mcp__claude_ai_Slack__slack_send_message",
       "mcp__claude_ai_Slack__slack_schedule_message",
       "mcp__claude_ai_Gmail__send_message",
@@ -118,12 +116,28 @@
     }
   ],
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/ask-gh-api-writes.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PermissionRequest": [
       {
         "hooks": [
           {
             "type": "command",
             "command": "bash ~/.claude/hooks/play-sound.sh ~/.claude/sounds/confirm.wav"
+          },
+          {
+            "type": "command",
+            "command": "jq -c '{t:(now|todate),tool:.tool_name,cwd:.cwd,input:(.tool_input|tostring|.[0:300])}' >> ~/.claude/state/permission-requests.jsonl 2>/dev/null; exit 0"
           }
         ]
       }
