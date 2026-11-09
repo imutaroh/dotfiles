@@ -145,6 +145,14 @@ for mod in status-keys changes-gh files-img redpen tab-autoname tab-groups agent
   link "$DOTFILES_DIR/.config/herdr-app/mods/$mod/mod.json" ~/.config/herdr-app/mods/$mod/mod.json
 done
 link "$DOTFILES_DIR/.config/herdr-app/mods/redpen/extract.py" ~/.config/herdr-app/mods/redpen/extract.py
+# issues と projects（右パネルの Issues / Projects）は fork imutaroh/herdr-github-panels の mod。
+# 実体は fork の checkout なので、あるときだけ mod フォルダごとリンクする（ファイルが 4 本あり、1 本ずつは張らない）
+GITHUB_PANELS="$HOME/repos/imutaroh/herdr-github-panels"
+if [ -d "$GITHUB_PANELS/mods/projects" ]; then
+  for mod in issues projects; do
+    link "$GITHUB_PANELS/mods/$mod" ~/.config/herdr-app/mods/$mod
+  done
+fi
 
 # hunk は config.toml のみ管理（同ディレクトリの state.json は対象外）
 mkdir -p ~/.config/hunk

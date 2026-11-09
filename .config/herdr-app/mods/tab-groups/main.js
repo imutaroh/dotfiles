@@ -31,6 +31,13 @@ const FIRST_RUN = {
   tabs: {},
 };
 // Every tab has the same width, and its bottom line is cut into one piece per pane, colored by that pane's status.
+// 右パネルのボタン。アイコンは付属の svg（別 mod が書き出す画像には頼らない）。
+const PANEL_BUTTONS = [
+  { id: "files", label: "Files", icon: "mods/files/file.svg" },
+  { id: "changes", label: "Changes", icon: "mods/changes/changes.svg" },
+  { id: "issues", label: "Issues", icon: "mods/workspace-chrome/circle-check.svg" },
+  { id: "projects", label: "Projects", icon: "mods/workspace-chrome/layers.svg" },
+];
 const TAB_WIDTH = 180;
 const PICKER = { kind: "popup", at: "top", offset: 40, width: 340 };
 const EDITOR = { kind: "popup", width: 250 };
@@ -323,7 +330,8 @@ class Bar {
       ? Math.max(10, (root.traffic_lights[0] + 64) / settings().zoom - (sidebar?.hidden ? 0 : sidebar?.size?.px ?? 0))
       : 10;
     const panel = find(root, "panel"), body = find(root, "panel-body");
-    const enabled = shared("workspace.panels") ?? ["files", "changes"];
+    // shared("workspace.panels") には Herdr が files と changes だけを入れる。足した分は常に出す。
+    const enabled = [...new Set([...(shared("workspace.panels") ?? []), ...PANEL_BUTTONS.map((b) => b.id)])];
     this.syncPanel(space, panel, body, enabled);
     const panelButton = (id, label, panelIcon) => {
       const on = panel && !panel.hidden && body?.active === id;
@@ -340,8 +348,7 @@ class Bar {
       .on_scroll_wheel((e) => { if (Math.abs(e.delta.y) >= 1) run(e.delta.y > 0 ? "tab.prev" : "tab.next"); })
       .child(h_flex().id("tab-scroll").flex_1().min_w(0).h_full().items_center().gap(3).overflow_x_scrollbar().children(strip))
       .child(button("tab-new", "+", () => openOverlay({ mod: "new-menu", kind: "popup", width: 250, height: 512 })))
-      .when(enabled.includes("files"), (el) => el.child(panelButton("files", "Files", "mods/files/file.svg")))
-      .when(enabled.includes("changes"), (el) => el.child(panelButton("changes", "Changes", "mods/changes/changes.svg")))
+      .children(PANEL_BUTTONS.filter((b) => enabled.includes(b.id)).map((b) => panelButton(b.id, b.label, b.icon)))
       .when(w?.buttons, (el) => el.child(button("minimize", w.platform === "windows" ? svg("mods/tabs/win-min.svg").size(16) : "−", () => run("window.minimize")))
         .child(button("maximize", w.platform === "windows" ? svg(`mods/tabs/${w.maximized ? "win-restore" : "win-max"}.svg`).size(16) : "□", () => run("window.maximize")))
         .child(button("close-window", w.platform === "windows" ? svg("mods/tabs/win-close.svg").size(16) : svg("mods/pane/close.svg").size(13), () => run("window.close"))));
