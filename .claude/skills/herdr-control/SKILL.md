@@ -1,108 +1,135 @@
 ---
 name: herdr-control
-description: herdr（ターミナルワークスペースマネージャ、socket API 付き CLI）のタブ・ペインを Claude が操作するスキル。「新しいタブで開いて」「ペインを分割して実行して」「横のペインでログ見せて」「herdr でタブ/ペイン作成」「ターミナルに TUI（hunk/yazi 等）を開いて」で使用。herdr セッション内のタブ/ペインの話であり、zellij や Ghostty 自体のタブとは別物。バックグラウンドジョブ（シェルがターミナル外）からでも socket API 経由で操作できるのが価値。
+description: Herdr デスクトップアプリ（herdr-app / hc）のタブ・ペインを Claude が操作するスキル。別タブで Claude を走らせる、タブの状態確認、指示の送信、承認待ちへの応答、タブを閉じる、で使用。「新しいタブで開いて」「別タブで Claude を走らせて」「そのタブの様子を見て」「承認して」「ペインを分割して実行して」「横のペインでログ見せて」「ターミナルに TUI（hunk/yazi 等）を開いて」。窓に出すのは herdr-app、端末の読み書きと待機は hc。旧 TUI 版の herdr pane / herdr tab は使えない。zellij や Ghostty 自体のタブとは別物。
 ---
 
 # herdr-control
 
-herdr は `/opt/homebrew/bin/herdr`。バックグラウンドジョブの PATH に無いことがあるので、コマンドの先頭で毎回これを通す。
+Herdr（デスクトップアプリ）の操作は 2 つの CLI に分かれている。確認した版は herdr-app 0.1.14 / hc 0.1.19（2026-11-09）。
+
+| やりたいこと | 使うもの |
+|---|---|
+| タブ・ペインを窓に出す／閉じる／畳む | `herdr-app do <コマンド>` |
+| 何が開いているか（space・tab・pane・terminal の ID）を引く | `herdr-app ls` |
+| 端末の状態を見る・画面を読む・文字やキーを送る・終わりを待つ | `hc get` / `read` / `send` / `keys` / `wait` |
+
+- 実体は `~/.local/bin/herdr-app` と `~/.local/bin/hc`。バックグラウンドジョブの PATH に無いときは先頭で `export PATH="$HOME/.local/bin:$PATH"` を通す
+- 旧 TUI 版の `herdr workspace|tab|pane ...` は動かない（`server_not_running`。2026-11-09 に確認）。古い記述を見つけても使わない
+- `hc` の `<t>` は端末のアドレス（`t7` のような短い ID）。`herdr-app ls` の `terminal` で分かる。自分の端末は `$HC_TERMINAL_ID` で、pane ID ではない。自分には送らない
+
+## 守ること
+
+- タブ・分割は頼まれたときだけ作る。作ると即座に表示され、ユーザーの画面が切り替わる。動作確認のためだけに試験用のタブを作らない
+- 作るタブには必ず `name` を付け、`folder` も明示する（省略すると、今フォーカスしている端末のフォルダになる）
+- ID は `herdr-app ls` で引く。推測せず、フォーカス中のものへの暗黙の対象指定にも頼らない。ID は JSON の文字列で渡す
+- 自分が作ったタブ・ペイン以外は、閉じない・キーを押さない・文字を送らない。必要になったら、実行前にユーザーへ確認する
+- 引数なしの `herdr-app`（窓を開く／前面に出す）と、アプリや core の停止・再起動（`hc server stop|restart` を含む）はしない。Claude の中から Herdr を起動しない（起動した側の環境変数が全端末に漏れ、Claude の会話ログが保存されなくなった。2026-11-02）
+- 窓へのキー・クリックの自動操作はしない（公式の禁止事項）。`hc keys` は端末の中へキーを送る機能で、これとは別
+
+## タブを開く
 
 ```bash
-export PATH="/opt/homebrew/bin:$PATH"
+herdr-app do tab.new '{"name":"fix login","folder":"/path/to/repo","argv":["claude"],"task":"ログインのバグを調べて"}'
 ```
 
-## 基本フロー
+| 引数 | 内容 |
+|---|---|
+| `name` | タブ名。省略すると番号で呼ばれるので必ず付ける |
+| `space` | 開くスペースの ID（`herdr-app ls`）。省略すると選択中のスペース |
+| `folder` | 端末の開始フォルダ |
+| `argv` | 起動するプログラム（JSON 配列）。Claude なら `["claude"]` |
+| `task` | `argv` のエージェントへの最初のメッセージ |
 
-1. `herdr workspace list` で対象リポジトリの workspace_id（`w48` 等）を label から特定する
-2. `herdr tab create` または `herdr pane split` で作業場所を作る
-3. `herdr pane run` でコマンドを流し込む
-4. `herdr pane read` / `herdr pane wait-output` で結果を確認する
-5. 一時的に作ったタブ/ペインは `herdr pane close` / `herdr tab close` で片付ける
+- 引数は `--name "fix login" --argv '["claude"]'` の形でも渡せる。未知の引数名は失敗し、有効な名前が返る
+- 結果は作られた ID の JSON（例 `{"pane":"…","terminal":"…"}`）。失敗は `{"error":…}` と exit 1。返事を読み、`herdr-app ls` で確かめる。返事は端末ができた合図にすぎず、プログラムが正しく動いた保証ではない（2 秒以内に非 0 で終わると、窓にエラーのトーストが出る）
+- 最初の依頼は `task` で渡す。起動直後の `hc send` は取りこぼされ得る
+- 依頼の本文に `gh api …` のような文字列を書くと、こちらの Bash コマンド文字列に `ask-gh-api-writes.sh` フックが反応して確認が出る（2026-11-09 の実測）。本文は一時ファイルに置き、`--task "$(cat <ファイル>)"` で渡す
+- 例「hunk でレビューしたい」: `argv` なしで開いてシェルを出し（`pane.split` では 2026-11-09 に確認済み。`tab.new` では未確認）、出た `terminal` に `hc send <t> "hunk diff --wrap origin/main...HEAD"`。`--wrap` は必ず付ける（長いコメントや日本語行が折り返されず読めなくなる。`~/.config/hunk/config.toml` の `wrap_lines = true` だけでは効かなかった。2026-08-12）。起動確認は `hc read <t>` か `hunk session list`。`argv` に hunk を直接渡す方法は未検証
 
-## ワークスペース解決
+## 状態を見る・読む
 
 ```bash
-herdr workspace list
+herdr-app ls                 # space > tab > terminal。各 terminal の app と status も出る
+hc get <t> --json            # state（live / finished）と status
+hc read <t>                  # 今の画面
+hc read <t> --lines 100      # 画面の上に履歴 100 行を足す
 ```
 
-JSON で `workspace_id` と `label`（リポジトリ名）、`active_tab_id`、`pane_count`、`tab_count`、`focused` が返る。ユーザーの意図したリポジトリ名から workspace_id を引く。`focused: true` のワークスペースがユーザーが今見ている画面。
+- `hc get` の `status` はオブジェクトで、`status.state` が `idle` / `working` / `done` / `blocked` / `error`、`status.msg` に今の作業や承認待ちの中身が入る。プログラムが報告した値で、画面の文字から推測しない。普通のシェルは報告しないので `status` は `null`
+- `working` / `blocked` / `error` の間は、履歴読みが画面だけを即座に返す（不完全）
+- terminal から tab の ID を引く: `herdr-app ls | jq -r --arg t "<t>" '.spaces[].tabs[] | select(any(.terminals[]; .terminal == $t)) | .id'`（pane は `.terminals[].pane`）
 
-## タブ・ペイン作成
+## 指示する・待つ
 
 ```bash
-herdr tab create --workspace <workspace_id> --cwd <path> --label <名前> --focus|--no-focus
+hc send <t> "<依頼>"                # 貼り付けて Enter
+hc send --if idle <t> "<依頼>"      # idle のときだけ送る
+hc wait <t> --timeout 120 --json   # 止まる（idle / done / blocked / error / 終了）まで待つ
 ```
 
-結果 JSON の `result.root_pane.pane_id`（`w48:pH` 等）が新規ペインの ID。
+- `hc send` は貼り付け＋Enter。本人が入力中なら一呼吸待つ。nvim などの TUI に `:cmd` を打つ用途には使わない（旧 TUI 版で、貼り付けが nvim のバッファ本文に入った事故がある）。TUI は `hc keys` で操作する
+- Claude に送ると `<hc from="t…">…</hc>` の手紙として届き、`/exit` などの組み込みコマンドは実行されない。終わらせるときはタブを閉じる（2026-11-09 の実測）
+- 待つのに `sleep` やポーリングは使わない。`hc wait` の既定は 180 秒で、`reason: timeout` は失敗ではなく途中経過なので、もう一度待つ。待つ間は Bash ツールが塞がるので、`--timeout` で区切る
+- `hc wait <t> --output TEXT` はプログラム用で、エージェントには使わない。待ち始めたあとに出た出力だけを見る。マッチ文字列は、送ったコマンドのエコー行に一致しないよう、コマンドの文字列に現れない目印にする
+
+## 承認する（blocked のとき）
+
+1. `hc get <t> --json` で `status.state` が `blocked` になる。`status.msg` に `approve Bash: …` のように承認待ちの中身が出る
+2. `hc read --lines 0 <t>` で画面を読み、何を許可する場面か確かめる
+3. ユーザーが許可した範囲だけ自分で答える。それ以外は、要点を伝えて聞く
+4. 答える: 既定の選択肢なら `hc keys <t> enter`、2 番目なら `hc keys <t> down enter`、拒否は `hc keys <t> esc`
+5. `hc wait <t>` に戻る
+
+- `hc send --force` で権限ダイアログを迂回しない（公式の禁止事項）
+- 確認が出たかは見た目で判断せず、`hc get` の `status.state` か `~/.claude/state/permission-requests.jsonl` で確かめる
+
+## 閉じる
 
 ```bash
-herdr pane split [<pane_id>] --direction right|down --ratio <float> --cwd <path> --focus|--no-focus
+herdr-app do tab.close --id <tab の id> --confirmed true
+herdr-app do pane.close --pane <pane の id>
 ```
 
-pane_id を省略すると現在フォーカス中のペインを分割する。明示指定を基本にする。
+- `--confirmed true` はアプリ側の確認を飛ばす。自分が作ったタブにだけ使う
+- 閉じるとタブの中の端末（走っている Claude を含む）も終わる。見返すかもしれないタブは、閉じずに `herdr-app do tab.settle --id <tab の id>` で畳む（動いたまま一覧から消え、そのエージェントが人を必要としたら戻る）
+- 作業後は `herdr-app ls` で、作る前から増えたタブ・ペインが残っていないか確かめる
 
-- 黙って作業用に作るときは `--no-focus`
-- ユーザーに見せる目的で作るときは `--focus`
-
-## コマンド実行
+## ペインを分割して実行する
 
 ```bash
-herdr pane run <pane_id> <command>
+herdr-app ls                                                            # 自分の $HC_TERMINAL_ID が入るタブの pane ID を引く
+herdr-app do pane.split '{"direction":"right","pane":"<pane の id>"}'    # 戻り値の terminal を控える
+hc send <terminal> "<コマンド>"                                           # 新しいペインのシェルへ打つ
+herdr-app do pane.close '{"pane":"<作った pane の id>"}'                  # 片付け
 ```
 
-ペインでコマンドを実行する。`herdr pane --help` には出るがまとまった説明が薄いので存在を忘れやすい。
+- `direction` は `right` か `down`。`pane` を省略するとフォーカス中のペインを分割するので、必ず明示する
+- 新しいペインはログインシェルなので、`.zprofile` の環境変数の防護が効く
+- 同じタブで別件の Claude が動いていても、触らない
 
-他に:
-- `herdr pane send-text <pane_id> <text>` — テキストを流し込む（改行は送られない）
-- `herdr pane send-keys <pane_id> <key> [key ...]` — キー送信。`enter` `esc` のようなキー名単位で渡す。文字列全体は送れない
-- `herdr agent send-keys` は **Claude/Codex 等のエージェントペイン専用**。普通のシェルペインに使うと `{"error":{"code":"agent_not_found","message":"agent target <pane_id> not found"}}` になる（実測済み）。シェルペインには `pane send-keys` / `pane run` を使う
+## `hc run --bg` は使わない
 
-## 出力確認
+エージェントは `tab.new` の `argv` で起こし、`hc run --bg` は使わない。公式の `hc --skill` は「エージェントは常に `--bg`」と書いているが、それは窓に出さない作業用エージェントの流儀で、この環境では従わない。公式に合わせて直さないこと。理由:
+
+- `--bg` の端末は `herdr.space` ラベルを付けないと窓に出ない（`herdr-app --skill`: unlabeled workers stay hidden）。ユーザーはタブで Claude の進捗を見て回る運用で、見えないエージェントは扱えない
+- 起こした端末は起こした側の子になり、親のプログラムが終わると一緒に終わる（`hc run --help` の `--outlive-parent`）
+- `hc run claude` は明示コマンドをシェルを通さずに直接起動する（`hc --skill`）。`.zprofile` 冒頭の環境変数の防護（`CLAUDE*` などを消す）は端末の最初のシェルでしか働かないので、直接起動はその外に出る
+
+## 迷ったら一次情報
 
 ```bash
-herdr pane read <pane_id> [--source visible|recent|recent-unwrapped] [--lines N]
-herdr pane wait-output <pane_id> (--match TEXT | --regex PATTERN) [--timeout MS]
+herdr-app commands    # 窓のコマンド全部。引数と説明（窓が無くても動く）
+herdr-app --skill     # 窓の公式ガイド
+hc --help             # hc のコマンド一覧。個別は hc <コマンド> --help
+hc --skill            # hc の公式ガイド
 ```
 
-**`wait-output` の落とし穴（実測済み）**: `--match` はターミナル行全体への部分文字列マッチで、コマンドのエコー行も対象になる。`--match` の文字列がコマンド自体に含まれていると、実行完了前にエコー行で即マッチしてしまう。
+版が上がったら、ここで引数や挙動を取り直す。この文書の記述と食い違ったら、一次情報を優先してこの文書を直す。
 
-例: `herdr pane run <id> "sleep 1 && echo done-waiting"` の後 `--match done-waiting` で待つと、`sleep 1` の完了を待たず `❯ sleep 1 && echo done-waiting` という入力エコー行に一致して即座に返ってくる。
+## このスキルを直すとき
 
-回避策: マッチ文字列はコマンド文字列に出現しないユニークなマーカーにする。例えば `echo "===DONE_$(date +%s)==="` のような、実行するコマンド文字列自体には現れない目印を使う。
-
-## 片付け・安全ルール
-
-```bash
-herdr pane close <pane_id>
-herdr tab close <tab_id>
-```
-
-- **自分が作ったタブ/ペイン以外は閉じない**。ユーザーの既存タブ（特に稼働中の hunk-review 等）には触れない
-- ユーザーの既存タブ/ペインを閉じる必要が生じた場合は、実行前に必ず確認する
-- TUI（hunk, yazi 等）を起動したペインは、ユーザーが使い終わるまで放置。勝手に close しない
-- 作業後は `herdr workspace list` で pane_count / tab_count が作業前と一致することを確認する（後片付け漏れの検知）
-
-## 隠しコマンドの再発見（セルフヒール）
-
-`herdr pane --help` に載らない、または載っていても見落としやすいサブコマンドがある。herdr のアップデートで挙動やサブコマンド一覧が変わったら、以下で全リストを取り直す。
-
-```bash
-herdr pane
-```
-
-引数無しで実行すると、`list / current / get / layout / process-info / neighbor / edges / focus / resize / zoom / read / rename / split / swap / move / close / send-text / send-keys / wait-output / run / report-agent / report-agent-session / release-agent / report-metadata` のフル一覧が usage 形式で出る。`herdr tab` や `herdr workspace` など他のトップレベルコマンドでも同じ手が使える。
-
-## ユースケース例
-
-「hunk でレビューしたい、新しいタブで開いて」への対応フロー:
-
-```bash
-herdr workspace list  # 対象 workspace の workspace_id (w48) を特定
-herdr tab create --workspace w48 --cwd <repo> --label hunk-review --focus
-# 結果の root_pane.pane_id を控える
-herdr pane run <pane_id> "hunk diff --wrap origin/main...HEAD"
-```
-
-hunk 起動時は **`--wrap` を必ず明示する**（長いコメント・日本語行が折り返されず読めなくなる。`~/.config/hunk/config.toml` の `wrap_lines = true` だけでは効かなかった実例あり 2026-08-12）。
-
-TUI 系は起動確認を `herdr pane read` や対象ツール自身のコマンド（例: `hunk session list`）で行う。`wait-output` で待つ場合は上記の落とし穴に注意し、TUI 起動後の固有の文字列（プロンプトやタイトル）をマッチ対象にする。
+- 正本は dotfiles の `.claude/skills/herdr-control/SKILL.md`。`~/.claude/skills` が `~/dotfiles/.claude/skills` へのディレクトリ symlink なので、`~/.claude/skills/herdr-control/SKILL.md` は別のコピーではなく同じファイル
+- `.codex/skills/herdr-control/SKILL.md`（Codex 用）は本文を持たず、正本を実行時に読む橋渡し
+- 本文を変えたら、`shasum -a 256 .claude/skills/herdr-control/SKILL.md` の値を `.codex/skill-bridge.json` の `source_sha256` に入れる。入れないと `python3 setup-codex-skills.py --check` が `SOURCE_DRIFT` で落ちる。`description` を変えたら、manifest と Codex 側の `description` も同じ文字列にそろえる
+- worktree で検証するときは `python3 setup-codex-skills.py --check --target-dir <存在しないパス>` にする（`~/.agents/skills` のリンクが main を指すため、付けないと必ず NG になる）
+- worktree で直した内容は、main に入れて `~/dotfiles` を `git pull --ff-only` するまで実環境に効かない
