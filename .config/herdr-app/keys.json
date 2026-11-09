@@ -68,7 +68,6 @@
     "cmd-shift-e": "status-keys.cycle",
     "cmd-shift-g": "status-keys.changes",
     "cmd-shift-i": "status-keys.issues",
-    "cmd-shift-j": "status-keys.projects",
     "cmd-u": "mod.open:redpen"
   },
   "layout:mine": {

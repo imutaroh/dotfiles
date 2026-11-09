@@ -4,11 +4,11 @@ import { spaces, agents, theme, run, window, layout, nextCommand } from "herdr";
 
 // Herdr 付属の workspace-status を複製して改変したもの（Apache-2.0。LICENSES/Herdr-Apache-2.0.txt を参照）。
 // 表示は元のまま、キーの受け口を足しただけ。
-// keys.json の "status-keys.cycle"（閉→Files→Changes→Issues→Projects→閉）と、
-// "status-keys.files" / ".changes" / ".issues" / ".projects" で右パネルを操作する。
+// keys.json の "status-keys.cycle"（閉→Files→Changes→Issues→閉）と、
+// "status-keys.files" / ".changes" / ".issues" で右パネルを操作する。
 // 動きはタブバー右端のボタンと同じ（表示中なら閉じる、それ以外なら切り替えて開く）。
-// issues と projects は fork の imutaroh/herdr-github-panels の mod（無ければ cycle は layout.select が空振りする）。
-const PANELS = ["files", "changes", "issues", "projects"];
+// issues は fork の imutaroh/herdr-github-panels の mod（無ければ cycle は layout.select が空振りする）。
+const PANELS = ["files", "changes", "issues"];
 
 function find(node, id) {
   if (node?.id === id) return node;

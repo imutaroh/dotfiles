@@ -158,13 +158,6 @@
                       "content": {
                         "mod": "issues"
                       }
-                    },
-                    {
-                      "id": "projects",
-                      "type": "block",
-                      "content": {
-                        "mod": "projects"
-                      }
                     }
                   ],
                   "active": "files"
