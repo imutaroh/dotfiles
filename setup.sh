@@ -188,6 +188,7 @@ link "$DOTFILES_DIR/.claude/scripts" ~/.claude/scripts
 # skills のようなディレクトリまるごとリンクにはしない）
 mkdir -p ~/.claude/hooks
 link "$DOTFILES_DIR/.claude/hooks/play-sound.sh" ~/.claude/hooks/play-sound.sh
+link "$DOTFILES_DIR/.claude/hooks/ask-gh-api-writes.sh" ~/.claude/hooks/ask-gh-api-writes.sh
 
 mkdir -p ~/.claude/output-styles
 link "$DOTFILES_DIR/.claude/output-styles/15sai.md" ~/.claude/output-styles/15sai.md
