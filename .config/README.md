@@ -52,7 +52,7 @@ herdr-app do mod.open '{"name":"tab-autoname"}'
 | `agents-groups` | 付属 `agents` の複製。サイドバーの Agents 一覧を `tab-groups` のグループで区切る。見出しのクリックはタブバーのチップと同じく畳む。行の右クリックで別のグループへ移す。並びは右上のボタンで付属の Priority などへ戻せる |
 | `pane-progress` | 付属 `pane` の複製。ペインの見出しに、エージェントのセッションのタイトルと、Claude Code のタスクの流れ（完了数、今の作業、残りの作業）を 1 行で出す。タスクが無いときは今の動作を出す |
 | `progress-panel` | サイドバーに、フォーカス中のペインの Claude Code セッションのタスクを全件並べる。全体像はここで見る |
-| `status-keys` | 付属 `workspace-status` の複製。右パネルの Files / Changes を Cmd+Shift+E / Cmd+Shift+G で開閉する。開いている間はターミナルを隠して全幅で見せる |
+| `status-keys` | 付属 `workspace-status` の複製。右パネルの Files / Changes / Issues を Cmd+Shift+E / G / I で開閉する。パネルはターミナルの右に並べて出す（幅は mine.json の weight で、main 3 対 panel 2） |
 | `changes-gh` | 付属 `changes` の複製。差分を GitHub の配色にして長い行を折り返す |
 | `files-img` | 付属 `files` の複製。画像ファイルを画像として表示する |
 

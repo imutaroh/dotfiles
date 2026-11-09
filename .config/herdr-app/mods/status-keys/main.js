@@ -38,19 +38,8 @@ function cyclePanel() {
   else { run("layout.select", { stack: "panel-body", child: next }); run("layout.show", { id: "panel" }); }
 }
 
-// 右パネルを開いている間はターミナル領域（main）を隠し、パネルを全幅で見せる。
-// タブバーのボタンで開閉した場合も拾えるよう、キー処理ではなく状態を見て合わせる。
-function syncFullPanel() {
-  const root = layout();
-  const panel = find(root, "panel"), main = find(root, "main");
-  if (!panel || !main) return;
-  const panelShown = !panel.hidden;
-  if (Boolean(main.hidden) !== panelShown) run(panelShown ? "layout.hide" : "layout.show", { id: "main" });
-}
-
 export default class WorkspaceStatus extends View {
   init(_props, cx) {
-    cx.timer.every(250, () => syncFullPanel());
     cx.spawn(async (cx) => {
       for (;;) {
         const c = await nextCommand();
