@@ -54,6 +54,10 @@ if [ -e "$HOME/.local/share/mise/shims/node" ]; then
     link "$HOME/.local/share/mise/shims/node" ~/.local/bin/node
 fi
 
+# hview: HTML / Markdown を Herdr の html-viewer ペインで開く（yazi で選べる）
+mkdir -p ~/.local/bin
+link "$DOTFILES_DIR/bin/hview" ~/.local/bin/hview
+
 # Codex 用のスクリプトは tomllib を使う（Python 3.11 以上）。macOS 標準の python3 は 3.9 なので使えない
 codex_python() {
     mise exec -- python3 "$@"

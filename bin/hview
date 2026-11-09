@@ -1,0 +1,32 @@
+#!/bin/bash
+# hview: HTML / Markdown を Herdr の html-viewer ペインで、いまのペインの右に開く
+# 使い方:
+#   hview <file>   そのファイルを開く（相対パス・~ 可）
+#   hview          yazi で選ぶ（開始位置は HVIEW_START、既定は ~/dotfiles/.claude/tmp）
+# 開いたペインが「読み込み」のまま止まったら:
+#   touch ~/.config/herdr-app/mods/html-viewer/place.js   # mod を再読み込みさせる
+set -euo pipefail
+
+command -v herdr-app >/dev/null || { echo "hview: herdr-app が見つからない" >&2; exit 1; }
+
+file="${1:-}"
+if [ -z "$file" ]; then
+    start="${HVIEW_START:-$HOME/dotfiles/.claude/tmp}"
+    [ -d "$start" ] || start="$HOME"
+    chooser="$(mktemp -t hview-chooser.XXXXXX)"
+    yazi "$start" --chooser-file="$chooser"
+    file="$(head -n 1 "$chooser")"
+    [ -n "$file" ] || { echo "hview: 選ばれなかった" >&2; exit 0; }
+fi
+
+file="${file/#\~/$HOME}"
+[ -f "$file" ] || { echo "hview: ファイルが無い: $file" >&2; exit 1; }
+case "$file" in
+    *.html|*.htm|*.md|*.markdown|*.mdown) ;;
+    *) echo "hview: .html か .md だけ開ける: $file" >&2; exit 1 ;;
+esac
+file="$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
+
+pane="$(herdr-app status | jq -r '.focused_pane')"
+props="$(jq -cn --arg f "$file" '{file: $f}')"
+herdr-app do pane.split --direction right --pane "$pane" --mod html-viewer --props "$props"
