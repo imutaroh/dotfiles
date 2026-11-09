@@ -12,6 +12,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - `settings.json` は symlink 不可（`claude doctor` 等が実ファイルに置き換えるため）。`./sync-settings.sh` で実環境 → dotfiles へ明示的に取り込む。公開用に一部を除いて取り込むので、追跡版は実環境と一致しない（除く項目はスクリプトの先頭に書いてある）。`.claude/settings.json` を直接編集しない
 - `.claude/mods/image-view-bytes/` は `~/.claude/settings.json` の `env` にある `CLAUDE_CODE_PLUGIN_DIRS` で読み込む（symlink にしない）。起動中のセッションには効かず、次に起動したセッションから効く。元の `image-view@claude-image-view` は無効にして併用しない
 - 右パネルの Issues は、fork `imutaroh/herdr-github-panels`（実体は `~/repos/imutaroh/herdr-github-panels`）の mod。`setup.sh` が checkout の `mods/issues` をフォルダごとリンクする（checkout が無ければ張らない）。`mine.json` の `panel-body`、`status-keys` の `PANELS`、`tab-groups` の `PANEL_BUTTONS` が参照する。Projects のパネルは作ったが、見にくいので 2026-11-09 に外した
+- `~/.local/bin/node` は mise の node の shim へのリンクで、`setup.sh` が張る。Herdr アプリなどの GUI アプリは、対話しないログインシェルの PATH でコマンドを探す。そこには `.zshrc` が足す mise の PATH が無いので、何もしないと Homebrew の node が先に見つかり、それが壊れると node を使う mod（`html-viewer`）が動かない。`~/.local/bin` は `.zprofile` で Homebrew より前にあるので、ここに置いて先に見つけさせる。アプリの再起動は要らない
 - Codex 側（`.codex/` と `setup-codex-skills.py`）の管理方式は `.claude/rules/codex.md` に分けてある。該当ファイルを触るときに読み込まれる
 - `.claude/settings.local.json` はこのリポジトリ固有の設定として使える（gitignore 対象でコミットされない・設定の優先順位は user < project < local）
 - `launchd/*.plist` は常駐エージェント定義。`setup.sh` が `__HOME__` を置き換えて `~/Library/LaunchAgents/` へコピーし `launchctl bootstrap` でロードする（symlink ではなくコピー）。実行するファイルが無いジョブは登録しない。`launchd/optional/` は対象外で、使うときに手で登録する

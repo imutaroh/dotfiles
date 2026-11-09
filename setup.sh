@@ -45,6 +45,15 @@ mise trust "$DOTFILES_DIR/.config/mise/config.toml"
 eval "$(mise activate bash)"
 mise install
 
+# Herdr などの GUI アプリは、対話しないログインシェルの PATH でコマンドを探す。
+# mise の PATH は .zshrc（対話）でしか足されないので、そこでは Homebrew の node が先に見つかり、
+# それが壊れると node を使う Herdr の mod（html-viewer）が動かない。
+# ~/.local/bin は .zprofile で Homebrew より前に置いてあるので、mise の node の shim をここに置いて先に見つけさせる
+if [ -e "$HOME/.local/share/mise/shims/node" ]; then
+    mkdir -p ~/.local/bin
+    link "$HOME/.local/share/mise/shims/node" ~/.local/bin/node
+fi
+
 # Codex 用のスクリプトは tomllib を使う（Python 3.11 以上）。macOS 標準の python3 は 3.9 なので使えない
 codex_python() {
     mise exec -- python3 "$@"
