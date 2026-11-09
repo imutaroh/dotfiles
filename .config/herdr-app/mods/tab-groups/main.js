@@ -31,13 +31,12 @@ const FIRST_RUN = {
   tabs: {},
 };
 // Every tab has the same width, and its bottom line is cut into one piece per pane, colored by that pane's status.
-// 右パネルのボタン。Issues と Projects のアイコンは、それぞれの mod が data/ に書き出す
-// （symlink した mod フォルダの画像は読まれないため）。
+// 右パネルのボタン。アイコンは付属の svg（別 mod が書き出す画像には頼らない）。
 const PANEL_BUTTONS = [
   { id: "files", label: "Files", icon: "mods/files/file.svg" },
   { id: "changes", label: "Changes", icon: "mods/changes/changes.svg" },
-  { id: "issues", label: "Issues", icon: "data/issues/icons/issue.svg" },
-  { id: "projects", label: "Projects", icon: "data/projects/icons/projects.svg" },
+  { id: "issues", label: "Issues", icon: "mods/workspace-chrome/circle-check.svg" },
+  { id: "projects", label: "Projects", icon: "mods/workspace-chrome/layers.svg" },
 ];
 const TAB_WIDTH = 180;
 const PICKER = { kind: "popup", at: "top", offset: 40, width: 340 };
@@ -331,7 +330,8 @@ class Bar {
       ? Math.max(10, (root.traffic_lights[0] + 64) / settings().zoom - (sidebar?.hidden ? 0 : sidebar?.size?.px ?? 0))
       : 10;
     const panel = find(root, "panel"), body = find(root, "panel-body");
-    const enabled = shared("workspace.panels") ?? PANEL_BUTTONS.map((b) => b.id);
+    // shared("workspace.panels") には Herdr が files と changes だけを入れる。足した分は常に出す。
+    const enabled = [...new Set([...(shared("workspace.panels") ?? []), ...PANEL_BUTTONS.map((b) => b.id)])];
     this.syncPanel(space, panel, body, enabled);
     const panelButton = (id, label, panelIcon) => {
       const on = panel && !panel.hidden && body?.active === id;
