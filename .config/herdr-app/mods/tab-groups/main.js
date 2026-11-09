@@ -36,7 +36,6 @@ const PANEL_BUTTONS = [
   { id: "files", label: "Files", icon: "mods/files/file.svg" },
   { id: "changes", label: "Changes", icon: "mods/changes/changes.svg" },
   { id: "issues", label: "Issues", icon: "mods/workspace-chrome/circle-check.svg" },
-  { id: "projects", label: "Projects", icon: "mods/workspace-chrome/layers.svg" },
 ];
 const TAB_WIDTH = 180;
 const PICKER = { kind: "popup", at: "top", offset: 40, width: 340 };
