@@ -7,6 +7,8 @@ DISPLAY_DIR=$(echo "$CURRENT_DIR" | sed "s|^$HOME|~|")
 # session_name: /rename したカスタム名、なければ AI 生成タイトル。どちらも無い間は absent
 # 専用行に出すので上限は緩め（横幅からあふれる分は Claude Code 側が … で切る）
 SESSION_NAME=$(echo "$input" | jq -r '.session_name // empty | if length > 48 then .[0:47] + "…" else . end')
+# session_id: claude --resume <ID> / --fork-session に貼れるよう全桁（UUID 36 文字）で出す
+SESSION_ID=$(echo "$input" | jq -r '.session_id // empty')
 EFFORT=$(echo "$input" | jq -r '.effort.level // empty')
 # output style は default 以外のときだけ表示する
 OUTPUT_STYLE=$(echo "$input" | jq -r '.output_style.name // empty')
@@ -72,6 +74,10 @@ NOW=$(date +%s)
 # ── 0行目: セッション名（狭いペインでも見えるよう専用行）──
 LINE0=""
 [ -n "$SESSION_NAME" ] && LINE0="${VIOLET}${SESSION_NAME}${RESET}"
+
+# ── 0b行目: セッション ID（切り詰めると貼れないので専用行・全桁）──
+LINE0B=""
+[ -n "$SESSION_ID" ] && LINE0B="${ICE}${SESSION_ID}${RESET}"
 
 # ── 1行目: モデル·effort（effort-auto が有効なら省略）+ ディレクトリ + git ブランチ + output style ──
 GIT_SEG=""
@@ -161,11 +167,13 @@ LINE4=""
 
 # ── 出力: 縦に並べる (空の行はスキップ) ───────────────────
 #   0行目: セッション名（/rename 名 or AI 生成タイトル、未生成なら行ごと省略）
+#   0b行目: セッション ID（全桁。入力に無ければ行ごと省略）
 #   1行目: モデル·effort（effort-auto が有効なら省略）+ ディレクトリ + git ブランチ + output style（非default時のみ）
 #   2行目: ctx バー + コスト + セッション経過時間
 #   3行目: 5h レート制限バー + リセット残り
 #   4行目: 7d レート制限バー + リセット残り
 [ -n "$LINE0" ] && echo -e "$LINE0"
+[ -n "$LINE0B" ] && echo -e "$LINE0B"
 echo -e "$LINE1"
 echo -e "$LINE2"
 [ -n "$LINE3" ] && echo -e "$LINE3"

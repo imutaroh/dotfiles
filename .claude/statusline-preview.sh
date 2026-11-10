@@ -16,7 +16,7 @@ mkdir -p "$DIR/tmp"
 NOW=$(date +%s); FIVE=$((NOW + 9900)); SEVEN=$((NOW + 225000))
 render() {
     cat <<JSON | bash "$SCRIPT"
-{"model":{"display_name":"Opus 4.8"},"workspace":{"current_dir":"$HOME/dotfiles"},"cost":{"total_cost_usd":0.08,"total_duration_ms":423000},"context_window":{"context_window_size":1000000,"used_percentage":$1,"current_usage":{"input_tokens":1,"cache_creation_input_tokens":0,"cache_read_input_tokens":0}},"rate_limits":{"five_hour":{"used_percentage":$2,"resets_at":$FIVE},"seven_day":{"used_percentage":$3,"resets_at":$SEVEN}}}
+{"session_id":"8f3c2a1e-5b7d-4e9a-a0c6-1d2e3f4a5b6c","model":{"display_name":"Opus 4.8"},"workspace":{"current_dir":"$HOME/dotfiles"},"cost":{"total_cost_usd":0.08,"total_duration_ms":423000},"context_window":{"context_window_size":1000000,"used_percentage":$1,"current_usage":{"input_tokens":1,"cache_creation_input_tokens":0,"cache_read_input_tokens":0}},"rate_limits":{"five_hour":{"used_percentage":$2,"resets_at":$FIVE},"seven_day":{"used_percentage":$3,"resets_at":$SEVEN}}}
 JSON
 }
 
