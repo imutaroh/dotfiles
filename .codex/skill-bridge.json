@@ -2,6 +2,15 @@
   "schema_version": 1,
   "skills": [
     {
+      "name": "agile-data-modeling",
+      "source": ".claude/skills/agile-data-modeling/SKILL.md",
+      "source_sha256": "d3576586557f056e03b6b0f259f80784cb8a81bcc3672a8de65ef205f3efcfc0",
+      "description": "私的スキル。本体は追跡外（.gitignore）で、私的リポジトリからのリンクで置く。",
+      "mode": "deferred",
+      "codex_skill": null,
+      "note": "私的スキルのため Codex 側の入口を作らない。本文を変えたら source_sha256 を更新する。"
+    },
+    {
       "name": "ctx-agent-history-search",
       "source": ".claude/skills/ctx-agent-history-search/SKILL.md",
       "source_sha256": "d76cd55f506f6d8605f2fed933a16e4ab995b3a4ab8e6d96bfd84d469872b3d6",
