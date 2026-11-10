@@ -11,6 +11,15 @@
       "note": "私的スキルのため Codex 側の入口を作らない。本文を変えたら source_sha256 を更新する。"
     },
     {
+      "name": "ap",
+      "source": ".claude/skills/ap/SKILL.md",
+      "source_sha256": "c2983ef12637649817b1bf34d91bfc18d30a88bba39e1dac63a108a0b2ad8ed2",
+      "description": "私的スキル。本体は追跡外（.gitignore）で、私的リポジトリからのリンクで置く。",
+      "mode": "deferred",
+      "codex_skill": null,
+      "note": "私的スキルのため Codex 側の入口を作らない。本文を変えたら source_sha256 を更新する。"
+    },
+    {
       "name": "ctx-agent-history-search",
       "source": ".claude/skills/ctx-agent-history-search/SKILL.md",
       "source_sha256": "d76cd55f506f6d8605f2fed933a16e4ab995b3a4ab8e6d96bfd84d469872b3d6",

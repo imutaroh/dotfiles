@@ -85,6 +85,7 @@ auto モードでも、書き込みの疑いのある `gh api` は確認にな�
 | `ctx-agent-history-search` | `ctx integrations` |
 | `synced/` | claude.ai が同期する。手で消しても次の同期で戻る |
 | `agile-data-modeling` | 非公開の個人用スキル |
+| `ap` | 非公開の個人用スキル |
 
 ## mods/
 
