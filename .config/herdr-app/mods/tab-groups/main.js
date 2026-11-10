@@ -7,6 +7,7 @@ import { spaces, panes, run, openOverlay, closeOverlay, theme, window, shared, s
 // Changed from the `tabs` mod shipped with Herdr (https://github.com/herdrdev/herdr-app, Apache-2.0):
 // added the groups and their chips, the picker, the group editor, and the group items in the tab menu.
 // Tabs have one width, and a line under each name shows its panes (see paneLine).
+// Each name starts with the number Cmd+number goes to.
 //
 // One folder, four views, chosen by props:
 //   Tab bar   click a chip to fold or unfold it, right-click it to edit; drag tabs and chips to move them
@@ -265,6 +266,8 @@ class Bar {
     const s = state();
     const space = spaces().find((p) => p.active);
     const shown = inOrder(space?.tabs ?? [], s);
+    // The number Cmd+N (tab.select:N) goes to: settled tabs are skipped, in the real order. Only 1-9 have a key.
+    const numbers = new Map((space?.tabs ?? []).filter((x) => !x.settled).slice(0, 9).map((x, i) => [x.id, i + 1]));
     this.followClose(s);
     const stop = (_e, cx) => cx.stop_propagation();
     const button = (id, label, action) => div().id(id).size(26).flex_none().flex().items_center().justify_center().rounded(6).text_color(t.dim).hover((s) => s.bg(t.hover).text_color(t.foreground))
@@ -275,6 +278,7 @@ class Bar {
       const name = /^tb\d+$/.test(c.name) ? program?.name ?? "Terminal" : c.name;
       const idle = inGroup ? "#00000000" : t.chrome;
       const row = h_flex().flex_1().min_h(0).px(10).gap(7).items_center()
+        .when(numbers.has(c.id), (el) => el.child(div().flex_none().text_size(11).text_color(t.dim).child(String(numbers.get(c.id)))))
         .when(Boolean(program?.icon), (el) => el.child(program.tint ? svg(program.icon).size(14).flex_none().text_color(t.muted) : image(program.icon).size(14).flex_none()))
         .child(div().flex_1().min_w(0).truncate().child(c.zoomed ? `${name} Z` : name))
         .when(c.status === "working", (el) => el.child(svg("mods/workspace-chrome/spinner.svg").size(12).flex_none().text_color(t.working).spin(900)))
