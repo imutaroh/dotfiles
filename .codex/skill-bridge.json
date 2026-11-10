@@ -18,6 +18,15 @@
       "mode": "wrapper",
       "codex_skill": "herdr-control",
       "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "hview",
+      "source": ".claude/skills/hview/SKILL.md",
+      "source_sha256": "663a13d0e5677d6b1fc2be5be8a541fe38644d079d39e277155d84df0e9af780",
+      "description": "HTML / Markdown を書いて、Herdr の html-viewer ペイン（hview コマンド）でユーザーに見せるスキル。図・表・比較・設計の説明など、端末の文字より 1 枚のページのほうが分かりやすいものを見せるときに使う。「hview で見せて」「hview で開いて」「HTML で見せて」「ページにして」「図にして見せて」「横に出して」で使用。ビューアはページを画像として映すので、押して開く部品（折りたたみ・タブ・ホバー・リンク）を使わずに書く。claude.ai の Artifact とは別物で、ユーザーが Artifact と言わない限りこちらを使う。",
+      "mode": "wrapper",
+      "codex_skill": "hview",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
     }
   ]
 }

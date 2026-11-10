@@ -18,7 +18,7 @@ CHECK OK でも「未設置」があればまだ導入前です。SOURCE_DRIFT �
 
 ## 対応範囲と制限
 
-- 1件: herdr-control は共通規約を介して元スキルを参照。
+- 2件: herdr-control と hview は共通規約を介して元スキルを参照。
 - 1件: ctx-agent-history-search は ctx が `~/.agents/skills/` に導入した実体をそのまま使用。重複配置しません。
 
 ctx-agent-history-search の正本はこのリポジトリで追跡していません。無い環境では `--check` と `--apply` は「未導入」と表示して続行します。導入済みの外部スキルは更新されると SOURCE_DRIFT が出ます。
