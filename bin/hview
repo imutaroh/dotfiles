@@ -1,5 +1,5 @@
 #!/bin/bash
-# hview: HTML / Markdown を Herdr の html-viewer ペインで、いまのペインの右に開く
+# hview: HTML / Markdown を Herdr の html-viewer ペインで、hview を実行したペインの右に開く
 # 使い方:
 #   hview <file>   そのファイルを開く（相対パス・~ 可）
 #   hview          yazi で選ぶ（開始位置は HVIEW_START、既定は ~/dotfiles/.claude/tmp）
@@ -27,6 +27,14 @@ case "$file" in
 esac
 file="$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
 
-pane="$(herdr-app status | jq -r '.focused_pane')"
+# 開く場所は hview を実行した端末のペインの横。フォーカス中のペインを使うと、
+# 別タブで Claude が実行したときに本人がいま見ているペインの横に開いてしまう。
+# Herdr の端末には HC_TERMINAL_ID が渡るので、ls で端末からペインを引く。
+# 引けないとき（Herdr の外から実行したなど）はフォーカス中のペインの横に開く。
+pane=""
+if [ -n "${HC_TERMINAL_ID:-}" ]; then
+    pane="$(herdr-app ls | jq -r --arg t "$HC_TERMINAL_ID" '[.. | objects | select(.terminal? == $t) | .pane] | .[0] // empty')"
+fi
+[ -n "$pane" ] || pane="$(herdr-app status | jq -r '.focused_pane')"
 props="$(jq -cn --arg f "$file" '{file: $f}')"
-herdr-app do pane.split --direction right --pane "$pane" --mod html-viewer --props "$props"
+herdr-app "do" pane.split --direction right --pane "$pane" --mod html-viewer --props "$props"
