@@ -43,7 +43,6 @@ herdr-app do tab.new '{"name":"fix login","folder":"/path/to/repo","argv":["clau
 - 引数は `--name "fix login" --argv '["claude"]'` の形でも渡せる。未知の引数名は失敗し、有効な名前が返る
 - 結果は作られた ID の JSON（例 `{"pane":"…","terminal":"…"}`）。失敗は `{"error":…}` と exit 1。返事を読み、`herdr-app ls` で確かめる。返事は端末ができた合図にすぎず、プログラムが正しく動いた保証ではない（2 秒以内に非 0 で終わると、窓にエラーのトーストが出る）
 - 最初の依頼は `task` で渡す。起動直後の `hc send` は取りこぼされ得る
-- 依頼の本文に `gh api …` のような文字列を書くと、こちらの Bash コマンド文字列に `ask-gh-api-writes.sh` フックが反応して確認が出る（2026-11-09 の実測）。本文は一時ファイルに置き、`--task "$(cat <ファイル>)"` で渡す
 - 例「hunk でレビューしたい」: `argv` なしで開いてシェルを出し（`pane.split` では 2026-11-09 に確認済み。`tab.new` では未確認）、出た `terminal` に `hc send <t> "hunk diff --wrap origin/main...HEAD"`。`--wrap` は必ず付ける（長いコメントや日本語行が折り返されず読めなくなる。`~/.config/hunk/config.toml` の `wrap_lines = true` だけでは効かなかった。2026-08-12）。起動確認は `hc read <t>` か `hunk session list`。`argv` に hunk を直接渡す方法は未検証
 
 ## 状態を見る・読む
