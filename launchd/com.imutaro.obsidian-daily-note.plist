@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.imutaro.obsidian-daily-note</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__HOME__/dotfiles/bin/obsidian-daily-note.sh</string>
+  </array>
+  <!-- 毎日 0:05。止まっていた日は復帰時に1回だけ走る。ログイン時（RunAtLoad）にも走って取りこぼしを埋める -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>0</integer>
+    <key>Minute</key>
+    <integer>5</integer>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>__HOME__/Library/Logs/obsidian-daily-note.log</string>
+  <key>StandardErrorPath</key>
+  <string>__HOME__/Library/Logs/obsidian-daily-note.log</string>
+</dict>
+</plist>

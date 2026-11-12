@@ -17,6 +17,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - Codex 側（`.codex/` と `setup-codex-skills.py`）の管理方式は `.claude/rules/codex.md` に分けてある。該当ファイルを触るときに読み込まれる
 - `.claude/settings.local.json` はこのリポジトリ固有の設定として使える（gitignore 対象でコミットされない・設定の優先順位は user < project < local）
 - `launchd/*.plist` は常駐エージェント定義。`setup.sh` が `__HOME__` を置き換えて `~/Library/LaunchAgents/` へコピーし `launchctl bootstrap` でロードする（symlink ではなくコピー）。実行するファイルが無いジョブは登録しない。`launchd/optional/` は対象外で、使うときに手で登録する
+- `bin/obsidian-daily-note.sh` は Obsidian の daily ノート（Vault `~/repos/imutaroh/ObsidianImus` の `Private/Journals/YYYY-MM-DD.md`）を、無ければ Vault のテンプレ（`_Meta/Templates/日報.md`）から作る。`launchd/com.imutaro.obsidian-daily-note.plist` が毎日 0:05 とログイン時に呼ぶ（Mac が止まっていた日は復帰時に今日の分だけ作る）。既にあるノートは上書きしない。保存先とテンプレは Vault の `.obsidian/daily-notes.json` に従い、空なら上の既定値を使う。テンプレの `{{date}}` などの変数は展開しない。ログは `~/Library/Logs/obsidian-daily-note.log`
 - Git の名前とメールは `~/.gitconfig.local` に置き、追跡しない
 - `setup.sh` は既存の実ファイルや実ディレクトリを消さず、`~/.dotfiles-backup/<日時>/` へ退避してからリンクする
 
