@@ -1,4 +1,5 @@
--- コードの行や範囲に Claude へのコメントを溜めて、同じ herdr タブの Claude ペインにまとめて送る。
+-- コードの行や範囲に Claude へのコメントを溜めて、同じ Herdr タブの Claude ペインにまとめて送る。
+-- Herdr デスクトップアプリでは hc send で送るので、貼り付けたあと Enter まで押される（そのまま送信される）。
 -- 本体は自作プラグイン nudge.nvim。~/repos/imutaroh/ に clone があればそれを使い、無ければ GitHub から入れる
 return {
   {

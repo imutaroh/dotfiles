@@ -107,7 +107,7 @@ nvim/
 | `astrocore.lua` | コア設定（折り返し、カーソルライン、autocmd） |
 | `im-select.lua` | Insert モードを抜けたら IME を英語に自動切替 |
 | `keymaps-ja.lua` | which-key の説明文を日本語化 |
-| `nudge.lua` | 自作プラグイン nudge.nvim の読み込み。行・範囲に Claude へのコメントを溜め、同じ herdr タブの Claude ペインへまとめて貼り付ける（Enter は押さない）。`<leader>aa` 追加、`<leader>as` 送信 |
+| `nudge.lua` | 自作プラグイン nudge.nvim の読み込み。行・範囲に Claude へのコメントを溜め、同じ Herdr タブの Claude ペインへ `hc send` でまとめて送る（貼り付けたあと Enter まで押される）。`<leader>aa` 追加、`<leader>as` 送信 |
 
 ## 基本設定
 
