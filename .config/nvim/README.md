@@ -14,7 +14,7 @@ Vim 初心者がゼロから設定を構築するのは大変なため、オー�
 | フォント | Nerd Font 対応フォント（ファイルアイコン等の表示に必要。[Nerd Fonts](https://www.nerdfonts.com/) 参照） |
 | Git | プラグイン管理に必要 |
 | macism | IME 自動切替に必要（`brew install laishulu/homebrew/macism`） |
-| 自作プラグイン | [diffbase.nvim](https://github.com/imutaroh/diffbase.nvim) と [nudge.nvim](https://github.com/imutaroh/nudge.nvim) は GitHub から自動で入る。`~/repos/imutaroh/` に clone があればそちらを読む |
+| 自作プラグイン | [diffbase.nvim](https://github.com/imutaroh/diffbase.nvim) と [nudge.nvim](https://github.com/imutaroh/nudge.nvim) は GitHub から自動で入る。`~/repos/imutaroh/extensions/` に clone があればそちらを読む |
 | Obsidian の vault | 使うなら `lua/plugins/obsidian.lua` の `cond` と `path` を自分の vault に書き換える。vault が無ければ読み込まない |
 
 ### プラグイン管理
@@ -107,7 +107,7 @@ nvim/
 | `astrocore.lua` | コア設定（折り返し、カーソルライン、autocmd） |
 | `im-select.lua` | Insert モードを抜けたら IME を英語に自動切替 |
 | `keymaps-ja.lua` | which-key の説明文を日本語化 |
-| `nudge.lua` | 自作プラグイン nudge.nvim の読み込み。行・範囲に Claude へのコメントを溜め、同じ herdr タブの Claude ペインへまとめて貼り付ける（Enter は押さない）。`<leader>aa` 追加、`<leader>as` 送信 |
+| `nudge.lua` | 自作プラグイン nudge.nvim の読み込み。行・範囲に Claude へのコメントを溜め、同じ Herdr タブの Claude ペインへ `hc send` でまとめて送る（貼り付けたあと Enter まで押される）。`<leader>aa` 追加、`<leader>as` 送信 |
 
 ## 基本設定
 

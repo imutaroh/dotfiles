@@ -16,7 +16,7 @@ require("lazy").setup({
 } --[[@as LazySpec]], {
   -- Configure any other `lazy.nvim` configuration options here
   -- dev = true のプラグイン（自作）はローカルの clone を優先し、無ければ GitHub から入れる
-  dev = { path = "~/repos/imutaroh", fallback = true },
+  dev = { path = "~/repos/imutaroh/extensions", fallback = true },
   install = { colorscheme = { "astrotheme", "habamax" } },
   ui = { backdrop = 100 },
   performance = {

@@ -68,7 +68,7 @@
 | `<leader>aa` | この行 / 選択範囲にコメント |
 | `<leader>ae` / `<leader>ad` | カーソル下のコメントを編集 / 削除 |
 | `<leader>al` | コメント一覧（quickfix） |
-| `<leader>as` | Claude にまとめて送る（同じ herdr タブの Claude の入力欄に貼るだけ。Enter は自分で押す） |
+| `<leader>as` | Claude にまとめて送る（同じ Herdr タブの Claude へ `hc send` で送る。貼り付けたあと Enter まで押され、そのまま送信される） |
 | `<leader>at` | 送り先の Claude を選び直す |
 | `<leader>aC` | コメントをすべて消す |
 
