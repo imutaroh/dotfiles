@@ -14,7 +14,7 @@ Vim 初心者がゼロから設定を構築するのは大変なため、オー�
 | フォント | Nerd Font 対応フォント（ファイルアイコン等の表示に必要。[Nerd Fonts](https://www.nerdfonts.com/) 参照） |
 | Git | プラグイン管理に必要 |
 | macism | IME 自動切替に必要（`brew install laishulu/homebrew/macism`） |
-| 自作プラグイン | [diffbase.nvim](https://github.com/imutaroh/diffbase.nvim) と [nudge.nvim](https://github.com/imutaroh/nudge.nvim) は GitHub から自動で入る。`~/repos/imutaroh/` に clone があればそちらを読む |
+| 自作プラグイン | [diffbase.nvim](https://github.com/imutaroh/diffbase.nvim) と [nudge.nvim](https://github.com/imutaroh/nudge.nvim) は GitHub から自動で入る。`~/repos/imutaroh/extensions/` に clone があればそちらを読む |
 | Obsidian の vault | 使うなら `lua/plugins/obsidian.lua` の `cond` と `path` を自分の vault に書き換える。vault が無ければ読み込まない |
 
 ### プラグイン管理

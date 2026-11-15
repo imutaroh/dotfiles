@@ -1,5 +1,5 @@
 -- 普段の編集画面のまま「何と比べた差分を見るか」を切り替える。<leader>gn で比べる相手を選ぶ。
--- 本体は自作プラグイン diffbase.nvim。~/repos/imutaroh/ に clone があればそれを使い、無ければ GitHub から入れる
+-- 本体は自作プラグイン diffbase.nvim。~/repos/imutaroh/extensions/ に clone があればそれを使い、無ければ GitHub から入れる
 return {
   {
     "imutaroh/diffbase.nvim",
