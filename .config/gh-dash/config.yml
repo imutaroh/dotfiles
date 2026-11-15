@@ -57,6 +57,12 @@ issuesSections:
 # 完全一致はワイルドカードより優先されるため、dotfiles の例外配置を先に書ける。
 repoPaths:
   imutaroh/dotfiles: ~/dotfiles # dotfiles だけ ~/ 直下
+  # 拡張機能（Herdr の mod、Neovim のプラグイン）は ~/repos/imutaroh/extensions/ にまとめてある
+  imutaroh/herdr-github-panels: ~/repos/imutaroh/extensions/herdr-github-panels
+  imutaroh/herdr-redpen: ~/repos/imutaroh/extensions/herdr-redpen
+  imutaroh/herdr-tab-groups: ~/repos/imutaroh/extensions/herdr-tab-groups
+  imutaroh/nudge.nvim: ~/repos/imutaroh/extensions/nudge.nvim
+  imutaroh/diffbase.nvim: ~/repos/imutaroh/extensions/diffbase.nvim
   :owner/:repo: ~/repos/:owner/:repo
 
 # ─── カスタムキーバインド ───
