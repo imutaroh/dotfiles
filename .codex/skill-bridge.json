@@ -45,6 +45,15 @@
       "mode": "wrapper",
       "codex_skill": "hview",
       "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "master",
+      "source": ".claude/skills/master/SKILL.md",
+      "source_sha256": "2b47d9b4e8fc2dbd138c1c8a284a2b4c7507da5dcc1981a58e6ee28c1cce7b13",
+      "description": "入口の会話から Herdr の新しいタブで子の Claude を 1 タスクずつ起動する Claude Code 用スキル。",
+      "mode": "deferred",
+      "codex_skill": null,
+      "note": "子として claude を起動する Claude Code 前提のスキルなので、Codex 側の入口はまだ作らない。本文を変えたら source_sha256 を更新する。"
     }
   ]
 }
