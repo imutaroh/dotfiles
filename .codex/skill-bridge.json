@@ -54,6 +54,15 @@
       "mode": "deferred",
       "codex_skill": null,
       "note": "子として claude を起動する Claude Code 前提のスキルなので、Codex 側の入口はまだ作らない。本文を変えたら source_sha256 を更新する。"
+    },
+    {
+      "name": "roll",
+      "source": ".claude/skills/roll/SKILL.md",
+      "source_sha256": "42854832375993e61461a514df8658640379c0d2569063ed7cd38f382373bfcf",
+      "description": "Herdr で開いている全タブ・全セッションの状況を 1 つの表にして返す Claude Code 用スキル。",
+      "mode": "deferred",
+      "codex_skill": null,
+      "note": "master と対で使う Claude Code 用のスキルなので、Codex 側の入口はまだ作らない。本文を変えたら source_sha256 を更新する。"
     }
   ]
 }
