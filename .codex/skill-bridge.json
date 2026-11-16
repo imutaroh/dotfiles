@@ -58,7 +58,7 @@
     {
       "name": "roll",
       "source": ".claude/skills/roll/SKILL.md",
-      "source_sha256": "ac4418fed7325126d8bbb1b246000f1fa9808fc4c53c8026d2093e8590aec427",
+      "source_sha256": "c578e9ba0bf1696378e2eca86b841f659447dd16930e52c896df32f2b80fd061",
       "description": "Herdr で開いている全タブ・全セッションの状況を 1 つの表にして返す Claude Code 用スキル。",
       "mode": "deferred",
       "codex_skill": null,
