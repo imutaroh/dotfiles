@@ -1,0 +1,3 @@
+-- 純正 Neovim 練習用。プラグインなし・設定ほぼなし。
+-- 起動は `vv`（NVIM_APPNAME=nvim-vanilla nvim）。普段の nvim（AstroNvim）には影響しない。
+-- 設定を足すのは「不便を感じて、純正の機能で解決できないと分かってから」。

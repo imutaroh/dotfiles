@@ -67,6 +67,8 @@ export VISUAL='nvim'
 # ==================================================
 alias vim='nvim'
 alias v='nvim'
+# vv: プラグインなしの純正 nvim（練習用。設定は .config/nvim-vanilla）
+alias vv='NVIM_APPNAME=nvim-vanilla nvim'
 alias g='git'
 alias gb='git branch'
 alias gs='git switch'
