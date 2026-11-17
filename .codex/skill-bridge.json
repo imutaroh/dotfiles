@@ -49,7 +49,7 @@
     {
       "name": "master",
       "source": ".claude/skills/master/SKILL.md",
-      "source_sha256": "e2c1b195d164b95a275b663912dafb91a004bd1639480643459149847e061639",
+      "source_sha256": "8c6b42e3bb127b97682dc7e03525b0dbd2fde44f5453ed4f4ce46b449f22549a",
       "description": "入口の会話から Herdr の新しいタブで子の Claude を 1 タスクずつ起動する Claude Code 用スキル。",
       "mode": "deferred",
       "codex_skill": null,
