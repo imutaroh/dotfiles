@@ -123,9 +123,6 @@ link "$DOTFILES_DIR/.zshrc" ~/.zshrc
 mkdir -p ~/.config/uv
 link "$DOTFILES_DIR/.config/uv/uv.toml" ~/.config/uv/uv.toml
 
-# nvim-vanilla: 純正 nvim 練習用（NVIM_APPNAME=nvim-vanilla。alias vv）
-link "$DOTFILES_DIR/.config/nvim-vanilla" ~/.config/nvim-vanilla
-
 mkdir -p ~/.config/ghostty
 link "$DOTFILES_DIR/.config/ghostty/config" ~/.config/ghostty/config
 
