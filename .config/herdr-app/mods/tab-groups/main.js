@@ -561,7 +561,8 @@ class Picker {
         .child(div().w(10).flex_none().text_size(11).text_color(t.dim).child("x"))
         .child(icon(t, "x"))
         .child("Remove from group")))
-      .child(div().px(8).pt(7).pb(4).text_size(11).text_color(t.dim).child(this.creating ? "enter create · esc close" : "1-9 move · f fold · e edit · j/k select · J/K order"));
+      .child(div().px(8).pt(7).pb(4).text_size(11).text_color(t.dim).child(this.creating ? "enter create · esc close" : "1-9 move · f fold · e edit · j/k select"))
+      .when(!this.creating && s.groups.length > 1, (el) => el.child(div().px(8).pb(4).text_size(11).text_color(t.dim).child("shift+j / shift+k  move the selected group down / up")));
   }
 }
 
