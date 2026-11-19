@@ -32,12 +32,12 @@ const FIRST_RUN = {
   tabs: {},
 };
 // Every tab has the same width, and its bottom line is cut into one piece per pane, colored by that pane's status.
-// 右パネルのボタン。アイコンは付属の svg（別 mod が書き出す画像には頼らない）。
-const PANEL_BUTTONS = [
-  { id: "files", label: "Files", icon: "mods/files/file.svg" },
-  { id: "changes", label: "Changes", icon: "mods/changes/changes.svg" },
-  { id: "issues", label: "Issues", icon: "mods/workspace-chrome/circle-check.svg" },
-];
+// 右パネルのボタン（Files / Changes / Issues）。タブ列には出さない（2026-11-19）。
+// 開くには keys.json の status-keys.cycle（Cmd+Shift+E）/ .changes（Cmd+Shift+G）/ .issues（Cmd+Shift+I）。
+// 戻すときは、下の行を { id: "files", label: "Files", icon: "mods/files/file.svg" },
+// { id: "changes", label: "Changes", icon: "mods/changes/changes.svg" },
+// { id: "issues", label: "Issues", icon: "mods/workspace-chrome/circle-check.svg" } に入れ替える。
+const PANEL_BUTTONS = [];
 const TAB_WIDTH = 180;
 const PICKER = { kind: "popup", at: "top", offset: 40, width: 340 };
 const EDITOR = { kind: "popup", width: 250 };
