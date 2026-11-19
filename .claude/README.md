@@ -53,6 +53,7 @@ GitHub の操作（`gh pr merge` などや `gh api` の書き込み）に確認�
 | カテゴリ | スキル |
 |----------|--------|
 | ツール操作（CLI / API の知識） | `herdr-control`, `hview` |
+| 自分の決まりへの入口（正本は Obsidian Vault） | `brand` |
 
 公式や配布元から入れ直せるスキルは、ここに複製しない。`skill-creator` は claude.ai が同期する版（`anthropic-skills:skill-creator`）か公式プラグインを使い、Codex は標準で持っている。Hunk のスキルは `hunk skill path` で同梱版を取り出せる。
 
