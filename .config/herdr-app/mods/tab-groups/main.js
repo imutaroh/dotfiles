@@ -12,7 +12,8 @@ import { spaces, panes, run, openOverlay, closeOverlay, theme, window, shared, s
 // One folder, four views, chosen by props:
 //   Tab bar   click a chip to fold or unfold it, right-click it to edit; drag tabs and chips to move them
 //   Tab menu  right-click a tab: the shipped items, plus moving it between groups
-//   Picker    mod.open (Cmd+O in keys.json): a number moves the tab, f folds, n creates, e edits, x removes
+//   Picker    mod.open (Cmd+O in keys.json): a number moves the tab, f folds, n creates, e edits, x removes,
+//             Shift+J / Shift+K reorder the groups
 //   Editor    name, color, fold, delete
 //
 // Folded tabs are put away with tab.settle: Cmd+number and tab.next skip settled tabs, so the numbers
@@ -178,6 +179,40 @@ function paneLine(t, tab, tabPanes) {
   return h_flex().h(3).mx(2).mb(2).gap(3).flex_none()
     .children(tabPanes.map((p) => div().flex_1().h_full().rounded(2)
       .bg(tab.active && p.focused ? color(p) : faded(color(p)))));
+}
+
+// The bar with its groups in the order of s.groups. The places the groups take stay, and ungrouped tabs don't move.
+function arranged(tabs, s) {
+  const shown = inOrder(tabs, s);
+  const members = (g) => shown.filter((t) => groupOf(s, t.id) === g).map((t) => t.id);
+  const present = s.groups.filter((g) => members(g).length > 0);
+  const placed = new Set();
+  const out = [];
+  for (const tab of shown) {
+    const g = groupOf(s, tab.id);
+    if (!g) out.push(tab.id);
+    else if (!placed.has(g)) {
+      out.push(...members(present[placed.size]));
+      placed.add(g);
+    }
+  }
+  return out;
+}
+
+const arrange = (s) => spaces().forEach((space) => applyOrder(space, arranged(space.tabs, s)));
+
+// Swaps a group with its neighbor in the list (by is -1 or 1), and the bar follows in every space.
+// Returns false at either end.
+function shiftGroup(gid, by) {
+  const s = state();
+  const from = s.groups.findIndex((g) => g.id === gid), to = from + by;
+  if (from < 0 || to < 0 || to >= s.groups.length) return false;
+  const groups = [...s.groups];
+  [groups[from], groups[to]] = [groups[to], groups[from]];
+  const next = { ...s, groups };
+  setShared(KEY, next);
+  arrange(next);
+  return true;
 }
 
 const dot = (color) => h_flex().w(14).flex_none().justify_center().child(div().size(10).rounded(5).bg(color));
@@ -462,6 +497,14 @@ class Picker {
     openOverlay({ mod: KEY, ...EDITOR, at: "top", offset: 40, props: { group: g.id } });
   }
 
+  // Moves the selected group and keeps it selected. The picker stays open, to move it again.
+  reorder(g, by, cx) {
+    if (!g || !shiftGroup(g.id, by)) return;
+    this.at += by;
+    // A quick second press may work from the tab order before the first one landed, so arrange once more.
+    cx.timer.after(300, () => arrange(state()));
+  }
+
   key(e, cx) {
     if (this.creating) {
       if (e.key === "escape") this.dismiss();
@@ -469,8 +512,11 @@ class Picker {
     }
     if (e.modifiers?.platform || e.modifiers?.control) return;
     const groups = state().groups;
-    const k = e.key;
+    // With Shift held, a letter may arrive in either case.
+    const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    const shift = e.modifiers?.shift || e.keystroke?.startsWith("shift-") || k !== e.key;
     if (k === "escape") this.dismiss();
+    else if (shift && ["down", "j", "up", "k"].includes(k)) this.reorder(groups[this.at], k === "down" || k === "j" ? 1 : -1, cx);
     else if (k === "down" || k === "j") this.at = (this.at + 1) % Math.max(1, groups.length);
     else if (k === "up" || k === "k") this.at = (this.at + groups.length - 1) % Math.max(1, groups.length);
     else if (k === "enter") this.pick(groups[this.at]);
@@ -515,7 +561,7 @@ class Picker {
         .child(div().w(10).flex_none().text_size(11).text_color(t.dim).child("x"))
         .child(icon(t, "x"))
         .child("Remove from group")))
-      .child(div().px(8).pt(7).pb(4).text_size(11).text_color(t.dim).child(this.creating ? "enter create · esc close" : "1-9 move · f fold · e edit · j/k select"));
+      .child(div().px(8).pt(7).pb(4).text_size(11).text_color(t.dim).child(this.creating ? "enter create · esc close" : "1-9 move · f fold · e edit · j/k select · J/K order"));
   }
 }
 
