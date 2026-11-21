@@ -17,6 +17,7 @@ macOS の開発環境の設定一式。Claude Code と Codex を中心に、Herd
 | [.config/](.config/README.md) | Herdr・Neovim などのアプリ設定 |
 | [Brewfile](Brewfile) | 入れるアプリの一覧 |
 | [setup.sh](setup.sh) | パッケージの導入とリンクの作成 |
+| [REVIEW.md](REVIEW.md) | このリポジトリの差分を見るときの確認 |
 | [macos.sh](macos.sh) | macOS のシステム設定（手動で実行） |
 
 ## セットアップ
