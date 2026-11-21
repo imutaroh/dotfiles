@@ -29,6 +29,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
   - `./sync-settings.sh --check`: 実環境の `settings.json` と追跡版の差分
   - `python3 setup-codex-skills.py --check`: Codex 側のスキルの対応表とリンク
   - `bash .codex/scripts/check-parity.sh --quick`: Claude Code と Codex の同等設定の一括点検
+- 予定タスクの見直し: 長く回しているセッションでは、区切りで `/tasks` を開く。そのセッションの予定と `/loop` が出る。繰り返しはセッションが動いているあいだ最大 30 日残る。止めたはずのものや、期限の切れたものが残っていたら消す
 
 ## 作業ルール
 
