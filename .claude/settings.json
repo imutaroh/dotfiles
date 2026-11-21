@@ -133,6 +133,11 @@
           {
             "type": "command",
             "command": "bash ~/.claude/hooks/play-sound.sh ~/.claude/sounds/complete.wav"
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/log-session-stop.sh",
+            "async": true
           }
         ]
       }

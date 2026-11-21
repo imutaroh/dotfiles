@@ -12,7 +12,8 @@ Claude Code のユーザーレベル設定。`setup.sh` が項目ごとに `~/.c
 ├── statusline-preview.sh   # ステータスラインの実出力をブラウザで確認する
 ├── design.md               # ステータスラインとテーマの配色リファレンス
 ├── hooks/
-│   └── play-sound.sh              # 確認要求時・完了時の効果音
+│   ├── play-sound.sh              # 確認要求時・完了時の効果音
+│   └── log-session-stop.sh        # Stop の観察ログ（止めない）
 ├── scripts/
 │   └── hc-label-claude-session.sh  # 会話ログの場所を Herdr の端末ラベルに入れる
 ├── sounds/                 # 通知音（macOS のシステムサウンドへのリンク）
@@ -43,6 +44,7 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 | ファイル | 役割 |
 |----------|------|
 | `play-sound.sh` | 確認要求時（`PermissionRequest`）と完了時（`Stop`）の効果音 |
+| `log-session-stop.sh` | `Stop` の観察ログ。`~/.claude/state/session-stops.jsonl` に 1 行足す。`async: true` で、会話は止めない。応答本文は残さない |
 
 GitHub の操作（`gh pr merge` などや `gh api` の書き込み）に確認を出すフックや `ask` ルールは置いていない。止めるかどうかは auto モードの分類器が会話を読んで判断する（2026-11-11 に `ask-gh-api-writes.sh` と `gh pr merge/close/ready` の `ask` を外した）。
 
