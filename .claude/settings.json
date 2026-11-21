@@ -101,7 +101,7 @@
     ]
   },
   "fallbackModel": [
-    "claude-opus-5",
+    "claude-opus-5-5",
     "claude-sonnet-5-5"
   ],
   "deniedMcpServers": [
@@ -190,7 +190,9 @@
     "claude-opus-5": {
       "effortLevel": "high"
     },
-    "claude-opus-5-5": {},
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    },
     "claude-sonnet-5-5": {
       "effortLevel": "low"
     }
