@@ -19,6 +19,8 @@ Claude Code のユーザーレベル設定。`setup.sh` が項目ごとに `~/.c
 ├── themes/                 # カスタムテーマ
 ├── output-styles/          # 自作の output style
 ├── rules/                  # このリポジトリ用の局所ルール（paths に合うファイルを触るときだけ読まれる）
+├── agents/                 # サブエージェント（ファイル単位でリンク）
+│   └── refuter.md
 ├── skills/                 # カスタムスキル
 └── mods/                   # 自作プラグイン（image-view-bytes は常用、ほかは試作）
 ```
@@ -43,6 +45,14 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 | `play-sound.sh` | 確認要求時（`PermissionRequest`）と完了時（`Stop`）の効果音 |
 
 GitHub の操作（`gh pr merge` などや `gh api` の書き込み）に確認を出すフックや `ask` ルールは置いていない。止めるかどうかは auto モードの分類器が会話を読んで判断する（2026-11-11 に `ask-gh-api-writes.sh` と `gh pr merge/close/ready` の `ask` を外した）。
+
+## agents/
+
+サブエージェント。`setup.sh` が `~/.claude/agents/` へ 1 ファイルずつリンクする（管理外の定義を消さないため、ディレクトリごとにはしない）。
+
+| ファイル | 役割 |
+|----------|------|
+| `refuter.md` | 主張された結果や修正を、反例と未検証の前提から読み取りだけで確かめる。ファイルは変えない |
 
 ## skills/
 

@@ -229,6 +229,10 @@ fi
 # skillsはディレクトリ全体をシンボリックリンク
 link "$DOTFILES_DIR/.claude/skills" ~/.claude/skills
 
+# agents はファイル単位でリンク（dotfiles 管理外のサブエージェントを消さない）
+mkdir -p ~/.claude/agents
+link "$DOTFILES_DIR/.claude/agents/refuter.md" ~/.claude/agents/refuter.md
+
 # Codex は Claude Code と同じカスタム指示を読む。
 # Codex 固有のモデル・権限・Hooks は ~/.codex/config.toml で別管理する。
 mkdir -p ~/.codex
