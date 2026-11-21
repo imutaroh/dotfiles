@@ -72,6 +72,15 @@
       "mode": "deferred",
       "codex_skill": null,
       "note": "master と対で使う Claude Code 用のスキルなので、Codex 側の入口はまだ作らない。本文を変えたら source_sha256 を更新する。"
+    },
+    {
+      "name": "verify",
+      "source": ".claude/skills/verify/SKILL.md",
+      "source_sha256": "777f770d9a5964e5c99cdcfec12f6f603a7f76cdb296295354d0ba1cd3683e79",
+      "description": "作業が終わったと言う前に、該当するテスト・lint・このリポジトリの確認コマンドを実行し、出力を見せてから完了にする。「/verify」「検証して」「終わったか確認して」「証拠を見せて」で使用。",
+      "mode": "wrapper",
+      "codex_skill": "verify",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
     }
   ]
 }
