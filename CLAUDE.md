@@ -32,6 +32,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
   - `bash .codex/scripts/check-parity.sh --quick`: Claude Code と Codex の同等設定の一括点検
 - 予定タスクの見直し: 長く回しているセッションでは、区切りで `/tasks` を開く。そのセッションの予定と `/loop` が出る。繰り返しはセッションが動いているあいだ最大 30 日残る。止めたはずのものや、期限の切れたものが残っていたら消す
 - PR は `/ship`（コミット → push → PR → `/code-review` → watch）か `/steward`（開いてある PR の watch だけ）で出してよい。このリポジトリは公開なので、`/ship` は未コミットの変更をコミットしない。worktree（`.claude/worktrees/<名前>`）のブランチで先にコミットしてから `/ship` する。`/ship` の前に上の確認を通す（`sync-settings.sh --check` などは worktree では NG になるので `~/dotfiles` で実行する）。watch の間はセッションを開いたまま前面に置き、ブランチを切り替えない（Esc・`/clear`・ブランチ切り替えで終わる。止めるときは `/ship stop`）。auto-merge は有効にしない。マージは本人がやる
+- いつ `/verify`・refuter・`/ship` を使うかの例は [.claude/README.md](.claude/README.md) の「いつ何を使うか（使用例）」
 
 ## 作業ルール
 
