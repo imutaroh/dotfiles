@@ -37,7 +37,7 @@ macOS 用の個人設定ファイル管理リポジトリ。
 ## 作業ルール
 
 - シンボリックリンクで管理されるファイルは直接編集しない
-- 差分のレビューは REVIEW.md に沿う
+- 差分のレビューは REVIEW.md に沿う。ローカルの `/code-review` は REVIEW.md を自動では読まないので、`/code-review` や `/ship` の前に REVIEW.md を読み込ませる
 - ディレクトリ構造を変更した場合は CLAUDE.md と README.md の整合性を確認・更新する
 - コミット前に機密情報（APIキー、トークン等）が含まれていないか確認する
 - 私的ファイル（`.claude/CLAUDE.md` / `.claude/skills/agile-data-modeling/` / `.claude/skills/ap/` / `iphone/keep.txt`）はどれも Git の追跡から除外していて、このリポジトリの履歴には無い。`~/dotfiles-private` へのシンボリックリンクなので、`git clean -x` で消えたら張り直す。実体はリンク先のリポジトリで追跡している
