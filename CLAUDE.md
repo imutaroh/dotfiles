@@ -41,6 +41,9 @@ macOS 用の個人設定ファイル管理リポジトリ。
 - ディレクトリ構造を変更した場合は CLAUDE.md と README.md の整合性を確認・更新する
 - コミット前に機密情報（APIキー、トークン等）が含まれていないか確認する
 - 私的ファイル（`.claude/CLAUDE.md` / `.claude/skills/agile-data-modeling/` / `.claude/skills/ap/` / `iphone/keep.txt`）はどれも Git の追跡から除外していて、このリポジトリの履歴には無い。`~/dotfiles-private` へのシンボリックリンクなので、`git clean -x` で消えたら張り直す。実体はリンク先のリポジトリで追跡している
+- `settings.json` の deny（`rm`・`rmdir`・`git push --force`・`git reset --hard`・`git clean` など）はわざと止めてある。同じ結果になる別のコマンドで回り道しない。消すときは許可してある `trash` を使う
+- 作業に必要な権限やファイル（リポジトリの外、`~/dotfiles-private` の実体など）が足りないときは、止まって本人にそう言う
+- 認証情報やトークンを含むファイル（`~/.gitconfig.local`、各種の credentials、会社の管理設定）は読まない。中身も出力しない
 
 ## スキル管理ルール
 
