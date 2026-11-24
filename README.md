@@ -17,6 +17,7 @@ macOS の開発環境の設定一式。Claude Code と Codex を中心に、Herd
 | [.config/](.config/README.md) | Herdr・Neovim などのアプリ設定 |
 | [Brewfile](Brewfile) | 入れるアプリの一覧 |
 | [setup.sh](setup.sh) | パッケージの導入とリンクの作成 |
+| [setup-claude-account.sh](setup-claude-account.sh) | Claude Code の MCP サーバーとプラグインの登録（手作業は [.claude/account-setup.md](.claude/account-setup.md)） |
 | [REVIEW.md](REVIEW.md) | このリポジトリの差分を見るときの確認 |
 | [macos.sh](macos.sh) | macOS のシステム設定（手動で実行） |
 
@@ -25,7 +26,10 @@ macOS の開発環境の設定一式。Claude Code と Codex を中心に、Herd
 ```bash
 git clone https://github.com/imutaroh/dotfiles.git ~/dotfiles
 ~/dotfiles/setup.sh
+~/dotfiles/setup-claude-account.sh   # Claude Code にログインしてから
 ```
+
+Claude のアカウントを切り替えたときも `setup-claude-account.sh` を走らせ、[.claude/account-setup.md](.claude/account-setup.md) の手作業（OAuth とコネクタ）を進める。
 
 > [!WARNING]
 > 作者の環境が前提で、多くのアプリを入れて既存の設定を置き換える。実行する前に `setup.sh` を読むこと。置き換えた設定は `~/.dotfiles-backup/` に退避する。Git の名前とメールは `~/.gitconfig.local` に書く。
