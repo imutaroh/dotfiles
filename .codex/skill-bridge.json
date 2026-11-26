@@ -38,6 +38,15 @@
       "note": "既存の Codex スキルを利用し、同名ファイルを重複作成しない。"
     },
     {
+      "name": "deep-read",
+      "source": ".claude/skills/deep-read/SKILL.md",
+      "source_sha256": "930e20242b77e0daf3d2c8da14ba2bc96d4898251ff71e05c52697bc828703ca",
+      "description": "他人の書いたコード（プルリクエスト 1 本、またはリポジトリの一部）を、ユーザーが 100% 理解するまで一緒に読むスキル（ディープコードリーディング）。先に全体の構造と動きの流れを地図にし、次に変更を 1 かたまりずつ実際のコードを見せながら解説し、分からない点をその場で潰し、最後にユーザーが自分の言葉で説明して締める。「/deep-read <PR の URL や番号>」「ディープコードリーディングしたい」「この PR を 100% 理解したい」「このリポジトリを担当することになったので深く読みたい」「このコードを一緒に読んで」で使用。変更の良し悪しを判定するコードレビューは code-review を使う。",
+      "mode": "wrapper",
+      "codex_skill": "deep-read",
+      "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
       "name": "herdr-control",
       "source": ".claude/skills/herdr-control/SKILL.md",
       "source_sha256": "e356fe61cda250dfdb0990acb85d65362cd642d9ead48fdaeccf3396334f462b",
