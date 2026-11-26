@@ -3,11 +3,11 @@
 # 承認待ちで止まった時（blocked）に、macOS の通知を 1 件出す。
 # 載せるのはタブ名・状態・本文の先頭 5 行まで。本文は、done なら最後の返答、blocked なら承認を求めている中身。
 # 通知はこの Mac の中だけで、外部のサービスには何も送らない。
+# alerter があれば Herdr のアイコンで出し、無ければ osascript（スクリプトエディタのアイコン）で出す。
 # Herdr の外（HC_TERMINAL_ID なし）とサブエージェントでは何もしない。
 # 失敗しても Claude Code を止めない（常に exit 0、標準出力は空）。
 [ -n "${HC_TERMINAL_ID:-}" ] || exit 0
 command -v jq >/dev/null 2>&1 || exit 0
-command -v osascript >/dev/null 2>&1 || exit 0
 
 input=$(cat)
 [ -z "$(printf '%s' "$input" | jq -r '.agent_id // empty' 2>/dev/null)" ] || exit 0
@@ -46,9 +46,18 @@ tab=$(hc get "$HC_TERMINAL_ID" --json 2>/dev/null | jq -r '.labels.where // .tit
 body=$(printf '%s' "$body" | jq -Rrs 'split("\n") | map(select(test("\\S"))) | .[0:5] | map(.[0:120]) | join("\n")' 2>/dev/null)
 [ -n "$body" ] || body="(本文なし)"
 
-osascript \
-  -e 'on run argv' \
-  -e 'display notification (item 3 of argv) with title (item 1 of argv) subtitle (item 2 of argv)' \
-  -e 'end run' \
-  "$tab" "$state" "$body" >/dev/null 2>&1 || true
+if command -v alerter >/dev/null 2>&1; then
+  # alerter（Brewfile で入る）は Herdr を送り主にできるので、アイコンが Herdr になり、クリックで Herdr が前に出る。
+  # 閉じるまで終わらないコマンドなので、裏で走らせて 30 秒で消す。同じタブの古い通知は新しいもので置き換える。
+  # 値は = でつなぐ（「- 」で始まる本文を空白区切りで渡すと、オプションと間違われて出ない）
+  (alerter --sender dev.herdr.app --group="herdr-notify-$HC_TERMINAL_ID" --timeout 30 \
+    --title="$tab" --subtitle="$state" --message="$body" >/dev/null 2>&1 &)
+else
+  # alerter が無い Mac ではスクリプトエディタのアイコンで出す
+  osascript \
+    -e 'on run argv' \
+    -e 'display notification (item 3 of argv) with title (item 1 of argv) subtitle (item 2 of argv)' \
+    -e 'end run' \
+    "$tab" "$state" "$body" >/dev/null 2>&1 || true
+fi
 exit 0

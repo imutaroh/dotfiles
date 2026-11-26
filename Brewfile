@@ -1,11 +1,13 @@
 tap "laishulu/homebrew"
 tap "oven-sh/bun"
+tap "vjeantet/tap"
 
 # === シェル・ターミナル ===
 brew "zsh-autosuggestions"    # 履歴から補完候補を表示
 brew "starship"               # プロンプトカスタマイズ
 brew "direnv"                 # ディレクトリごとの環境変数管理
 brew "herdr"                  # エージェントマルチプレクサ（Ghostty のキーバインドが依存。旧 zellij の後継）
+brew "vjeantet/tap/alerter"   # macOS の通知を Herdr のアイコンで出す（.claude/scripts/herdr-notify.sh。無ければ osascript で出す）
 
 # === エディタ ===
 brew "neovim"
