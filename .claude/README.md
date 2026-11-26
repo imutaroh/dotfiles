@@ -15,7 +15,8 @@ Claude Code のユーザーレベル設定。`setup.sh` が項目ごとに `~/.c
 │   ├── play-sound.sh              # 確認要求時・完了時の効果音
 │   └── log-session-stop.sh        # Stop の観察ログ（止めない）
 ├── scripts/
-│   └── hc-label-claude-session.sh  # 会話ログの場所を Herdr の端末ラベルに入れる
+│   ├── hc-label-claude-session.sh  # 会話ログの場所を Herdr の端末ラベルに入れる
+│   └── herdr-notify.sh             # Herdr のタブの Claude が返答を終えた時・承認待ちの時に macOS の通知を出す
 ├── sounds/                 # 通知音（macOS のシステムサウンドへのリンク）
 ├── themes/                 # カスタムテーマ
 ├── output-styles/          # 自作の output style
