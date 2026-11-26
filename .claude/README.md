@@ -46,6 +46,8 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 | `play-sound.sh` | 確認要求時（`PermissionRequest`）と完了時（`Stop`）の効果音 |
 | `log-session-stop.sh` | `Stop` の観察ログ。`~/.claude/state/session-stops.jsonl` に 1 行足す。`async: true` で、会話は止めない。応答本文は残さない |
 
+`PreSkillShellCommand`（matcher は `Bash|PowerShell`）は、スキルやコマンドの読み込み時に走るシェルを `~/.claude/state/skill-shell-commands.jsonl` に 1 行足す。`exit 0` で、止めない。
+
 GitHub の操作（`gh pr merge` などや `gh api` の書き込み）に確認を出すフックや `ask` ルールは置いていない。止めるかどうかは auto モードの分類器が会話を読んで判断する（2026-11-11 に `ask-gh-api-writes.sh` と `gh pr merge/close/ready` の `ask` を外した）。
 
 ## agents/
@@ -197,4 +199,4 @@ PR が既に開いていてレビューは要らないとき、または watch �
 - **通知音**: `sounds/` のリンク先を変える。ファイル名は変えない
 - **ステータスライン**: `statusline.sh` を編集する。標準入力の JSON を読み、標準出力に表示内容を書くスクリプト
 - **コマンド許可**: `settings.json` の `permissions.allow` に `"Bash(コマンド:*)"` の形で足す
-- **フック**: `settings.json` の `hooks` にイベントとコマンドを足す（`Stop`、`PermissionRequest`、`UserPromptSubmit`、`SessionStart` など）
+- **フック**: `settings.json` の `hooks` にイベントとコマンドを足す（`Stop`、`PermissionRequest`、`PreSkillShellCommand`、`UserPromptSubmit`、`SessionStart` など）
