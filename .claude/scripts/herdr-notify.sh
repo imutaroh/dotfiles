@@ -48,10 +48,19 @@ body=$(printf '%s' "$body" | jq -Rrs 'split("\n") | map(select(test("\\S"))) | .
 
 if command -v alerter >/dev/null 2>&1; then
   # alerter（Brewfile で入る）は Herdr を送り主にできるので、アイコンが Herdr になり、クリックで Herdr が前に出る。
-  # 閉じるまで終わらないコマンドなので、裏で走らせて 30 秒で消す。同じタブの古い通知は新しいもので置き換える。
+  # 押されるか消えるまで終わらないコマンドなので、裏で走らせる。10 分たったら通知ごと消す。
+  # 同じタブの古い通知は新しいもので置き換える。
   # 値は = でつなぐ（「- 」で始まる本文を空白区切りで渡すと、オプションと間違われて出ない）
-  (alerter --sender dev.herdr.app --group="herdr-notify-$HC_TERMINAL_ID" --timeout 30 \
-    --title="$tab" --subtitle="$state" --message="$body" >/dev/null 2>&1 &)
+  (
+    clicked=$(alerter --sender dev.herdr.app --group="herdr-notify-$HC_TERMINAL_ID" --timeout 600 \
+      --title="$tab" --subtitle="$state" --message="$body" 2>/dev/null)
+    # 通知を押したら、そのタブのペインへ移る
+    case "$clicked" in
+      @CONTENTCLICKED | @ACTIONCLICKED)
+        PATH="$HOME/.local/bin:$PATH" herdr-app "do" agent.focus --terminal "$HC_TERMINAL_ID" >/dev/null 2>&1
+        ;;
+    esac
+  ) >/dev/null 2>&1 &
 else
   # alerter が無い Mac ではスクリプトエディタのアイコンで出す
   osascript \
