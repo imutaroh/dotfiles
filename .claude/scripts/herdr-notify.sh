@@ -57,7 +57,10 @@ if command -v alerter >/dev/null 2>&1; then
     # 通知を押したら、そのタブのペインへ移る
     case "$clicked" in
       @CONTENTCLICKED | @ACTIONCLICKED)
-        PATH="$HOME/.local/bin:$PATH" herdr-app "do" agent.focus --terminal "$HC_TERMINAL_ID" >/dev/null 2>&1
+        # 別のアプリを見ている時は、押しただけでは Herdr が前に出ない（macOS 26 で実測）。
+        # 表示を切り替えられた時（＝Herdr が動いている時）だけ、前に出す。
+        PATH="$HOME/.local/bin:$PATH" herdr-app "do" agent.focus --terminal "$HC_TERMINAL_ID" >/dev/null 2>&1 &&
+          open -b dev.herdr.app
         ;;
     esac
   ) >/dev/null 2>&1 &
