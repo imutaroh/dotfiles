@@ -49,3 +49,8 @@ __pycache__/
 
 # claude.ai が同期するスキル（Anthropic 提供・アカウント側で管理され自動で書き換わる）
 .claude/skills/synced/
+# claude.ai の同期が、外したスキルを退避する場所
+.claude/skills/.trash/
+
+# 配布されているスキル（配布元から入れ直す）
+.claude/skills/yomiyasu/

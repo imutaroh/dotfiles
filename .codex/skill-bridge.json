@@ -90,6 +90,15 @@
       "mode": "wrapper",
       "codex_skill": "verify",
       "note": "共通互換規約を介して元スキルを実行時参照する。"
+    },
+    {
+      "name": "yomiyasu",
+      "source": ".claude/skills/yomiyasu/SKILL.md",
+      "source_sha256": "e3aee084c9fd4e0db746890d0bbcf2ba247ac3292cc14ee38710c51a1bef0b89",
+      "description": "配布されているスキル。本体は追跡外（.gitignore）で、配布元から入れ直す。",
+      "mode": "deferred",
+      "codex_skill": null,
+      "note": "配布元のスキルなので Codex 側の入口を作らない。入れ直して本文が変わったら source_sha256 を更新する。"
     }
   ]
 }

@@ -21,7 +21,10 @@ Claude Code のユーザーレベル設定。`setup.sh` が項目ごとに `~/.c
 ├── output-styles/          # 自作の output style
 ├── rules/                  # このリポジトリ用の局所ルール（paths に合うファイルを触るときだけ読まれる）
 ├── agents/                 # サブエージェント（ファイル単位でリンク）
-│   └── refuter.md
+│   ├── refuter.md
+│   ├── Explore.md
+│   ├── dbt-reviewer.md
+│   └── log-reader.md
 ├── skills/                 # カスタムスキル
 └── mods/                   # 自作プラグイン（image-view-bytes は常用、ほかは試作）
 ```
@@ -57,6 +60,9 @@ GitHub の操作（`gh pr merge` などや `gh api` の書き込み）に確認�
 | ファイル | 役割 |
 |----------|------|
 | `refuter.md` | 主張された結果や修正を、反例と未検証の前提から読み取りだけで確かめる。ファイルは変えない |
+| `Explore.md` | 組み込みの Explore を上書きする。読み取りだけでファイルとコードを探す（Haiku） |
+| `dbt-reviewer.md` | dbt モデル・SQL・指標の定義を読み取りだけでレビューする（Sonnet） |
+| `log-reader.md` | dbt やテストのログを読み、失敗した箇所を報告する（Haiku） |
 
 ## skills/
 
@@ -69,6 +75,7 @@ GitHub の操作（`gh pr merge` などや `gh api` の書き込み）に確認�
 | ツール操作（CLI / API の知識） | `herdr-control`, `hview` |
 | 自分の決まりへの入口（正本は Obsidian Vault） | `brand` |
 | 作業の確認 | `verify` |
+| 学び方（対話の進め方の決まり） | `deep-read` |
 
 公式や配布元から入れ直せるスキルは、ここに複製しない。`skill-creator` は claude.ai が同期する版（`anthropic-skills:skill-creator`）か公式プラグインを使い、Codex は標準で持っている。Hunk のスキルは `hunk skill path` で同梱版を取り出せる。
 
@@ -80,6 +87,8 @@ GitHub の操作（`gh pr merge` などや `gh api` の書き込み）に確認�
 | `synced/` | claude.ai が同期する。手で消しても次の同期で戻る |
 | `agile-data-modeling` | 非公開の個人用スキル |
 | `ap` | 非公開の個人用スキル |
+| `yomiyasu` | 配布されているスキル（nanaism 作、MIT）。配布元から入れ直す |
+| `.trash/` | claude.ai の同期が、外したスキルを退避する場所 |
 
 ## mods/
 

@@ -1,9 +1,10 @@
 {
   "zoom": 1.0,
   "sounds": {
-    "enabled": false
+    "enabled": true
   },
   "font": "Moralerspace Argon",
   "font_size": 14.0,
+  "font_ligatures": false,
   "minimum_contrast": 1.0
 }
