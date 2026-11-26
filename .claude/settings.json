@@ -3,7 +3,6 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE": "1",
-    "CLAUDE_CODE_ENABLE_TODO_TOOLS": "1",
     "CLAUDE_CODE_FORCE_TERMINAL_IMAGES": "1",
     "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/.claude/mods/image-view-bytes"
   },
@@ -91,7 +90,12 @@
       "Bash(git push * :*)",
       "Bash(tree -o*)",
       "Bash(tree * -o*)",
-      "Skill(anthropic-skills:obsidian-daily)"
+      "Skill(anthropic-skills:obsidian-daily)",
+      "TaskCreate",
+      "TaskUpdate",
+      "TaskList",
+      "TaskGet",
+      "TodoWrite"
     ],
     "ask": [
       "mcp__claude_ai_Slack__slack_send_message",
