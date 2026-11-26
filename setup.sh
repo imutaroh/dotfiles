@@ -164,6 +164,16 @@ GITHUB_PANELS="$HOME/repos/imutaroh/herdr-github-panels"
 if [ -d "$GITHUB_PANELS/mods/issues" ]; then
   link "$GITHUB_PANELS/mods/issues" ~/.config/herdr-app/mods/issues
 fi
+# better-alerts（エージェントの done / blocked を macOS の通知で出す）は fork imutaroh/herdr-mods の mod。
+# 実体は fork の checkout（mine ブランチ）なので、あるときだけ mod フォルダごとリンクする。
+# 通知を Herdr のアイコンで出す小さなアプリ（bin/HerdrAlerts.app）は追跡していないので、無ければその場でビルドする
+BETTER_ALERTS="$HOME/repos/imutaroh/herdr-mods/better-alerts"
+if [ -d "$BETTER_ALERTS/mods/better-alerts" ]; then
+  link "$BETTER_ALERTS/mods/better-alerts" ~/.config/herdr-app/mods/better-alerts
+  if [ ! -d "$BETTER_ALERTS/mods/better-alerts/bin/HerdrAlerts.app" ] && command -v swiftc >/dev/null 2>&1; then
+    "$BETTER_ALERTS/helper/build.sh" "$BETTER_ALERTS/mods/better-alerts/bin"
+  fi
+fi
 
 # hunk は config.toml のみ管理（同ディレクトリの state.json は対象外）
 mkdir -p ~/.config/hunk
