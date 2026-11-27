@@ -19,7 +19,7 @@
 
 - ディレクトリ形式（`.claude/skills/<名前>/SKILL.md`）。`.skill` 単体ファイルは無い
 - Codex でも使うスキルは、本文を複製せず `.codex/skills/<名前>/SKILL.md` から正本を読む
-- 本文を変えたら `.codex/skill-bridge.json` の `source_sha256` が一致している（`python3 setup-codex-skills.py --check`）
+- 本文を変えたら `.codex/skill-bridge.json` の `source_sha256` が一致している（`python3 setup-codex-skills.py --check`）。Claude Code だけで運用しているあいだは見ない（ハッシュは更新しない）
 
 ## 動作
 

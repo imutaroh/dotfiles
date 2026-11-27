@@ -130,6 +130,7 @@ hc --skill            # hc の公式ガイド
 
 - 正本は dotfiles の `.claude/skills/herdr-control/SKILL.md`。`~/.claude/skills` が `~/dotfiles/.claude/skills` へのディレクトリ symlink なので、`~/.claude/skills/herdr-control/SKILL.md` は別のコピーではなく同じファイル
 - `.codex/skills/herdr-control/SKILL.md`（Codex 用）は本文を持たず、正本を実行時に読む橋渡し
+- Claude Code だけで運用しているあいだは、次の 2 つ（ハッシュの更新と Codex の点検）はしない。Codex に戻すときに使う
 - 本文を変えたら、`shasum -a 256 .claude/skills/herdr-control/SKILL.md` の値を `.codex/skill-bridge.json` の `source_sha256` に入れる。入れないと `python3 setup-codex-skills.py --check` が `SOURCE_DRIFT` で落ちる。`description` を変えたら、manifest と Codex 側の `description` も同じ文字列にそろえる
 - worktree で検証するときは `python3 setup-codex-skills.py --check --target-dir <存在しないパス>` にする（`~/.agents/skills` のリンクが main を指すため、付けないと必ず NG になる）
 - worktree で直した内容は、main に入れて `~/dotfiles` を `git pull --ff-only` するまで実環境に効かない
