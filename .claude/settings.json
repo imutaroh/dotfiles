@@ -101,7 +101,15 @@
       "Bash(perl -i*)",
       "Bash(perl * -i*)",
       "Bash(perl -pi*)",
-      "Bash(perl * -pi*)"
+      "Bash(perl * -pi*)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(!.env.example)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.config/gh/hosts.yml)",
+      "Read(~/.dbt/profiles.yml)",
+      "Read(//Library/Application Support/ClaudeCode/managed-settings.json)"
     ],
     "ask": [
       "mcp__claude_ai_Slack__slack_send_message",
