@@ -40,6 +40,7 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 - 設定を変えたら、リポジトリ直下の `./sync-settings.sh` で実環境の内容を取り込んでコミットする
 - `./sync-settings.sh --check` は差分の有無だけを見る（差分があれば終了コード 1）
 - 公開しているので、一部は取り込まず実環境にだけ残す（`autoMode`、auto モードの既定、公式以外のプラグインなど。一覧は `sync-settings.sh` の先頭）。公式以外のプラグインは新しいマシンで入れ直す
+- `permissions.deny` の `Read` は、`.env` 系（`.env.example` 以外）、`~/.ssh`、`~/.aws`、`~/.config/gh/hosts.yml`、`~/.dbt/profiles.yml`、会社の `managed-settings.json` を読めなくする。確認は出さず、黙って止まる
 
 ## hooks/
 
