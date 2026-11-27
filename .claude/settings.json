@@ -2,9 +2,9 @@
   "cleanupPeriodDays": 365,
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE": "1",
     "CLAUDE_CODE_FORCE_TERMINAL_IMAGES": "1",
-    "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/.claude/mods/image-view-bytes"
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/.claude/mods/image-view-bytes",
+    "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE": "1"
   },
   "permissions": {
     "allow": [
@@ -132,17 +132,6 @@
         ]
       }
     ],
-    "PreSkillShellCommand": [
-      {
-        "matcher": "Bash|PowerShell",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "jq -c '{t:(now|todate),skill:.command_name,source:.command_source,by:.invoked_by,cwd:.cwd,cmd:(.tool_input.command|tostring|.[0:300])}' >> ~/.claude/state/skill-shell-commands.jsonl 2>/dev/null; exit 0"
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "hooks": [
@@ -180,6 +169,17 @@
           }
         ]
       }
+    ],
+    "PreSkillShellCommand": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -c '{t:(now|todate),skill:.command_name,source:.command_source,by:.invoked_by,cwd:.cwd,cmd:(.tool_input.command|tostring|.[0:300])}' >> ~/.claude/state/skill-shell-commands.jsonl 2>/dev/null; exit 0"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
@@ -207,10 +207,13 @@
       "effortLevel": "high"
     },
     "claude-opus-5-5": {
-      "effortLevel": "high"
+      "effortLevel": "medium"
     },
     "claude-sonnet-5-5": {
       "effortLevel": "low"
+    },
+    "claude-fable-5-2": {
+      "effortLevel": "medium"
     }
   },
   "advisorModel": "fable",
