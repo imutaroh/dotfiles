@@ -95,7 +95,13 @@
       "TaskUpdate",
       "TaskList",
       "TaskGet",
-      "TodoWrite"
+      "TodoWrite",
+      "Bash(sed -i*)",
+      "Bash(sed * -i*)",
+      "Bash(perl -i*)",
+      "Bash(perl * -i*)",
+      "Bash(perl -pi*)",
+      "Bash(perl * -pi*)"
     ],
     "ask": [
       "mcp__claude_ai_Slack__slack_send_message",
@@ -165,6 +171,18 @@
           {
             "type": "command",
             "command": "sh ~/.claude/scripts/hc-label-claude-session.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/block-main-edit.sh",
             "timeout": 10
           }
         ]

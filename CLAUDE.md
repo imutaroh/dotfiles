@@ -27,12 +27,15 @@ macOS 用の個人設定ファイル管理リポジトリ。
 
 - `~/dotfiles` の main の作業ツリーは、複数の Claude が同時に作業場所にしている。`git switch` せず、`origin/main` から `.claude/worktrees/<名前>` に worktree を切って直す。`~/.claude/` のリンク先は main なので、worktree の変更は PR のマージと `~/dotfiles` での `git pull --ff-only` まで実環境に効かない
 - main に自分の作業でない未コミットの変更があれば、PR に混ぜずに本人へ確認する
-- 変更後の確認（読み取りのみ。Codex の 2 つはリンク先を見るので `~/dotfiles` で実行する。worktree からだと必ず NG になる）
+- 変更後の確認（読み取りのみ）。確認コマンドの正本はここだけで、`/verify` やグローバルの CLAUDE.md はここを指す。リポジトリ直下（worktree で作業中ならその worktree）で走らせ、終了コード 0 が合格。着手前にも走らせて基準を取り、自分の変更で増えた NG だけ直す。もとからある NG は直さず報告する
   - `./sync-settings.sh --check`: 実環境の `settings.json` と追跡版の差分
-  - `python3 setup-codex-skills.py --check`: Codex 側のスキルの対応表とリンク
-  - `bash .codex/scripts/check-parity.sh --quick`: Claude Code と Codex の同等設定の一括点検
+  - `git ls-files -z '*.sh' bin/vid2text | xargs -0 shellcheck -S warning -e SC2034`: シェルスクリプトの警告以上。未使用変数（SC2034）だけ除く
+  - `claude plugin validate .claude/skills`: スキルの frontmatter。YAML が壊れていると 1 で終わる
+  - `(rc=0; for m in .claude/mods/*/; do claude plugin test "$m" && claude plugin validate "$m" || rc=1; done; exit $rc)`: mod のテストとマニフェスト
+  - Codex の点検（`python3 setup-codex-skills.py --check`・`bash .codex/scripts/check-parity.sh --quick`）は、Claude Code だけで運用しているあいだは走らせない。ファイルは残してある
+- `.claude/hooks/block-main-edit.sh` が、git リポジトリの main / master の作業ツリーでの Edit / Write を止める（gitignore されたパスは通す）。`~/.claude/skills` などのリンク先は main なので、そこを直すときも worktree で直す
 - 予定タスクの見直し: 長く回しているセッションでは、区切りで `/tasks` を開く。そのセッションの予定と `/loop` が出る。繰り返しはセッションが動いているあいだ最大 30 日残る。止めたはずのものや、期限の切れたものが残っていたら消す
-- PR は `/ship`（コミット → push → PR → `/code-review` → watch）か `/steward`（開いてある PR の watch だけ）で出してよい。このリポジトリは公開なので、`/ship` は未コミットの変更をコミットしない。worktree（`.claude/worktrees/<名前>`）のブランチで先にコミットしてから `/ship` する。`/ship` の前に上の確認を通す（`sync-settings.sh --check` などは worktree では NG になるので `~/dotfiles` で実行する）。watch の間はセッションを開いたまま前面に置き、ブランチを切り替えない（Esc・`/clear`・ブランチ切り替えで終わる。止めるときは `/ship stop`）。auto-merge は有効にしない。マージは本人がやる
+- PR は `/ship`（コミット → push → PR → `/code-review` → watch）か `/steward`（開いてある PR の watch だけ）で出してよい。このリポジトリは公開なので、`/ship` は未コミットの変更をコミットしない。worktree（`.claude/worktrees/<名前>`）のブランチで先にコミットしてから `/ship` する。`/ship` の前に上の確認を通す。watch の間はセッションを開いたまま前面に置き、ブランチを切り替えない（Esc・`/clear`・ブランチ切り替えで終わる。止めるときは `/ship stop`）。auto-merge は有効にしない。マージは本人がやる
 - いつ `/verify`・refuter・`/ship` を使うかの例は [.claude/README.md](.claude/README.md) の「いつ何を使うか（使用例）」
 
 ## 作業ルール

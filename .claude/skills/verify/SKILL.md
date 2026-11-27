@@ -9,15 +9,7 @@ description: 作業が終わったと言う前に、該当するテスト・lint
 
 ## このリポジトリ（dotfiles）
 
-リポジトリ直下の CLAUDE.md「作業の進め方と確認」と同じものを実行する。Codex の 2 つはリンク先を見るので `~/dotfiles` で実行する。worktree からだと必ず NG になる。
-
-```bash
-./sync-settings.sh --check
-python3 setup-codex-skills.py --check
-bash .codex/scripts/check-parity.sh --quick
-```
-
-シェルを変えたときは `shellcheck` もかける。
+リポジトリ直下の CLAUDE.md「作業の進め方と確認」にある「変更後の確認」を、書いてあるとおりに全部実行する。コマンドの一覧はそこが正本なので、ここには写さない（写すと片方だけ直って食い違う）。
 
 ## ほかのリポジトリ
 

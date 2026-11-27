@@ -13,7 +13,8 @@ Claude Code のユーザーレベル設定。`setup.sh` が項目ごとに `~/.c
 ├── design.md               # ステータスラインとテーマの配色リファレンス
 ├── hooks/
 │   ├── play-sound.sh              # 確認要求時・完了時の効果音
-│   └── log-session-stop.sh        # Stop の観察ログ（止めない）
+│   ├── log-session-stop.sh        # Stop の観察ログ（止めない）
+│   └── block-main-edit.sh         # main / master の作業ツリーでの Edit / Write を止める
 ├── scripts/
 │   └── hc-label-claude-session.sh  # 会話ログの場所を Herdr の端末ラベルに入れる
 ├── sounds/                 # 通知音（macOS のシステムサウンドへのリンク）
@@ -48,6 +49,7 @@ Claude Code の動作設定。主な項目は `permissions`（自動許可と拒
 |----------|------|
 | `play-sound.sh` | 確認要求時（`PermissionRequest`）と完了時（`Stop`）の効果音 |
 | `log-session-stop.sh` | `Stop` の観察ログ。`~/.claude/state/session-stops.jsonl` に 1 行足す。`async: true` で、会話は止めない。応答本文は残さない |
+| `block-main-edit.sh` | `PreToolUse`（`Edit\|Write\|MultiEdit\|NotebookEdit`）。書き換える先が git リポジトリの main / master の作業ツリーなら、終了コード 2 で止める。シンボリックリンクは実体の場所で判定するので、`~/.claude/skills` の下も止まる。リポジトリの外、ほかのブランチ、gitignore されたパスは通す |
 
 `PreSkillShellCommand`（matcher は `Bash|PowerShell`）は、スキルやコマンドの読み込み時に走るシェルを `~/.claude/state/skill-shell-commands.jsonl` に 1 行足す。`exit 0` で、止めない。
 
@@ -120,15 +122,7 @@ Claude Code のプラグインとして書いたもの。`setup.sh` では配置
 
 「完了」と言う前と、PR を出す前に頼む。確認コマンドを実行し、出力を見せてから完了にする。失敗したら完了にしない。実行していない確認は、してないと言う。
 
-このリポジトリでは次を実行する。後ろの 2 つはリンク先を見るので `~/dotfiles` で実行する。worktree からだと必ず NG になる。
-
-```bash
-./sync-settings.sh --check
-python3 setup-codex-skills.py --check
-bash .codex/scripts/check-parity.sh --quick
-```
-
-シェルを変えたときは `shellcheck` もかける。ほかのリポジトリでは、その CLAUDE.md、README、パッケージのスクリプトに書いてある確認を実行する。書いて無ければ、変えた言語のテストか lint を 1 つ選ぶ。dbt なら `dbt build`。見当たらなければ、見当たらないと言う。
+このリポジトリでは、リポジトリ直下の CLAUDE.md「作業の進め方と確認」にある「変更後の確認」を全部実行する。コマンドの一覧はそこが正本で、ここには写さない。ほかのリポジトリでは、その CLAUDE.md、README、パッケージのスクリプトに書いてある確認を実行する。書いて無ければ、変えた言語のテストか lint を 1 つ選ぶ。dbt なら `dbt build`。見当たらなければ、見当たらないと言う。
 
 例:
 
@@ -180,7 +174,7 @@ Claude Code の CLI で、手元のクローンを開いて打つ。クラウド
 
 - 確認のダイアログは出ない。commit や push の直前に、行末が `Esc to cancel` の表示が出て、何もしなければ数秒で進む
 - `/ship` の前に `git status` を見る。PR に入れないファイルは消すか、`git stash push -u -- <ファイル>` で退ける。秘密は中身を自分で見る。`/ship` が弾くのは `.env` のようなファイル名だけで、中のトークンは見ない
-- `/verify` の 3 コマンドを、worktree ではなく `~/dotfiles` で通してから `/ship` する
+- `/verify`（CLAUDE.md の「変更後の確認」）を通してから `/ship` する
 - 確認を待たずに進めてほしいときは auto モード。ほかの権限モードでは、たいていプロンプトで止まる。`bypassPermissions` では watch が始まらない
 - auto-merge は有効にしない。有効だと、チェックが通った時点で GitHub がマージすることがある。切るなら `gh pr merge --disable-auto <番号>`。マージは自分でやる
 - watch のあいだはセッションを開いたまま前面に置き、ブランチを切り替えない。Esc、`/clear`、ブランチの切り替えで終わる。止めるときは `/ship stop`
@@ -195,7 +189,7 @@ Claude Code の CLI で、手元のクローンを開いて打つ。クラウド
 ### 1日の流れの例
 
 1. worktree で実装する
-2. 「完了」の前に `/verify`（確認は `~/dotfiles`）
+2. 「完了」の前に `/verify`
 3. 大きい変更なら、refuter に完了報告を反証させる
 4. `git status` を見て、秘密が無いことを確認し、自分でコミットする
 5. `/ship` する。マージは自分でやる
