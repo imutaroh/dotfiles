@@ -31,8 +31,8 @@
     {
       "name": "brand",
       "source": ".claude/skills/brand/SKILL.md",
-      "source_sha256": "9c16c0e9809f2d0180586f3453284cfccda0d34dea3d351977772748803b4e9e",
-      "description": "いむたろの見た目の決まり（Obsidian Vault の Studio/Brand。色・文字・図の型・たとえの使い方）に合わせて、Artifact・hview のページ・スライド・図解を作るスキル。見た目の指定が無いまま Artifact・hview のページ・スライド・図解を作るときは、書き始める前に必ず使う。「/brand」「brand で」「いつもの見た目で」「ブランドに合わせて」「アーティファクト作って」「スライド作って」「図解して」で使用。見た目を別に指定されたときは使わない。",
+      "source_sha256": "9ca4e497cd77d60ed13b43e1fef0cb3c10d08a0a9777e84e87eeb6f7ec4f04c4",
+      "description": "いむたろの見た目と読みやすさの決まり（Obsidian Vault の Studio/Brand。色・文字・図の型・たとえの使い方・読むページの中身の書き方）に合わせて、Artifact・hview のページ・スライド・図解を作るスキル。見た目の指定が無いまま Artifact・hview のページ・スライド・図解を作るときは、書き始める前に必ず使う。「/brand」「brand で」「いつもの見た目で」「ブランドに合わせて」「アーティファクト作って」「スライド作って」「図解して」で使用。見た目を別に指定されたときは使わない。",
       "mode": "wrapper",
       "codex_skill": "brand",
       "note": "共通互換規約を介して元スキルを実行時参照する。"
@@ -67,7 +67,7 @@
     {
       "name": "hview",
       "source": ".claude/skills/hview/SKILL.md",
-      "source_sha256": "663a13d0e5677d6b1fc2be5be8a541fe38644d079d39e277155d84df0e9af780",
+      "source_sha256": "a9a0242723d9b0242be3a25c2b685b0b5890f43c32456bacfc21a71edc9f35e6",
       "description": "HTML / Markdown を書いて、Herdr の html-viewer ペイン（hview コマンド）でユーザーに見せるスキル。図・表・比較・設計の説明など、端末の文字より 1 枚のページのほうが分かりやすいものを見せるときに使う。「hview で見せて」「hview で開いて」「HTML で見せて」「ページにして」「図にして見せて」「横に出して」で使用。ビューアはページを画像として映すので、押して開く部品（折りたたみ・タブ・ホバー・リンク）を使わずに書く。claude.ai の Artifact とは別物で、ユーザーが Artifact と言わない限りこちらを使う。",
       "mode": "wrapper",
       "codex_skill": "hview",
