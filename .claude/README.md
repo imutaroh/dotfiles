@@ -65,6 +65,7 @@ GitHub の操作（`gh pr merge` などや `gh api` の書き込み）に確認�
 | `Explore.md` | 組み込みの Explore を上書きする。読み取りだけでファイルとコードを探す（Haiku） |
 | `dbt-reviewer.md` | dbt モデル・SQL・指標の定義を読み取りだけでレビューする（Sonnet） |
 | `log-reader.md` | dbt やテストのログを読み、失敗した箇所を報告する（Haiku） |
+| `master.md` | 司令塔の会話として `claude --agent master` で起動する。/master で子のタブへ渡し、/roll で様子を見る。Edit・Write・NotebookEdit を外してあり、自分ではファイルを書き換えない |
 
 ## skills/
 

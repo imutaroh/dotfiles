@@ -243,7 +243,7 @@ link "$DOTFILES_DIR/.claude/skills" ~/.claude/skills
 
 # agents はファイル単位でリンク（dotfiles 管理外のサブエージェントを消さない）
 mkdir -p ~/.claude/agents
-for agent in refuter Explore dbt-reviewer log-reader; do
+for agent in refuter Explore dbt-reviewer log-reader master; do
   link "$DOTFILES_DIR/.claude/agents/$agent.md" ~/.claude/agents/$agent.md
 done
 
