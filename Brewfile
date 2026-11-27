@@ -21,7 +21,6 @@ brew "chafa"                  # ターミナルで画像表示（kitty graphics�
 
 # === 開発ツール ===
 brew "gh"                     # GitHub CLI
-brew "jq"                     # JSON 処理（statusline・codex-hud・sync-settings・desk で使用）
 brew "mise"                   # ランタイムバージョン管理（Node / Python 等）
 brew "hunk"                   # レビュー特化の差分ビューア（AI 向けスキルは `hunk skill path` で同梱版を取り出せる）
 brew "node"                   # Node.js / npm（Mason LSP: typescript-language-server, pyright 等）
@@ -32,6 +31,8 @@ brew "hugo"                   # 静的サイト生成
 brew "xcodegen"               # Xcode プロジェクトを yml から生成
 brew "shellcheck"             # シェルスクリプトの静的検査
 brew "postgresql@17"          # PostgreSQL（ローカル開発用 DB）
+brew "flyctl"                 # Fly.io の CLI
+brew "socat"                  # ソケットの中継（netcat の上位版）
 
 # === macOS ユーティリティ ===
 brew "defaultbrowser"         # デフォルトブラウザを CLI から設定
@@ -40,6 +41,7 @@ brew "imagemagick"            # 画像変換・情報取得（Neovim snacks.imag
 brew "ffmpeg"                 # 動画・音声の変換（GIF 生成などで使用）
 brew "yt-dlp"                 # Web動画の取得（bin/vid2text で使用）
 brew "pngquant"               # PNG の減色圧縮（GitHub アバターの 1MB 制限対応など）
+brew "poppler"                # PDF の変換・抽出（pdftoppm / pdftotext）
 brew "libimobiledevice"       # iPhone と USB 経由で通信（idevice_id / idevicepair）
 brew "ideviceinstaller"       # iPhone のアプリ一覧取得・削除（iphone/ 参照）
 
@@ -49,8 +51,10 @@ cask "alt-tab"
 cask "antigravity-cli"        # Google Antigravity CLI（agy -p で Claude Code から Gemini を呼ぶ）
 cask "aqua-voice"
 cask "arc"
+cask "blender"
 # cask "capsomnia"  # caskが存在しないため手動インストール: https://capsomnia.com/ja/ からpkgをDL
 cask "chatwork"
+cask "claude"                 # Claude デスクトップアプリ
 cask "cleanshot"
 cask "codex"                  # OpenAI Codex CLI（Claude CodeからMCPサーバーとして呼び出し）
 cask "discord"
@@ -58,10 +62,13 @@ cask "discord"
 cask "font-hackgen"
 cask "font-moralerspace"
 cask "ghostty"
+cask "godot"
 cask "google-chrome"
+cask "grok-bot"               # xAI の Grok Bot（既存の Grok Bot.app は .dmg 直入れ。brew 管理に移すなら brew install --cask --adopt grok-bot）
 cask "handy"                  # ローカル音声入力（OSS・Whisper large-v3-turbo で日本語）
 cask "herdr-app"              # Herdr デスクトップアプリ（herdr-core の hc は公式 install.sh で ~/.local/bin に入れる。brew 無し）
 cask "karabiner-elements"    # BTキーボード接続時に内蔵キーボードを無効化
+cask "linear"
 cask "logi-options+"
 cask "nani"
 cask "notion"
@@ -70,5 +77,5 @@ cask "obsidian"
 cask "raindropio"
 cask "raycast"
 cask "slack"
-brew "whisper-cpp"
+brew "whisper.cpp"
 brew "sevenzip"           # 7zz（VOICEVOX エンジンの .7z 展開用）
