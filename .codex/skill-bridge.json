@@ -49,7 +49,7 @@
     {
       "name": "herdr-control",
       "source": ".claude/skills/herdr-control/SKILL.md",
-      "source_sha256": "e356fe61cda250dfdb0990acb85d65362cd642d9ead48fdaeccf3396334f462b",
+      "source_sha256": "fcb9c5d9dc2ee7ff037b20d7612188d492a0ef64a9b22760fbb8cc1880602334",
       "description": "Herdr デスクトップアプリ（herdr-app / hc）のタブ・ペインを Claude が操作するスキル。別タブで Claude を走らせる、タブの状態確認、指示の送信、承認待ちへの応答、タブを閉じる、で使用。「新しいタブで開いて」「別タブで Claude を走らせて」「そのタブの様子を見て」「承認して」「ペインを分割して実行して」「横のペインでログ見せて」「ターミナルに TUI（hunk/yazi 等）を開いて」。窓に出すのは herdr-app、端末の読み書きと待機は hc。旧 TUI 版の herdr pane / herdr tab は使えない。zellij や Ghostty 自体のタブとは別物。",
       "mode": "wrapper",
       "codex_skill": "herdr-control",
@@ -67,7 +67,7 @@
     {
       "name": "master",
       "source": ".claude/skills/master/SKILL.md",
-      "source_sha256": "8c6b42e3bb127b97682dc7e03525b0dbd2fde44f5453ed4f4ce46b449f22549a",
+      "source_sha256": "1fee911cf746056c25504af12abb4041db90d48950b7d98ce8925a1ef1d048e8",
       "description": "入口の会話から Herdr の新しいタブで子の Claude を 1 タスクずつ起動する Claude Code 用スキル。",
       "mode": "deferred",
       "codex_skill": null,

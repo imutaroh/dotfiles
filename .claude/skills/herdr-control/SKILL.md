@@ -37,8 +37,8 @@ herdr-app do tab.new '{"name":"fix login","folder":"/path/to/repo","argv":["clau
 | `name` | タブ名。省略すると番号で呼ばれるので必ず付ける |
 | `space` | 開くスペースの ID（`herdr-app ls`）。省略すると選択中のスペース |
 | `folder` | 端末の開始フォルダ |
-| `argv` | 起動するプログラム（JSON 配列）。Claude なら `["claude"]` |
-| `task` | `argv` のエージェントへの最初のメッセージ |
+| `argv` | 起動するプログラム（JSON 配列）。Claude なら `["claude"]`。モデルや effort を決めるときは `["claude","--model","sonnet","--effort","low"]` のように起動オプションを足す |
+| `task` | `argv` のエージェントへの最初のメッセージ。実際には `argv` の最後に足されて起動する（2026-11-27 に `hc get` で確認） |
 
 - 引数は `--name "fix login" --argv '["claude"]'` の形でも渡せる。未知の引数名は失敗し、有効な名前が返る
 - 結果は作られた ID の JSON（例 `{"pane":"…","terminal":"…"}`）。失敗は `{"error":…}` と exit 1。返事を読み、`herdr-app ls` で確かめる。返事は端末ができた合図にすぎず、プログラムが正しく動いた保証ではない（2 秒以内に非 0 で終わると、窓にエラーのトーストが出る）
@@ -103,6 +103,7 @@ herdr-app do pane.close '{"pane":"<作った pane の id>"}'                  # 
 ```
 
 - `direction` は `right` か `down`。`pane` を省略するとフォーカス中のペインを分割するので、必ず明示する
+- `pane.split` も `argv` を受けるが、`task` は受けない（`herdr-app commands` で確認）。ペインで Claude を起こすときは、依頼文を `argv` の最後に置く（例 `["claude","--model","sonnet","--effort","low","<依頼>"]`）
 - 新しいペインはログインシェルなので、`.zprofile` の環境変数の防護が効く
 - 同じタブで別件の Claude が動いていても、触らない
 
