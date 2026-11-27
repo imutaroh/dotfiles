@@ -72,7 +72,7 @@ GitHub の操作（`gh pr merge` などや `gh api` の書き込み）に確認�
 
 | カテゴリ | スキル |
 |----------|--------|
-| ツール操作（CLI / API の知識） | `herdr-control`, `hview` |
+| ツール操作（CLI / API の知識） | `herdr-control`, `hview`, `ask-bridge` |
 | 自分の決まりへの入口（正本は Obsidian Vault） | `brand` |
 | 作業の確認 | `verify` |
 | 学び方（対話の進め方の決まり） | `deep-read` |

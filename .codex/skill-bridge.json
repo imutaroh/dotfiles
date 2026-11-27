@@ -20,6 +20,15 @@
       "note": "私的スキルのため Codex 側の入口を作らない。本文を変えたら source_sha256 を更新する。"
     },
     {
+      "name": "ask-bridge",
+      "source": ".claude/skills/ask-bridge/SKILL.md",
+      "source_sha256": "1ea9ccea3b08dbb73951bd494c6f71f56b68feb32fb59e0f8573041edf67e1b3",
+      "description": "Herdr のタブの Claude Code から Grok Bot の herdr ボット（claude-bridge Webhook）に調べものを頼む Claude Code 用スキル。",
+      "mode": "deferred",
+      "codex_skill": null,
+      "note": "返事が Herdr 経由で Claude Code のタブに届く前提のスキルなので、Codex 側の入口はまだ作らない。本文を変えたら source_sha256 を更新する。"
+    },
+    {
       "name": "brand",
       "source": ".claude/skills/brand/SKILL.md",
       "source_sha256": "9c16c0e9809f2d0180586f3453284cfccda0d34dea3d351977772748803b4e9e",
