@@ -293,6 +293,10 @@ fi
 # themesはディレクトリ全体をシンボリックリンク
 link "$DOTFILES_DIR/.claude/themes" ~/.claude/themes
 
+# pstack の役割ごとのモデル。~/.claude/rules/ は全セッションに読み込まれるので、codex.md は張らずにこのファイルだけ張る
+mkdir -p ~/.claude/rules
+link "$DOTFILES_DIR/.claude/rules/pstack-models.md" ~/.claude/rules/pstack-models.md
+
 link "$DOTFILES_DIR/.claude/sounds/complete.wav" ~/.claude/sounds/complete.wav
 link "$DOTFILES_DIR/.claude/sounds/confirm.wav" ~/.claude/sounds/confirm.wav
 
